@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>단국대 학식당 — 관리자</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--g:#1a7a5e;--gl:#e8f5f0;--gm:#4caf8a;--am:#c97c2a;--al:#fef3e2;--rd:#c0392b;--rl:#fdf0ef;--bg:#f5f3ee;--s:#fff;--s2:#f0ede6;--b:#e0dbd2;--t:#1a1814;--t2:#6b6560;--t3:#a09b94;--r:12px;--rs:8px;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);min-height:100vh}
+a{text-decoration:none;color:inherit}
+
+nav{background:var(--s);border-bottom:1px solid var(--b);padding:0 22px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-ic{width:32px;height:32px;background:var(--g);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.logo-ic svg{width:17px;height:17px;fill:#fff}
+.logo-t{font-size:14px;font-weight:700}
+.logo-s{font-size:10px;color:var(--t3);font-family:'DM Mono',monospace}
+.nav-r{display:flex;align-items:center;gap:8px}
+.nav-time{font-family:'DM Mono',monospace;font-size:12px;color:var(--t3)}
+.btn{padding:7px 13px;border:none;border-radius:var(--rs);font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px;text-decoration:none}
+.btn-g{background:var(--g);color:#fff}
+.btn-g:hover{background:#155f49}
+.btn-o{background:var(--s2);color:var(--t2);border:1px solid var(--b)}
+.btn-o:hover{background:var(--b)}
+
+/* TABS */
+.tabs{display:flex;gap:0;background:var(--s);border-bottom:1px solid var(--b);padding:0 22px}
+.tab{padding:12px 16px;font-size:13px;font-weight:500;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}
+.tab.active{color:var(--g);border-bottom-color:var(--g);font-weight:700}
+
+.page{display:none;max-width:1080px;margin:0 auto;padding:20px 22px}
+.page.active{display:block}
+
+.live{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--rd)}
+.live::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--rd);animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+.section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.section-hd h2{font-size:15px;font-weight:700}
+
+/* CONG */
+.cong-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:24px}
+.cong-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;transition:all .3s}
+.cong-card.flash{background:#fffde7;border-color:var(--am);transform:scale(1.02)}
+.cc-name{font-size:13px;font-weight:700;margin-bottom:6px}
+.cbadge{display:inline-block;font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;margin-bottom:6px}
+.cbadge.low{background:var(--gl);color:var(--g)}.cbadge.mid{background:var(--al);color:var(--am)}.cbadge.high{background:var(--rl);color:var(--rd)}
+.cw{font-size:24px;font-weight:700;font-family:'DM Mono',monospace}
+.cw span{font-size:12px;font-weight:400;color:var(--t3)}
+.co{font-size:11px;color:var(--t3);margin-top:3px}
+.cbar{height:4px;background:var(--b);border-radius:2px;margin-top:8px;overflow:hidden}
+.cfill{height:100%;border-radius:2px;transition:width .5s}
+.cfill.low{background:var(--g)}.cfill.mid{background:var(--am)}.cfill.high{background:var(--rd)}
+
+/* SEATS */
+.seats-wrap{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:18px;margin-bottom:24px}
+.zone-hd{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
+.seat-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.seat-chip{padding:8px 12px;border:1px solid var(--b);border-radius:var(--rs);background:var(--s);font-size:12px;font-weight:700;text-align:center;min-width:60px;transition:all .3s}
+.seat-chip.occ{background:var(--g);border-color:var(--g);color:#fff}
+.seat-chip.expiring{background:var(--al);border-color:var(--am);color:var(--am)}
+.seat-chip .stype{font-size:9px;font-weight:400;opacity:.75;display:block}
+.seat-chip.occ .stype{opacity:.8}
+.seat-chip .stime{font-size:9px;font-family:'DM Mono',monospace;display:block;margin-top:1px}
+.leg{display:flex;gap:14px;margin-top:6px}
+.leg-i{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--t3)}
+.leg-d{width:10px;height:10px;border-radius:3px}
+
+/* ORDERS PANEL */
+.order-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-bottom:20px}
+.order-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;transition:all .3s}
+.order-card.new-flash{border-color:var(--g);background:var(--gl)}
+.oc-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.oc-booth{font-size:13px;font-weight:700}
+.oc-table{font-size:11px;color:var(--t3)}
+.oc-time{font-size:11px;font-family:'DM Mono',monospace;color:var(--t3)}
+.order-items{display:flex;flex-direction:column;gap:5px}
+.oi{display:flex;align-items:center;gap:8px;font-size:13px;padding:5px 0;border-bottom:1px solid var(--b)}
+.oi:last-child{border-bottom:none}
+.oi-num{font-family:'DM Mono',monospace;font-size:16px;font-weight:700;min-width:36px;color:var(--g)}
+.oi-num.done{color:var(--t3);text-decoration:line-through}
+.oi-name{flex:1}
+.oi.done-row .oi-name{color:var(--t3);text-decoration:line-through}
+.done-btn{padding:4px 10px;border:1px solid var(--b);border-radius:6px;background:var(--s);font-family:'Noto Sans KR',sans-serif;font-size:11px;cursor:pointer;color:var(--t2);white-space:nowrap}
+.done-btn:hover{border-color:var(--g);color:var(--g)}
+.done-btn.done{background:var(--gl);border-color:var(--gm);color:var(--g)}
+
+/* STATS */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:20px}
+.stat-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;text-align:center}
+.stat-v{font-size:24px;font-weight:700;font-family:'DM Mono',monospace}
+.stat-l{font-size:11px;color:var(--t3);margin-top:3px}
+
+/* SOLDOUT MANAGER */
+.sold-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.sold-booth{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px}
+.sold-booth-name{font-size:13px;font-weight:700;margin-bottom:10px}
+.sold-item{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--b);font-size:13px}
+.sold-item:last-child{border-bottom:none}
+.sold-toggle{padding:4px 10px;border:1px solid var(--b);border-radius:6px;background:var(--s);font-family:'Noto Sans KR',sans-serif;font-size:11px;cursor:pointer;color:var(--t2)}
+.sold-toggle.on{background:var(--rl);border-color:var(--rd);color:var(--rd);font-weight:700}
+.sold-toggle:hover{opacity:.8}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">
+    <div class="logo-ic"><svg viewBox="0 0 24 24"><path d="M3 9H21M3 15H21M12 3v18M7.8 3h8.4C18.9 3 21 3 21 5.64v12.72C21 21 18.9 21 16.2 21H7.8C5.1 21 3 21 3 18.36V5.64C3 3 5.1 3 7.8 3Z"/></svg></div>
+    <div><div class="logo-t">단국대 학식당</div><div class="logo-s">관리자 · 죽전캠퍼스</div></div>
+  </div>
+  <div class="nav-r">
+    <div class="nav-time" id="nav-time">00:00</div>
+    <a href="tv.html" class="btn btn-o" target="_blank">📺 TV 화면</a>
+    <a href="qr.html" class="btn btn-g" target="_blank">🖨 QR 인쇄</a>
+  </div>
+</nav>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('dash')">대시보드</div>
+  <div class="tab" onclick="switchTab('orders')">주문 관리</div>
+  <div class="tab" onclick="switchTab('soldout')">품절 관리</div>
+</div>
+
+<!-- DASH -->
+<div id="page-dash" class="page active">
+  <div class="section-hd"><h2>실시간 혼잡도</h2><span class="live">LIVE</span></div>
+  <div class="cong-grid" id="cong-grid"></div>
+  <div class="section-hd"><h2>좌석 현황</h2>
+    <div class="leg">
+      <div class="leg-i"><div class="leg-d" style="background:var(--s);border:1px solid var(--b)"></div>비어있음</div>
+      <div class="leg-i"><div class="leg-d" style="background:var(--g)"></div>사용중</div>
+      <div class="leg-i"><div class="leg-d" style="background:var(--al);border:1px solid var(--am)"></div>곧 만료</div>
+    </div>
+  </div>
+  <div class="seats-wrap" id="seats-wrap"></div>
+  <div class="section-hd"><h2>통계</h2></div>
+  <div class="stat-grid" id="stat-grid"></div>
+</div>
+
+<!-- ORDERS -->
+<div id="page-orders" class="page">
+  <div class="section-hd"><h2>주문 현황</h2><span class="live">LIVE</span></div>
+  <div class="order-grid" id="order-grid"></div>
+</div>
+
+<!-- SOLDOUT -->
+<div id="page-soldout" class="page">
+  <div class="section-hd"><h2>품절 설정</h2><button class="btn btn-o" onclick="clearAllSoldout()">전체 해제</button></div>
+  <div class="sold-grid" id="sold-grid"></div>
+</div>
+
+<script src="data.js"></script>
+<script>
+const SK='dku_state',ORDERS='dku_orders',SEATS='dku_seats',SOLD='dku_soldout';
+const ls=k=>{try{return JSON.parse(localStorage.getItem(k))||{}}catch{return{}}};
+const lsa=k=>{try{return JSON.parse(localStorage.getItem(k))||[]}catch{return[]}};
+const ss=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+
+let curTab='dash';
+function switchTab(t){
+  curTab=t;
+  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',['dash','orders','soldout'][i]===t));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+t).classList.add('active');
+}
+
+function tick(){document.getElementById('nav-time').textContent=new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});}
+setInterval(tick,1000);tick();
+
+function lv(w){return w<=5?'low':w<=11?'mid':'high'}
+function lvL(l){return l==='low'?'여유':l==='mid'?'보통':'혼잡'}
+function pct(w){return Math.min(100,Math.round((w/22)*100))}
+
+/* ── CONG ── */
+function renderCong(){
+  const st=ls(SK);
+  document.getElementById('cong-grid').innerHTML=BOOTHS.map(b=>{
+    const s={orders:0,wait:BASE_WAIT[b.id],revenue:0,...(st[b.id]||{})};
+    const l=lv(s.wait);
+    return`<div class="cong-card" id="cc-${b.id}">
+      <div class="cc-name">${b.name}</div>
+      <span class="cbadge ${l}">${lvL(l)}</span>
+      <div class="cw">${s.wait}<span>분</span></div>
+      <div class="co">주문 ${s.orders}건 · ${s.revenue.toLocaleString()}원</div>
+      <div class="cbar"><div class="cfill ${l}" style="width:${pct(s.wait)}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+/* ── SEATS ── */
+function renderSeats(){
+  const seats=ls(SEATS);
+  const zones={};
+  TABLES.forEach(t=>{if(!zones[t.zone])zones[t.zone]=[];zones[t.zone].push(t);});
+  const zl={A:'A구역 (1인석)',B:'B구역 (2인석)',C:'C구역 (4인석)',D:'D구역 (6인석)'};
+  document.getElementById('seats-wrap').innerHTML=Object.entries(zones).map(([z,tables])=>`
+    <div class="zone-hd">${zl[z]||z+'구역'}</div>
+    <div class="seat-row">${tables.map(t=>{
+      const s=seats[t.id];
+      const occ=s?.occupied;
+      let rem='',cls='';
+      if(occ&&s.endTs){
+        const r=Math.max(0,Math.floor((s.endTs-Date.now())/60000));
+        rem=r+'분';
+        cls=r<=10?' expiring':'';
+      }
+      return`<div class="seat-chip${occ?' occ':''}${cls}">
+        ${t.id}<span class="stype">${t.type}인</span>${occ&&rem?`<span class="stime">${rem}</span>`:''}
+      </div>`;
+    }).join('')}</div>`).join('');
+}
+
+/* ── STATS ── */
+function renderStats(){
+  const orders=lsa(ORDERS);
+  const popular={};
+  orders.forEach(o=>o.items?.forEach(it=>{popular[it.n]=(popular[it.n]||0)+it.qty;}));
+  const topItems=Object.entries(popular).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  const total=parseInt(localStorage.getItem('dku_total')||'0');
+  const rev=parseInt(localStorage.getItem('dku_rev')||'0');
+  const st=ls(SK);
+  const sorted=[...BOOTHS].sort((a,b)=>(st[b.id]?.wait||BASE_WAIT[b.id])-(st[a.id]?.wait||BASE_WAIT[a.id]));
+  document.getElementById('stat-grid').innerHTML=`
+    <div class="stat-card"><div class="stat-v" style="color:var(--g)">${total}</div><div class="stat-l">총 주문</div></div>
+    <div class="stat-card"><div class="stat-v" style="color:var(--am)">${rev.toLocaleString()}</div><div class="stat-l">매출(원)</div></div>
+    <div class="stat-card"><div class="stat-v" style="color:var(--rd);font-size:15px">${sorted[0].name}</div><div class="stat-l">가장 혼잡</div></div>
+    <div class="stat-card"><div class="stat-v" style="color:var(--g);font-size:15px">${sorted[sorted.length-1].name}</div><div class="stat-l">가장 여유</div></div>
+    <div class="stat-card" style="grid-column:span 2"><div class="stat-v" style="font-size:13px;line-height:1.8">${topItems.map(([n,c])=>`🔥 ${n} <span style="color:var(--t3);font-size:12px">${c}건</span>`).join('<br>')}</div><div class="stat-l">인기 메뉴 TOP3</div></div>`;
+}
+
+/* ── ORDERS ── */
+function renderOrders(){
+  const orders=lsa(ORDERS).slice(0,40);
+  if(!orders.length){document.getElementById('order-grid').innerHTML='<div style="font-size:13px;color:var(--t3)">주문이 없습니다</div>';return;}
+  document.getElementById('order-grid').innerHTML=orders.map(o=>`
+    <div class="order-card" id="oc-${o.id}">
+      <div class="oc-hd">
+        <div><div class="oc-booth">${o.booth}</div><div class="oc-table">테이블 ${o.table}</div></div>
+        <div class="oc-time">${o.time}</div>
+      </div>
+      <div class="order-items">
+        ${(o.items||[]).map(it=>`
+          <div class="oi${it.done?' done-row':''}" id="oi-${o.id}-${it.num}">
+            <span class="oi-num${it.done?' done':''}">${it.num}</span>
+            <span class="oi-name">${it.n} ×${it.qty}</span>
+            <button class="done-btn${it.done?' done':''}" onclick="toggleDone('${o.id}',${it.num})">
+              ${it.done?'완료':'완료처리'}
+            </button>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function toggleDone(orderId, num){
+  const orders=lsa(ORDERS);
+  const o=orders.find(x=>x.id===orderId);
+  if(!o)return;
+  const it=o.items?.find(x=>x.num===num);
+  if(it)it.done=!it.done;
+  ss(ORDERS,orders);
+  renderOrders();
+}
+
+/* ── SOLDOUT ── */
+function renderSoldout(){
+  const sold=ls(SOLD);
+  document.getElementById('sold-grid').innerHTML=BOOTHS.map(b=>`
+    <div class="sold-booth">
+      <div class="sold-booth-name">${b.name}</div>
+      ${b.items.map(item=>{
+        const key=b.id+'::'+item.n;
+        const on=!!sold[key];
+        return`<div class="sold-item">
+          <span style="font-size:13px">${item.n}</span>
+          <button class="sold-toggle${on?' on':''}" onclick="toggleSold('${key}',this)">
+            ${on?'품절':'정상'}
+          </button>
+        </div>`;
+      }).join('')}
+    </div>`).join('');
+}
+
+function toggleSold(key,btn){
+  const sold=ls(SOLD);
+  if(sold[key])delete sold[key]; else sold[key]=true;
+  ss(SOLD,sold);
+  btn.className='sold-toggle'+(sold[key]?' on':'');
+  btn.textContent=sold[key]?'품절':'정상';
+}
+
+function clearAllSoldout(){
+  ss(SOLD,{});
+  renderSoldout();
+}
+
+/* ── POLL ── */
+let prevOrderCount=lsa(ORDERS).length;
+function poll(){
+  renderCong();renderSeats();
+  if(curTab==='dash')renderStats();
+  if(curTab==='orders')renderOrders();
+  if(curTab==='soldout')renderSoldout();
+  // flash new orders
+  const newCount=lsa(ORDERS).length;
+  if(newCount>prevOrderCount){
+    const orders=lsa(ORDERS);
+    orders.slice(0,newCount-prevOrderCount).forEach(o=>{
+      const card=document.getElementById('oc-'+o.id);
+      if(card){card.classList.add('new-flash');setTimeout(()=>card.classList.remove('new-flash'),1500);}
+      const cc=document.getElementById('cc-'+o.boothId);
+      if(cc){cc.classList.add('flash');setTimeout(()=>cc.classList.remove('flash'),1200);}
+    });
+    prevOrderCount=newCount;
+  }
+}
+setInterval(poll,1500);
+renderCong();renderSeats();renderStats();renderOrders();renderSoldout();
+</script>
+</body>
+</html>

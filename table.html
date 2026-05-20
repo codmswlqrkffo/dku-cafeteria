@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>단국대 학식당 주문</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --g:#1a7a5e;--gl:#e8f5f0;--gm:#4caf8a;
+  --am:#c97c2a;--al:#fef3e2;
+  --rd:#c0392b;--rl:#fdf0ef;
+  --bg:#f5f3ee;--s:#fff;--s2:#f0ede6;
+  --b:#e0dbd2;--t:#1a1814;--t2:#6b6560;--t3:#a09b94;
+  --r:14px;--rs:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;max-width:480px;margin:0 auto}
+
+/* HEADER */
+.hd{background:var(--s);border-bottom:1px solid var(--b);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.hd-table{font-size:20px;font-weight:700}
+.hd-sub{font-size:11px;color:var(--t3);margin-top:1px}
+.hd-right{text-align:right}
+.cong-mini{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;display:inline-block}
+.cong-mini.low{background:var(--gl);color:var(--g)}.cong-mini.mid{background:var(--al);color:var(--am)}.cong-mini.high{background:var(--rl);color:var(--rd)}
+.hd-clock{font-size:11px;color:var(--t3);font-family:'DM Mono',monospace;margin-top:3px}
+
+/* TIMER BAR */
+.timer-bar{background:var(--s);border-bottom:1px solid var(--b);padding:10px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.timer-left{display:flex;align-items:center;gap:8px}
+.timer-icon{font-size:16px}
+.timer-label{font-size:12px;color:var(--t2)}
+.timer-val{font-size:16px;font-weight:700;font-family:'DM Mono',monospace;color:var(--g);min-width:48px}
+.timer-val.warn{color:var(--am)}.timer-val.danger{color:var(--rd)}
+.timer-prog{flex:1;height:5px;background:var(--b);border-radius:3px;overflow:hidden}
+.timer-fill{height:100%;border-radius:3px;background:var(--g);transition:width 1s linear}
+.timer-fill.warn{background:var(--am)}.timer-fill.danger{background:var(--rd)}
+.extend-btn{padding:5px 12px;border:1px solid var(--g);border-radius:20px;background:var(--gl);color:var(--g);font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
+.extend-btn:active{background:var(--g);color:#fff}
+
+/* STEPS */
+.steps{display:flex;align-items:center;padding:12px 18px;background:var(--s);border-bottom:1px solid var(--b)}
+.step{flex:1;text-align:center;font-size:11px;color:var(--t3)}
+.step.active{color:var(--g);font-weight:700}.step.done{color:var(--gm)}
+.step-num{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--b);background:var(--s);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin:0 auto 3px}
+.step.active .step-num{border-color:var(--g);background:var(--g);color:#fff}
+.step.done .step-num{border-color:var(--gm);background:var(--gm);color:#fff}
+.step-line{flex:none;width:36px;height:1px;background:var(--b);margin-bottom:22px}
+.step-line.done{background:var(--gm)}
+
+/* BOOTH PICKER */
+.booth-picker{padding:14px}
+.picker-title{font-size:13px;font-weight:700;margin-bottom:10px;color:var(--t2)}
+.min-order-notice{background:var(--al);border-radius:var(--rs);padding:9px 12px;font-size:12px;color:var(--am);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.booth-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:7px;transition:all .12s}
+.booth-card:active{background:var(--gl);border-color:var(--g)}
+.bc-name{font-size:15px;font-weight:700}
+.bc-wait{font-size:12px;margin-top:2px}
+.bc-wait.low{color:var(--g)}.bc-wait.mid{color:var(--am)}.bc-wait.high{color:var(--rd)}
+.bc-arrow{font-size:20px;color:var(--t3)}
+
+/* MENU */
+.menu-section{padding:0 14px 120px}
+.booth-hd{display:flex;align-items:center;gap:10px;padding:14px 0 10px;border-bottom:1px solid var(--b);margin-bottom:2px}
+.back-btn{width:32px;height:32px;border:1px solid var(--b);border-radius:var(--rs);background:var(--s);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.back-btn svg{width:15px;height:15px}
+.menu-item{display:flex;align-items:center;padding:11px 0;border-bottom:1px solid var(--b);gap:10px}
+.menu-item:last-child{border-bottom:none}
+.menu-item.soldout{opacity:.5}
+.mi-info{flex:1;min-width:0}
+.mi-name-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.mi-name{font-size:14px}
+.badge-popular{font-size:10px;font-weight:700;background:#fff3cd;color:#856404;padding:1px 6px;border-radius:10px;white-space:nowrap}
+.badge-soldout{font-size:10px;font-weight:700;background:var(--rl);color:var(--rd);padding:1px 6px;border-radius:10px;white-space:nowrap}
+.mi-price{font-size:12px;color:var(--t3);font-family:'DM Mono',monospace;margin-top:2px}
+.qty-ctrl{display:flex;align-items:center;gap:7px}
+.qty-btn{width:30px;height:30px;border:1px solid var(--b);border-radius:8px;background:var(--s);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--t2);transition:all .1s}
+.qty-btn:disabled{opacity:.3;cursor:default}
+.qty-btn.add:not(:disabled):active{border-color:var(--g);color:var(--g);background:var(--gl)}
+.qty-btn.sub:not(:disabled):active{border-color:var(--rd);color:var(--rd);background:var(--rl)}
+.qty-num{font-size:14px;font-weight:700;min-width:18px;text-align:center;font-family:'DM Mono',monospace}
+
+/* CART BAR */
+.cart-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--s);border-top:1px solid var(--b);padding:10px 14px;z-index:200}
+.cart-summary{display:flex;justify-content:space-between;font-size:12px;margin-bottom:7px}
+.min-warn{color:var(--rd);font-size:11px;font-weight:500}
+.cart-count{color:var(--t2)}
+.cart-tv{font-family:'DM Mono',monospace;font-weight:700;color:var(--g)}
+.next-btn{width:100%;padding:13px;background:var(--g);color:#fff;border:none;border-radius:var(--rs);font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:700;cursor:pointer}
+.next-btn:disabled{background:var(--s2);color:var(--t3);cursor:default}
+
+/* CART REVIEW */
+.cart-review{padding:14px 14px 130px}
+.sect-title{font-size:14px;font-weight:700;margin-bottom:10px}
+.cart-item-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--b);gap:8px;font-size:14px}
+.cart-item-row:last-child{border-bottom:none}
+.ci-name{flex:1;font-size:13px}
+.ci-qty{color:var(--t3);font-size:12px;margin-right:4px}
+.ci-price{font-family:'DM Mono',monospace;font-size:12px}
+.ci-rm{background:none;border:none;cursor:pointer;color:var(--t3);font-size:17px;padding:0 3px}
+.ci-rm:active{color:var(--rd)}
+.total-row{display:flex;justify-content:space-between;padding:12px 0 0;font-size:16px;font-weight:700;border-top:2px solid var(--t)}
+.total-price{font-family:'DM Mono',monospace;color:var(--g)}
+.pay-label{font-size:12px;color:var(--t3);margin:12px 0 7px;font-weight:500}
+.pay-methods{display:flex;gap:7px;margin-bottom:12px}
+.pay-btn2{flex:1;padding:9px 4px;border:1.5px solid var(--b);border-radius:var(--rs);background:var(--s);font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:500;cursor:pointer;text-align:center;color:var(--t2);transition:all .12s}
+.pay-btn2.active{border-color:var(--g);color:var(--g);background:var(--gl)}
+
+/* SUCCESS */
+.success-screen{padding:32px 18px;text-align:center;min-height:55vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.suc-icon{width:68px;height:68px;border-radius:50%;background:var(--gl);display:flex;align-items:center;justify-content:center;margin:0 auto}
+.suc-icon svg{width:34px;height:34px;stroke:var(--g)}
+.suc-title{font-size:22px;font-weight:700}
+.suc-sub{font-size:14px;color:var(--t2);line-height:1.7}
+.order-numbers{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.order-num-chip{background:var(--g);color:#fff;font-family:'DM Mono',monospace;font-size:20px;font-weight:700;padding:10px 18px;border-radius:10px;min-width:64px}
+.order-summary-box{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;text-align:left;width:100%;font-size:13px;line-height:1.9}
+.os-row{display:flex;justify-content:space-between}
+.extra-btn{width:100%;padding:12px;border:1.5px solid var(--b);border-radius:var(--rs);background:var(--s);font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;cursor:pointer;color:var(--t2);margin-top:6px}
+.extra-btn:active{background:var(--s2)}
+</style>
+</head>
+<body>
+<header class="hd">
+  <div>
+    <div class="hd-table" id="hd-table">—</div>
+    <div class="hd-sub" id="hd-sub"></div>
+  </div>
+  <div class="hd-right">
+    <div class="cong-mini" id="hd-cong"></div>
+    <div class="hd-clock" id="hd-clock">00:00</div>
+  </div>
+</header>
+
+<div class="timer-bar" id="timer-bar">
+  <div class="timer-left">
+    <span class="timer-icon">⏱</span>
+    <div>
+      <div class="timer-label">남은 이용시간</div>
+      <div class="timer-val" id="timer-val">40:00</div>
+    </div>
+  </div>
+  <div class="timer-prog"><div class="timer-fill" id="timer-fill" style="width:100%"></div></div>
+  <button class="extend-btn" onclick="extendTime()">+20분 연장</button>
+</div>
+
+<div class="steps" id="steps">
+  <div class="step active" id="step1"><div class="step-num">1</div>부스 선택</div>
+  <div class="step-line" id="sl1"></div>
+  <div class="step" id="step2"><div class="step-num">2</div>메뉴 선택</div>
+  <div class="step-line" id="sl2"></div>
+  <div class="step" id="step3"><div class="step-num">3</div>결제</div>
+</div>
+
+<div id="content"></div>
+<div class="cart-bar" id="cart-bar" style="display:none"></div>
+
+<script src="data.js"></script>
+<script>
+/* ── PARAMS ── */
+const params = new URLSearchParams(location.search);
+const tableId = params.get('id') || 'A1';
+const tableInfo = TABLES.find(t => t.id === tableId) || {id:tableId,zone:'A',type:1,minOrder:1};
+
+/* ── STORAGE HELPERS ── */
+const SK = 'dku_state', LOG = 'dku_log', SEATS = 'dku_seats', ORDERS = 'dku_orders', SOLD = 'dku_soldout';
+const ls = k => { try { return JSON.parse(localStorage.getItem(k)) || {} } catch { return {} } };
+const lsa = k => { try { return JSON.parse(localStorage.getItem(k)) || [] } catch { return [] } };
+const ss = (k,v) => localStorage.setItem(k, JSON.stringify(v));
+
+/* ── SEAT SESSION ── */
+const sessionKey = 'dku_session_' + tableId;
+function getSession() { try { return JSON.parse(sessionStorage.getItem(sessionKey)) || null } catch { return null } }
+function setSession(s) { sessionStorage.setItem(sessionKey, JSON.stringify(s)) }
+
+let session = getSession();
+if (!session) {
+  session = { tableId, startTs: Date.now(), endTs: Date.now() + DEFAULT_TIME * 60000, extended: 0 };
+  setSession(session);
+  // mark seat occupied
+  const seats = ls(SEATS);
+  seats[tableId] = { occupied: true, since: Date.now() };
+  ss(SEATS, seats);
+}
+
+/* ── TIMER ── */
+function extendTime() {
+  session.endTs += EXTEND_TIME * 60000;
+  session.extended = (session.extended || 0) + 1;
+  setSession(session);
+  // persist extension to shared state for admin to see
+  const st = ls(SK);
+  if (st[tableId]) { st[tableId].endTs = session.endTs; ss(SK, st); }
+}
+
+function updateTimer() {
+  const rem = Math.max(0, session.endTs - Date.now());
+  const totalMs = (DEFAULT_TIME + (session.extended||0)*EXTEND_TIME) * 60000;
+  const pct = (rem / totalMs) * 100;
+  const mins = Math.floor(rem / 60000);
+  const secs = Math.floor((rem % 60000) / 1000);
+  const el = document.getElementById('timer-val');
+  const fill = document.getElementById('timer-fill');
+  if (!el) return;
+  el.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+  el.className = 'timer-val' + (mins < 5 ? ' danger' : mins < 10 ? ' warn' : '');
+  if (fill) {
+    fill.style.width = pct + '%';
+    fill.className = 'timer-fill' + (mins < 5 ? ' danger' : mins < 10 ? ' warn' : '');
+  }
+  if (rem === 0) { showExpired(); }
+}
+setInterval(updateTimer, 1000); updateTimer();
+
+function showExpired() {
+  document.getElementById('steps').style.display = 'none';
+  document.getElementById('cart-bar').style.display = 'none';
+  document.getElementById('content').innerHTML = `
+    <div class="success-screen">
+      <div class="suc-icon" style="background:var(--rl)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--rd)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
+      <div class="suc-title" style="color:var(--rd)">이용시간 종료</div>
+      <div class="suc-sub">이용시간이 만료되었습니다.<br>자리를 비워주시면 감사합니다.</div>
+    </div>`;
+}
+
+/* ── HEADER ── */
+document.getElementById('hd-table').textContent = '테이블 ' + tableId;
+document.getElementById('hd-sub').textContent = tableInfo.type + '인석 · ' + tableInfo.zone + '구역';
+
+function updateHeader() {
+  const st = ls(SK);
+  const waits = BOOTHS.map(b => st[b.id]?.wait || BASE_WAIT[b.id]);
+  const avg = Math.round(waits.reduce((a,b)=>a+b,0)/waits.length);
+  const l = avg<=5?'low':avg<=11?'mid':'high';
+  const el = document.getElementById('hd-cong');
+  el.className = 'cong-mini ' + l;
+  el.textContent = '● ' + (l==='low'?'여유':l==='mid'?'보통':'혼잡') + ' · 평균 ' + avg + '분';
+  document.getElementById('hd-clock').textContent = new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
+}
+setInterval(updateHeader, 8000); updateHeader();
+
+/* ── STEP ── */
+let curStep = 1;
+function setStep(n) {
+  curStep = n;
+  [1,2,3].forEach(i => {
+    const el = document.getElementById('step'+i);
+    el.className = 'step' + (i===n?' active':i<n?' done':'');
+  });
+  [1,2].forEach(i => {
+    const l = document.getElementById('sl'+i);
+    if(l) l.className = 'step-line' + (i<n?' done':'');
+  });
+}
+
+/* ── CART STATE ── */
+let cart = {}; // {booth_id: {itemName: {n,p,qty}}}
+let cartBooth = null;
+function cartCount() {
+  let cnt=0,total=0;
+  Object.values(cart).forEach(bth => Object.values(bth).forEach(it => { cnt+=it.qty; total+=it.p*it.qty; }));
+  return {cnt,total};
+}
+
+/* ── POPULAR / SOLDOUT ── */
+function getPopular() {
+  const orders = lsa(ORDERS);
+  const counts = {};
+  orders.forEach(o => o.items.forEach(it => { counts[it.n] = (counts[it.n]||0)+it.qty; }));
+  return counts;
+}
+function getSoldout() { return ls(SOLD); }
+
+/* ── STEP 1: BOOTH PICKER ── */
+function renderBooth() {
+  setStep(1);
+  document.getElementById('cart-bar').style.display = 'none';
+  const st = ls(SK);
+  const minO = tableInfo.minOrder;
+  document.getElementById('content').innerHTML = `
+    <div class="booth-picker">
+      <div class="picker-title">어느 부스에서 주문하시겠어요?</div>
+      ${minO > 1 ? `<div class="min-order-notice">⚠ ${tableInfo.type}인석은 최소 ${minO}개 메뉴를 주문해야 합니다</div>` : ''}
+      <div>
+        ${BOOTHS.map(b => {
+          const w = st[b.id]?.wait || BASE_WAIT[b.id];
+          const l = w<=5?'low':w<=11?'mid':'high';
+          const lbl = l==='low'?'여유':l==='mid'?'보통':'혼잡';
+          return `<div class="booth-card" onclick="selectBooth('${b.id}')">
+            <div>
+              <div class="bc-name">${b.name}</div>
+              <div class="bc-wait ${l}">● ${lbl} · 약 ${w}분</div>
+            </div>
+            <span class="bc-arrow">›</span>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+}
+
+/* ── STEP 2: MENU ── */
+function selectBooth(id) {
+  cartBooth = id;
+  if (!cart[id]) cart[id] = {};
+  renderMenu(id);
+}
+
+function renderMenu(id) {
+  setStep(2);
+  const b = BOOTHS.find(x => x.id === id);
+  const st = ls(SK);
+  const w = st[id]?.wait || BASE_WAIT[id];
+  const l = w<=5?'low':w<=11?'mid':'high';
+  const popular = getPopular();
+  const soldout = getSoldout();
+
+  document.getElementById('content').innerHTML = `
+    <div class="menu-section">
+      <div class="booth-hd">
+        <button class="back-btn" onclick="renderBooth()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div>
+          <div style="font-size:16px;font-weight:700">${b.name}</div>
+          <div class="bc-wait ${l}">● ${l==='low'?'여유':l==='mid'?'보통':'혼잡'} · 약 ${w}분 대기</div>
+        </div>
+      </div>
+      ${b.items.map((item,i) => {
+        const qty = cart[id][item.n]?.qty || 0;
+        const isPopular = (popular[item.n]||0) >= POPULAR_THRESHOLD;
+        const isSold = !!soldout[id+'::'+item.n];
+        return `<div class="menu-item${isSold?' soldout':''}">
+          <div class="mi-info">
+            <div class="mi-name-row">
+              <span class="mi-name">${item.n}</span>
+              ${isPopular&&!isSold?'<span class="badge-popular">🔥 인기</span>':''}
+              ${isSold?'<span class="badge-soldout">품절</span>':''}
+            </div>
+            <div class="mi-price">${item.p.toLocaleString()}원</div>
+          </div>
+          <div class="qty-ctrl">
+            <button class="qty-btn sub" onclick="chgQty('${id}',${i},'${item.n}',${item.p},-1)" ${qty===0||isSold?'disabled':''}>−</button>
+            <span class="qty-num" id="qn-${i}">${qty}</span>
+            <button class="qty-btn add" onclick="chgQty('${id}',${i},'${item.n}',${item.p},1)" ${isSold?'disabled':''}>+</button>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  document.getElementById('cart-bar').style.display = 'block';
+  updateCartBar();
+}
+
+function chgQty(bid, idx, name, price, delta) {
+  if (!cart[bid]) cart[bid] = {};
+  const cur = cart[bid][name]?.qty || 0;
+  const nw = Math.max(0, cur + delta);
+  if (nw === 0) delete cart[bid][name]; else cart[bid][name] = {n:name, p:price, qty:nw};
+  const el = document.getElementById('qn-'+idx);
+  if (el) el.textContent = nw;
+  // update sub btn
+  const subEl = el?.parentElement?.querySelector('.sub');
+  if (subEl) subEl.disabled = nw === 0;
+  updateCartBar();
+}
+
+function updateCartBar() {
+  const {cnt, total} = cartCount();
+  const minO = tableInfo.minOrder;
+  const canNext = cnt >= minO;
+  document.getElementById('cart-bar').innerHTML = `
+    <div class="cart-summary">
+      <span class="${canNext?'cart-count':'min-warn'}">${cnt < minO ? `최소 ${minO}개 필요 (현재 ${cnt}개)` : cnt+'개 선택'}</span>
+      <span class="cart-tv">${total.toLocaleString()}원</span>
+    </div>
+    <button class="next-btn" ${!canNext?'disabled':''} onclick="goCart()">주문 확인하기</button>`;
+}
+
+/* ── STEP 3: REVIEW + PAY ── */
+let payMethod = 'kakao';
+function goCart() {
+  setStep(3);
+  document.getElementById('cart-bar').style.display = 'none';
+  const b = BOOTHS.find(x => x.id === cartBooth);
+  const items = Object.values(cart[cartBooth]||{});
+  const total = items.reduce((a,i)=>a+i.p*i.qty,0);
+  document.getElementById('content').innerHTML = `
+    <div class="cart-review">
+      <div class="sect-title">${b.name} 주문 내역</div>
+      ${items.map((it,i)=>`
+        <div class="cart-item-row">
+          <span class="ci-name">${it.n}</span>
+          <span class="ci-qty">×${it.qty}</span>
+          <span class="ci-price">${(it.p*it.qty).toLocaleString()}원</span>
+          <button class="ci-rm" onclick="rmItem('${it.n}')">×</button>
+        </div>`).join('')}
+      <div class="total-row"><span>합계</span><span class="total-price">${total.toLocaleString()}원</span></div>
+      <div class="pay-label">결제 수단</div>
+      <div class="pay-methods">
+        <button class="pay-btn2 active" id="pm-kakao" onclick="setPay('kakao')">카카오페이</button>
+        <button class="pay-btn2" id="pm-toss" onclick="setPay('toss')">토스</button>
+        <button class="pay-btn2" id="pm-card" onclick="setPay('card')">신용카드</button>
+      </div>
+      <button class="next-btn" onclick="doPayment()">결제하기 · ${total.toLocaleString()}원</button>
+    </div>`;
+  payMethod = 'kakao';
+}
+
+function setPay(m) {
+  payMethod = m;
+  ['kakao','toss','card'].forEach(x => {
+    const el = document.getElementById('pm-'+x);
+    if (el) el.className = 'pay-btn2' + (x===m?' active':'');
+  });
+}
+
+function rmItem(name) {
+  if (cart[cartBooth]) delete cart[cartBooth][name];
+  const {cnt} = cartCount();
+  if (cnt < tableInfo.minOrder) renderMenu(cartBooth); else goCart();
+}
+
+/* ── PAYMENT ── */
+function doPayment() {
+  const b = BOOTHS.find(x => x.id === cartBooth);
+  const items = Object.values(cart[cartBooth]||{});
+  if (!items.length) return;
+  const total = items.reduce((a,i)=>a+i.p*i.qty, 0);
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
+
+  /* assign order numbers per item */
+  const orderNums = lsa(ORDERS);
+  let maxNum = orderNums.reduce((m,o)=>Math.max(m,...(o.items||[]).map(x=>x.num||0)),0);
+  const assigned = items.map(it => { maxNum++; return {...it, num: maxNum, done: false}; });
+
+  /* save order */
+  const orderNo = 'DKU-' + String(Date.now()).slice(-6);
+  const newOrder = {
+    id: orderNo, booth: b.name, boothId: cartBooth,
+    table: tableId, items: assigned, total, time: timeStr,
+    pay: payMethod, ts: Date.now()
+  };
+  orderNums.unshift(newOrder);
+  if (orderNums.length > 200) orderNums.splice(200);
+  ss(ORDERS, orderNums);
+
+  /* update booth state */
+  const gState = ls(SK);
+  if (!gState[cartBooth]) gState[cartBooth] = {orders:0, wait:BASE_WAIT[cartBooth], revenue:0};
+  gState[cartBooth].orders = (gState[cartBooth].orders||0) + 1;
+  gState[cartBooth].revenue = (gState[cartBooth].revenue||0) + total;
+  gState[cartBooth].wait = Math.min(25, BASE_WAIT[cartBooth] + Math.floor(gState[cartBooth].orders * 1.4));
+  ss(SK, gState);
+  localStorage.setItem('dku_total', String((parseInt(localStorage.getItem('dku_total')||'0')+1)));
+  localStorage.setItem('dku_rev',   String((parseInt(localStorage.getItem('dku_rev')||'0')+total)));
+
+  /* also log for admin */
+  const logs = lsa('dku_log');
+  logs.unshift({booth:b.name, table:tableId, items:items.map(i=>`${i.n}×${i.qty}`).join(', '), total, time:timeStr, orderNo});
+  if(logs.length>100)logs.splice(100);
+  ss('dku_log', logs);
+
+  /* show success */
+  cart = {}; cartBooth = null;
+  document.getElementById('steps').style.display = 'none';
+  document.getElementById('cart-bar').style.display = 'none';
+  document.getElementById('content').innerHTML = `
+    <div class="success-screen">
+      <div class="suc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="suc-title">주문 완료!</div>
+      <div class="suc-sub">TV에 아래 번호가 뜨면 수령하세요</div>
+      <div class="order-numbers">
+        ${assigned.map(it=>`<div class="order-num-chip">${it.num}</div>`).join('')}
+      </div>
+      <div class="order-summary-box">
+        ${assigned.map(it=>`<div class="os-row"><span>${it.n} ×${it.qty}</span><span style="font-family:'DM Mono',monospace">${(it.p*it.qty).toLocaleString()}원</span></div>`).join('')}
+        <div class="os-row" style="font-weight:700;border-top:1px solid var(--b);margin-top:7px;padding-top:7px">
+          <span>합계</span><span style="font-family:'DM Mono',monospace;color:var(--g)">${total.toLocaleString()}원</span>
+        </div>
+        <div style="font-size:11px;color:var(--t3);margin-top:4px">테이블 ${tableId} · ${timeStr} · ${payMethod==='kakao'?'카카오페이':payMethod==='toss'?'토스':'신용카드'}</div>
+      </div>
+      <button class="extra-btn" onclick="resetOrder()">추가 주문하기</button>
+    </div>`;
+}
+
+function resetOrder() {
+  document.getElementById('steps').style.display = 'flex';
+  cart = {}; cartBooth = null;
+  renderBooth();
+}
+
+renderBooth();
+</script>
+</body>
+</html>
