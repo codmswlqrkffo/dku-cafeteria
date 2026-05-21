@@ -33,6 +33,32 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
 .extend-btn{padding:5px 11px;border:1px solid var(--g);border-radius:20px;background:var(--gl);color:var(--g);font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
 .extend-btn:active{background:var(--g);color:#fff}
 
+/* ── 이전 주문 트래커 (하단 고정) ── */
+.order-tracker{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--s);border-top:2px solid var(--b);z-index:300;transition:all .3s}
+.order-tracker.has-pending{border-top-color:var(--am)}
+.order-tracker.all-done{border-top-color:var(--g)}
+.tracker-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;cursor:pointer;user-select:none}
+.tracker-title{font-size:13px;font-weight:700;display:flex;align-items:center;gap:7px}
+.tracker-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px}
+.tracker-badge.pending{background:var(--al);color:var(--am)}
+.tracker-badge.done{background:var(--gl);color:var(--g)}
+.tracker-toggle{font-size:11px;color:var(--t3)}
+.tracker-body{padding:0 16px;max-height:0;overflow:hidden;transition:max-height .3s ease}
+.tracker-body.open{max-height:300px;padding-bottom:14px}
+.tracker-order-group{margin-bottom:10px}
+.tog-booth{font-size:11px;font-weight:700;color:var(--t3);margin-bottom:5px}
+.tog-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--b)}
+.tog-item:last-child{border-bottom:none}
+.tog-num{font-family:'DM Mono',monospace;font-size:18px;font-weight:700;min-width:40px;color:var(--g)}
+.tog-num.done{color:var(--t3);text-decoration:line-through}
+.tog-name{flex:1;font-size:12px}
+.tog-item.done-row .tog-name{color:var(--t3);text-decoration:line-through}
+.tog-status{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap}
+.tog-status.waiting{background:var(--al);color:var(--am)}
+.tog-status.ready{background:var(--gl);color:var(--g)}
+.tracker-clear{width:100%;padding:8px;border:1px solid var(--b);border-radius:var(--rs);background:var(--s2);font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:500;cursor:pointer;color:var(--t2);margin-top:6px}
+.tracker-clear:active{background:var(--b)}
+
 .steps{display:flex;align-items:center;padding:10px 18px;background:var(--s);border-bottom:1px solid var(--b)}
 .step{flex:1;text-align:center;font-size:11px;color:var(--t3)}
 .step.active{color:var(--g);font-weight:700}.step.done{color:var(--gm)}
@@ -45,13 +71,13 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
 .booth-picker{padding:14px}
 .picker-title{font-size:13px;font-weight:700;margin-bottom:8px;color:var(--t2)}
 .min-notice{background:var(--al);border-radius:var(--rs);padding:8px 12px;font-size:12px;color:var(--am);margin-bottom:10px}
-.booth-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:7px;transition:all .12s}
+.booth-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:7px}
 .booth-card:active{background:var(--gl);border-color:var(--g)}
 .bc-name{font-size:15px;font-weight:700}
 .bc-wait{font-size:12px;margin-top:2px}
 .bc-wait.low{color:var(--g)}.bc-wait.mid{color:var(--am)}.bc-wait.high{color:var(--rd)}.bc-wait.none{color:var(--t3)}
 
-.menu-section{padding:0 14px 130px}
+.menu-section{padding:0 14px 180px}
 .booth-hd{display:flex;align-items:center;gap:10px;padding:13px 0 10px;border-bottom:1px solid var(--b);margin-bottom:2px}
 .back-btn{width:32px;height:32px;border:1px solid var(--b);border-radius:var(--rs);background:var(--s);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
 .back-btn svg{width:15px;height:15px}
@@ -70,7 +96,8 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
 .qty-btn.sub:not(:disabled):active{border-color:var(--rd);color:var(--rd)}
 .qty-num{font-size:14px;font-weight:700;min-width:18px;text-align:center;font-family:'DM Mono',monospace}
 
-.cart-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--s);border-top:1px solid var(--b);padding:10px 14px;z-index:200}
+.cart-bar{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--s);border-top:1px solid var(--b);padding:10px 14px;z-index:200}
+.cart-bar.tracker-open-adj{bottom:200px}
 .cart-summary{display:flex;justify-content:space-between;font-size:12px;margin-bottom:7px;align-items:center}
 .min-warn{color:var(--rd);font-size:11px;font-weight:500}
 .cart-tv{font-family:'DM Mono',monospace;font-weight:700;color:var(--g)}
@@ -78,7 +105,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
 .next-btn:hover{background:#155f49}
 .next-btn:disabled{background:var(--s2);color:var(--t3);cursor:default}
 
-.cart-review{padding:14px 14px 130px}
+.cart-review{padding:14px 14px 180px}
 .sect-title{font-size:14px;font-weight:700;margin-bottom:10px}
 .ci-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--b);gap:8px}
 .ci-row:last-child{border-bottom:none}
@@ -94,24 +121,11 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
 .pay-btn2{flex:1;padding:9px 4px;border:1.5px solid var(--b);border-radius:var(--rs);background:var(--s);font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:500;cursor:pointer;text-align:center;color:var(--t2)}
 .pay-btn2.active{border-color:var(--g);color:var(--g);background:var(--gl)}
 
-/* SUCCESS */
-.suc-screen{padding:32px 18px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
+.suc-screen{padding:32px 18px 180px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
 .suc-icon{width:64px;height:64px;border-radius:50%;background:var(--gl);display:flex;align-items:center;justify-content:center;margin:0 auto}
 .suc-icon svg{width:32px;height:32px;stroke:var(--g)}
 .suc-title{font-size:22px;font-weight:700}
 .suc-sub{font-size:13px;color:var(--t2);line-height:1.7}
-.order-nums{display:flex;flex-direction:column;gap:8px;width:100%}
-.onum-row{display:flex;align-items:center;justify-content:space-between;background:var(--s);border:1px solid var(--b);border-radius:var(--rs);padding:12px 16px;transition:all .3s}
-.onum-row.done{background:var(--s2);opacity:.7}
-.onum-badge{font-family:'DM Mono',monospace;font-size:22px;font-weight:700;color:var(--g);min-width:50px}
-.onum-row.done .onum-badge{color:var(--t3);text-decoration:line-through}
-.onum-name{flex:1;font-size:13px;text-align:left;padding:0 12px}
-.onum-row.done .onum-name{color:var(--t3);text-decoration:line-through}
-.onum-status{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap}
-.onum-status.waiting{background:var(--al);color:var(--am)}
-.onum-status.ready{background:var(--gl);color:var(--g)}
-.order-sum-box{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;text-align:left;width:100%;font-size:13px;line-height:1.9}
-.os-row{display:flex;justify-content:space-between}
 .extra-btn{width:100%;padding:12px;border:1.5px solid var(--b);border-radius:var(--rs);background:var(--s);font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;cursor:pointer;color:var(--t2)}
 .extra-btn:active{background:var(--s2)}
 </style>
@@ -156,16 +170,43 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
 <div id="content"></div>
 <div class="cart-bar" id="cart-bar" style="display:none"></div>
 
+<!-- 이전 주문 트래커 (항상 하단 고정) -->
+<div class="order-tracker" id="order-tracker" style="display:none">
+  <div class="tracker-header" onclick="toggleTracker()">
+    <div class="tracker-title">
+      <span>내 주문 현황</span>
+      <span class="tracker-badge pending" id="tracker-badge">준비중</span>
+    </div>
+    <span class="tracker-toggle" id="tracker-toggle">▲ 펼치기</span>
+  </div>
+  <div class="tracker-body" id="tracker-body"></div>
+</div>
+
 <script>
-/* ── PARAMS & TABLE INFO ── */
+/* ── PARAMS ── */
 const params = new URLSearchParams(location.search);
 const tableId = params.get('id') || 'A1';
 const tableInfo = TABLES.find(t => t.id === tableId) || {id:tableId,zone:'A',type:1,minOrder:1};
 
-/* ── LIVE DATA (Firebase 구독으로 채워짐) ── */
-let soldoutMap = {};    // key: "boothId::itemName" → true
-let boothStateMap = {}; // key: boothId → {orders, wait, revenue, popular}
-let myOrderId = null;   // 이번 세션에서 방금 결제한 주문 ID
+/* ── PERSISTENT ORDER TRACKING ──
+   localStorage에 이 테이블에서 주문한 orderId 목록 저장
+   새로고침/추가주문 후에도 유지됨 */
+const ORDER_KEY = 'dku_orders_' + tableId;
+function getSavedOrderIds() { try { return JSON.parse(localStorage.getItem(ORDER_KEY)) || []; } catch { return []; } }
+function addSavedOrderId(id) {
+  const ids = getSavedOrderIds();
+  if (!ids.includes(id)) ids.push(id);
+  // 오래된 것은 최대 10개만 유지
+  if (ids.length > 10) ids.splice(0, ids.length - 10);
+  localStorage.setItem(ORDER_KEY, JSON.stringify(ids));
+}
+function clearSavedOrderIds() { localStorage.removeItem(ORDER_KEY); }
+
+/* ── LIVE DATA ── */
+let soldoutMap = {};
+let boothStateMap = {};
+let trackedOrders = {}; // orderId → order 객체 (Firebase 실시간)
+let trackerOpen = false;
 let fbReady = false;
 
 /* ── SESSION TIMER ── */
@@ -189,12 +230,10 @@ function updateTimer() {
   const rem = Math.max(0, session.endTs - Date.now());
   const total = (DEFAULT_TIME + (session.extended||0) * EXTEND_TIME) * 60000;
   const pct = (rem / total) * 100;
-  const mins = Math.floor(rem / 60000);
-  const secs = Math.floor((rem % 60000) / 1000);
-  const el = document.getElementById('timer-val');
-  const fill = document.getElementById('timer-fill');
-  if (el) { el.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`; el.className = 'timer-val'+(mins<5?' danger':mins<10?' warn':''); }
-  if (fill) { fill.style.width = pct+'%'; fill.className = 'timer-fill'+(mins<5?' danger':mins<10?' warn':''); }
+  const mins = Math.floor(rem / 60000), secs = Math.floor((rem % 60000) / 1000);
+  const el = document.getElementById('timer-val'), fill = document.getElementById('timer-fill');
+  if (el) { el.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`; el.className='timer-val'+(mins<5?' danger':mins<10?' warn':''); }
+  if (fill) { fill.style.width=pct+'%'; fill.className='timer-fill'+(mins<5?' danger':mins<10?' warn':''); }
   if (rem === 0) showExpired();
 }
 setInterval(updateTimer, 1000); updateTimer();
@@ -223,8 +262,69 @@ function updateCongHeader() {
   const waits = keys.map(k => boothStateMap[k]?.wait || 0);
   const avg = Math.round(waits.reduce((a,b)=>a+b,0)/waits.length);
   const l = avg<=5?'low':avg<=11?'mid':'high';
-  el.className = 'cong-mini ' + l;
-  el.textContent = '● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · '+avg+'분';
+  el.className='cong-mini '+l;
+  el.textContent='● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · '+avg+'분';
+}
+
+/* ── ORDER TRACKER 렌더 ── */
+function renderTracker() {
+  const orders = Object.values(trackedOrders);
+  if (!orders.length) { document.getElementById('order-tracker').style.display='none'; return; }
+
+  // 전체 완료 여부
+  const allItems = orders.flatMap(o => o.items||[]);
+  const allDone = allItems.length > 0 && allItems.every(it => it.done);
+  const pendingCount = allItems.filter(it => !it.done).length;
+
+  const tracker = document.getElementById('order-tracker');
+  tracker.style.display = 'block';
+  tracker.className = 'order-tracker ' + (allDone ? 'all-done' : 'has-pending');
+
+  const badge = document.getElementById('tracker-badge');
+  badge.className = 'tracker-badge ' + (allDone ? 'done' : 'pending');
+  badge.textContent = allDone ? '✓ 전체 완료' : `준비중 ${pendingCount}개`;
+
+  // cart-bar 위치 조정
+  const cartBar = document.getElementById('cart-bar');
+  if (cartBar.style.display !== 'none') {
+    cartBar.style.bottom = trackerOpen ? '210px' : '62px';
+  }
+
+  // body
+  const body = document.getElementById('tracker-body');
+  body.innerHTML = orders.map(o => `
+    <div class="tracker-order-group">
+      <div class="tog-booth">${o.booth} · ${o.time}</div>
+      ${(o.items||[]).map((it,i) => `
+        <div class="tog-item${it.done?' done-row':''}">
+          <span class="tog-num${it.done?' done':''}">${it.num}</span>
+          <span class="tog-name">${it.n} ×${it.qty}</span>
+          <span class="tog-status ${it.done?'ready':'waiting'}">${it.done?'✓ 완료':'준비중'}</span>
+        </div>`).join('')}
+    </div>`).join('') +
+    (allDone ? `<button class="tracker-clear" onclick="clearTracker()">완료된 주문 지우기</button>` : '');
+}
+
+function toggleTracker() {
+  trackerOpen = !trackerOpen;
+  const body = document.getElementById('tracker-body');
+  const toggle = document.getElementById('tracker-toggle');
+  body.className = 'tracker-body' + (trackerOpen ? ' open' : '');
+  toggle.textContent = trackerOpen ? '▼ 접기' : '▲ 펼치기';
+  // cart-bar 위치 조정
+  const cartBar = document.getElementById('cart-bar');
+  if (cartBar.style.display !== 'none') {
+    cartBar.style.bottom = trackerOpen ? '210px' : '62px';
+  }
+}
+
+function clearTracker() {
+  clearSavedOrderIds();
+  trackedOrders = {};
+  trackerOpen = false;
+  document.getElementById('tracker-body').className = 'tracker-body';
+  document.getElementById('tracker-toggle').textContent = '▲ 펼치기';
+  document.getElementById('order-tracker').style.display = 'none';
 }
 
 /* ── FIREBASE ── */
@@ -232,91 +332,95 @@ window.addEventListener('load', () => {
   const ok = initFirebase();
   const bar = document.getElementById('conn-bar');
   if (!ok) {
-    bar.style.cssText = 'background:var(--rl);color:var(--rd);padding:6px 18px;font-size:11px';
-    bar.textContent = '⚠ Firebase 미설정';
+    bar.style.cssText='background:var(--rl);color:var(--rd);padding:6px 18px;font-size:11px';
+    bar.textContent='⚠ Firebase 미설정';
     return;
   }
   fbReady = true;
 
-  // 연결 상태
   db.ref('.info/connected').on('value', snap => {
     const c = snap.val();
-    bar.className = 'conn-bar' + (c?' ok':'');
-    bar.innerHTML = `<div class="conn-dot"></div><span>${c?'실시간 연결됨':'재연결 중...'}</span>`;
+    bar.className='conn-bar'+(c?' ok':'');
+    bar.innerHTML=`<div class="conn-dot"></div><span>${c?'실시간 연결됨':'재연결 중...'}</span>`;
   });
 
-  // 좌석 등록
   setSeat(tableId, { occupied: true, since: session.startTs, endTs: session.endTs });
 
-  // ── 품절 실시간 구독 ── Firebase 값 변경 즉시 반영
+  // 품절 구독
   db.ref('soldout').on('value', snap => {
     soldoutMap = snap.val() || {};
-    // 현재 메뉴 화면이면 즉시 다시 렌더
     if (currentBoothId) renderMenu(currentBoothId);
   });
 
-  // ── 부스 상태 실시간 구독 ──
+  // 부스 상태 구독
   db.ref('boothState').on('value', snap => {
     boothStateMap = snap.val() || {};
     updateCongHeader();
-    // 부스 선택 화면이면 대기시간 업데이트
     if (!currentBoothId) renderBooth();
     else {
       const waitEl = document.getElementById('booth-wait-label');
       if (waitEl) {
         const w = boothStateMap[currentBoothId]?.wait || 0;
         const l = w===0?'none':w<=5?'low':w<=11?'mid':'high';
-        waitEl.className = 'bc-wait ' + l;
-        waitEl.textContent = w===0?'대기 없음':'● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+w+'분 대기';
+        waitEl.className='bc-wait '+l;
+        waitEl.textContent=w===0?'대기 없음':'● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+w+'분 대기';
       }
     }
   });
 
-  // ── 내 주문 실시간 구독 (완료 상태 수신) ──
-  db.ref('orders').on('value', snap => {
-    if (!myOrderId) return;
-    const data = snap.val() || {};
-    const order = data[myOrderId];
-    if (order) updateSuccessScreen(order);
-  });
+  // ── 저장된 주문들 실시간 구독 ──
+  // localStorage에서 이 테이블의 주문 ID 불러와서 각각 구독
+  const savedIds = getSavedOrderIds();
+  savedIds.forEach(id => subscribeOrder(id));
 
   renderBooth();
 });
 
+/* ── 단일 주문 실시간 구독 ── */
+function subscribeOrder(orderId) {
+  db.ref('orders/' + orderId).on('value', snap => {
+    const order = snap.val();
+    if (order) {
+      trackedOrders[orderId] = order;
+    } else {
+      delete trackedOrders[orderId];
+    }
+    renderTracker();
+  });
+}
+
 /* ── STEP ── */
 function setStep(n) {
-  [1,2,3].forEach(i => { document.getElementById('step'+i).className='step'+(i===n?' active':i<n?' done':''); });
-  [1,2].forEach(i => { const l=document.getElementById('sl'+i); if(l) l.className='step-line'+(i<n?' done':''); });
+  [1,2,3].forEach(i=>{ document.getElementById('step'+i).className='step'+(i===n?' active':i<n?' done':''); });
+  [1,2].forEach(i=>{ const l=document.getElementById('sl'+i); if(l) l.className='step-line'+(i<n?' done':''); });
 }
 
 /* ── CART STATE ── */
 let cart = {}, currentBoothId = null, payMethod = 'kakao';
 function cartCount() {
-  let cnt=0, total=0;
-  Object.values(cart).forEach(b => Object.values(b).forEach(it => { cnt+=it.qty; total+=it.p*it.qty; }));
-  return {cnt, total};
+  let cnt=0,total=0;
+  Object.values(cart).forEach(b=>Object.values(b).forEach(it=>{cnt+=it.qty;total+=it.p*it.qty;}));
+  return {cnt,total};
 }
 
 /* ── STEP 1: BOOTH ── */
 function renderBooth() {
-  if (currentBoothId) return; // 메뉴 화면 중이면 무시
+  if (currentBoothId) return;
   setStep(1);
-  document.getElementById('cart-bar').style.display = 'none';
-  const minO = tableInfo.minOrder;
-  document.getElementById('content').innerHTML = `
+  document.getElementById('cart-bar').style.display='none';
+  const minO=tableInfo.minOrder;
+  document.getElementById('content').innerHTML=`
     <div class="booth-picker">
       <div class="picker-title">어느 부스에서 주문하시겠어요?</div>
       ${minO>1?`<div class="min-notice">⚠ ${tableInfo.type}인석 최소 ${minO}개 주문</div>`:''}
-      ${BOOTHS.map(b => {
-        const s = boothStateMap[b.id];
-        const w = s?.wait || 0;
-        const hasOrders = !!s;
-        const l = !hasOrders?'none':w<=5?'low':w<=11?'mid':'high';
-        const lbl = !hasOrders?'대기 없음':w<=5?'여유':w<=11?'보통':'혼잡';
-        return `<div class="booth-card" onclick="selectBooth('${b.id}')">
+      ${BOOTHS.map(b=>{
+        const s=boothStateMap[b.id];
+        const w=s?.wait||0; const hasO=!!s;
+        const l=!hasO?'none':w<=5?'low':w<=11?'mid':'high';
+        return`<div class="booth-card" onclick="selectBooth('${b.id}')">
           <div>
             <div class="bc-name">${b.name}</div>
-            <div class="bc-wait ${l}">${!hasOrders?'대기 없음':'● '+lbl+' · 약 '+w+'분'}</div>
+            <div class="bc-wait ${l}">${!hasO?'대기 없음':'● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+w+'분'}</div>
           </div>
           <span style="font-size:20px;color:var(--t3)">›</span>
         </div>`;
@@ -325,22 +429,15 @@ function renderBooth() {
 }
 
 /* ── STEP 2: MENU ── */
-function selectBooth(id) {
-  currentBoothId = id;
-  if (!cart[id]) cart[id] = {};
-  renderMenu(id);
-}
+function selectBooth(id) { currentBoothId=id; if(!cart[id]) cart[id]={}; renderMenu(id); }
 
 function renderMenu(id) {
   setStep(2);
-  const b = BOOTHS.find(x => x.id === id);
-  const s = boothStateMap[id];
-  const w = s?.wait || 0;
-  const hasOrders = !!s;
-  const l = !hasOrders?'none':w<=5?'low':w<=11?'mid':'high';
-  const popular = s?.popular || {};
-
-  document.getElementById('content').innerHTML = `
+  const b=BOOTHS.find(x=>x.id===id);
+  const s=boothStateMap[id]; const w=s?.wait||0; const hasO=!!s;
+  const l=!hasO?'none':w<=5?'low':w<=11?'mid':'high';
+  const popular=s?.popular||{};
+  document.getElementById('content').innerHTML=`
     <div class="menu-section">
       <div class="booth-hd">
         <button class="back-btn" onclick="currentBoothId=null;cart={};renderBooth()">
@@ -348,16 +445,15 @@ function renderMenu(id) {
         </button>
         <div>
           <div style="font-size:16px;font-weight:700">${b.name}</div>
-          <div id="booth-wait-label" class="bc-wait ${l}">${!hasOrders?'대기 없음':'● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+w+'분 대기'}</div>
+          <div id="booth-wait-label" class="bc-wait ${l}">${!hasO?'대기 없음':'● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+w+'분 대기'}</div>
         </div>
       </div>
-      ${b.items.map((item,i) => {
-        const qty = cart[id][item.n]?.qty || 0;
-        const key = id+'::'+item.n;
-        const isSold = soldoutMap[key] === true;
-        const popCnt = popular[item.n] || 0;
-        const isPop = popCnt >= POPULAR_THRESHOLD && !isSold;
-        return `<div class="menu-item" id="mi-row-${i}">
+      ${b.items.map((item,i)=>{
+        const qty=cart[id][item.n]?.qty||0;
+        const key=id+'::'+item.n;
+        const isSold=soldoutMap[key]===true;
+        const isPop=(popular[item.n]||0)>=POPULAR_THRESHOLD&&!isSold;
+        return`<div class="menu-item">
           <div class="mi-info">
             <div class="mi-name-row">
               <span class="mi-name">${item.n}</span>
@@ -367,8 +463,8 @@ function renderMenu(id) {
             <div class="mi-price">${item.p.toLocaleString()}원</div>
           </div>
           ${isSold
-            ? '<div style="font-size:12px;color:var(--rd);font-weight:500;flex-shrink:0">품절</div>'
-            : `<div class="qty-ctrl">
+            ?'<div style="font-size:12px;color:var(--rd);font-weight:500;flex-shrink:0">품절</div>'
+            :`<div class="qty-ctrl">
                 <button class="qty-btn sub" id="sub-${i}" onclick="chgQty('${id}',${i},'${item.n}',${item.p},-1)" ${qty===0?'disabled':''}>−</button>
                 <span class="qty-num" id="qn-${i}">${qty}</span>
                 <button class="qty-btn add" onclick="chgQty('${id}',${i},'${item.n}',${item.p},1)">+</button>
@@ -376,26 +472,26 @@ function renderMenu(id) {
         </div>`;
       }).join('')}
     </div>`;
-  document.getElementById('cart-bar').style.display = 'block';
+  document.getElementById('cart-bar').style.display='block';
+  document.getElementById('cart-bar').style.bottom = trackerOpen?'210px':'62px';
   updateCartBar();
 }
 
-function chgQty(bid, idx, name, price, delta) {
-  if (soldoutMap[bid+'::'+name] === true && delta > 0) { alert('방금 품절 처리된 메뉴입니다.'); renderMenu(bid); return; }
-  if (!cart[bid]) cart[bid] = {};
-  const nw = Math.max(0, (cart[bid][name]?.qty||0) + delta);
-  if (nw===0) delete cart[bid][name]; else cart[bid][name]={n:name,p:price,qty:nw};
-  const el=document.getElementById('qn-'+idx); if(el) el.textContent=nw;
-  const sub=document.getElementById('sub-'+idx); if(sub) sub.disabled=nw===0;
+function chgQty(bid,idx,name,price,delta) {
+  if(soldoutMap[bid+'::'+name]===true&&delta>0){alert('방금 품절 처리된 메뉴입니다.');renderMenu(bid);return;}
+  if(!cart[bid])cart[bid]={};
+  const nw=Math.max(0,(cart[bid][name]?.qty||0)+delta);
+  if(nw===0)delete cart[bid][name];else cart[bid][name]={n:name,p:price,qty:nw};
+  const el=document.getElementById('qn-'+idx);if(el)el.textContent=nw;
+  const sub=document.getElementById('sub-'+idx);if(sub)sub.disabled=nw===0;
   updateCartBar();
 }
 
 function updateCartBar() {
-  const {cnt,total} = cartCount();
-  const minO = tableInfo.minOrder, ok = cnt>=minO;
-  document.getElementById('cart-bar').innerHTML = `
+  const{cnt,total}=cartCount(); const minO=tableInfo.minOrder; const ok=cnt>=minO;
+  document.getElementById('cart-bar').innerHTML=`
     <div class="cart-summary">
-      <span class="${ok?'cart-count':'min-warn'}">${cnt<minO?`최소 ${minO}개 필요 (현재 ${cnt}개)`:cnt+'개 선택'}</span>
+      <span class="${ok?'':'min-warn'}">${cnt<minO?`최소 ${minO}개 필요 (현재 ${cnt}개)`:cnt+'개 선택'}</span>
       <span class="cart-tv">${total.toLocaleString()}원</span>
     </div>
     <button class="next-btn" ${!ok?'disabled':''} onclick="goCart()">주문 확인하기</button>`;
@@ -404,11 +500,11 @@ function updateCartBar() {
 /* ── STEP 3: REVIEW ── */
 function goCart() {
   setStep(3);
-  document.getElementById('cart-bar').style.display = 'none';
-  const b = BOOTHS.find(x=>x.id===currentBoothId);
-  const items = Object.values(cart[currentBoothId]||{});
-  const total = items.reduce((a,i)=>a+i.p*i.qty,0);
-  document.getElementById('content').innerHTML = `
+  document.getElementById('cart-bar').style.display='none';
+  const b=BOOTHS.find(x=>x.id===currentBoothId);
+  const items=Object.values(cart[currentBoothId]||{});
+  const total=items.reduce((a,i)=>a+i.p*i.qty,0);
+  document.getElementById('content').innerHTML=`
     <div class="cart-review">
       <div class="sect-title">${b.name} 주문 내역</div>
       ${items.map(it=>`
@@ -430,123 +526,76 @@ function goCart() {
   payMethod='kakao';
 }
 
-function setPay(m) {
+function setPay(m){
   payMethod=m;
-  ['kakao','toss','card'].forEach(x=>{ const el=document.getElementById('pm-'+x); if(el) el.className='pay-btn2'+(x===m?' active':''); });
+  ['kakao','toss','card'].forEach(x=>{const el=document.getElementById('pm-'+x);if(el)el.className='pay-btn2'+(x===m?' active':'');});
 }
 
-function rmItem(name) {
-  if(cart[currentBoothId]) delete cart[currentBoothId][name];
-  const {cnt}=cartCount();
-  if(cnt<tableInfo.minOrder){renderMenu(currentBoothId);}else{goCart();}
+function rmItem(name){
+  if(cart[currentBoothId])delete cart[currentBoothId][name];
+  const{cnt}=cartCount();
+  if(cnt<tableInfo.minOrder)renderMenu(currentBoothId);else goCart();
 }
 
 /* ── PAYMENT ── */
-async function doPayment() {
-  if (!fbReady) { alert('서버에 연결되지 않았습니다. 잠시 후 다시 시도해주세요.'); return; }
-  const b = BOOTHS.find(x=>x.id===currentBoothId);
-  const items = Object.values(cart[currentBoothId]||{});
-  if (!items.length) return;
+async function doPayment(){
+  if(!fbReady){alert('서버에 연결되지 않았습니다.');return;}
+  const b=BOOTHS.find(x=>x.id===currentBoothId);
+  const items=Object.values(cart[currentBoothId]||{});
+  if(!items.length)return;
 
-  // 품절 최종 확인
-  const soldItems = items.filter(it => soldoutMap[currentBoothId+'::'+it.n]===true);
-  if (soldItems.length) { alert('품절된 메뉴가 포함되어 있습니다:\n'+soldItems.map(i=>i.n).join(', ')); renderMenu(currentBoothId); return; }
+  const soldItems=items.filter(it=>soldoutMap[currentBoothId+'::'+it.n]===true);
+  if(soldItems.length){alert('품절된 메뉴가 포함되어 있습니다:\n'+soldItems.map(i=>i.n).join(', '));renderMenu(currentBoothId);return;}
 
-  const total = items.reduce((a,i)=>a+i.p*i.qty,0);
-  const now = new Date();
-  const timeStr = now.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
+  const total=items.reduce((a,i)=>a+i.p*i.qty,0);
+  const now=new Date();
+  const timeStr=now.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
 
-  // 아이템별 번호 채번 — 트랜잭션으로 순차 증가
-  const baseNum = await nextOrderNum();
-  // 아이템이 여러 개면 추가로 카운터 증가
-  if (items.length > 1) {
-    await REF.counter().set(baseNum + items.length - 1);
-  }
+  const baseNum=await nextOrderNum();
+  if(items.length>1) await REF.counter().set(baseNum+items.length-1);
 
-  // items 배열 구성 — 인덱스 기반으로 done 처리되므로 배열 순서 유지
-  const assignedItems = items.map((it, i) => ({
-    n: it.n,
-    p: it.p,
-    qty: it.qty,
-    num: baseNum + i,
-    done: false
-  }));
-
-  const orderId = 'ord_' + Date.now() + '_' + Math.random().toString(36).slice(2,6);
-  const order = {
-    id: orderId,
-    booth: b.name,
-    boothId: currentBoothId,
-    table: tableId,
-    items: assignedItems,  // 배열로 저장
-    total,
-    time: timeStr,
-    pay: payMethod,
-    ts: Date.now()
-  };
+  const assignedItems=items.map((it,i)=>({n:it.n,p:it.p,qty:it.qty,num:baseNum+i,done:false}));
+  const orderId='ord_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
+  const order={id:orderId,booth:b.name,boothId:currentBoothId,table:tableId,items:assignedItems,total,time:timeStr,pay:payMethod,ts:Date.now()};
 
   await saveOrder(order);
-  myOrderId = orderId; // 구독 시 이 ID의 변경사항만 추적
 
-  // 부스 상태 업데이트
-  const cur = boothStateMap[currentBoothId] || {orders:0, wait:0, revenue:0, popular:{}};
-  const popular = {...(cur.popular||{})};
-  assignedItems.forEach(it => { popular[it.n] = (popular[it.n]||0) + it.qty; });
-  await updateBoothState(currentBoothId, {
-    orders: (cur.orders||0) + 1,
-    revenue: (cur.revenue||0) + total,
-    wait: Math.min(25, ((cur.orders||0)+1) * 2),  // 주문 1건당 2분 증가
+  // ── localStorage에 orderId 저장 → 새로고침/추가주문 후에도 유지 ──
+  addSavedOrderId(orderId);
+  subscribeOrder(orderId); // 즉시 실시간 구독 시작
+
+  const cur=boothStateMap[currentBoothId]||{orders:0,wait:0,revenue:0,popular:{}};
+  const popular={...(cur.popular||{})};
+  assignedItems.forEach(it=>{popular[it.n]=(popular[it.n]||0)+it.qty;});
+  await updateBoothState(currentBoothId,{
+    orders:(cur.orders||0)+1,
+    revenue:(cur.revenue||0)+total,
+    wait:Math.min(25,((cur.orders||0)+1)*2),
     popular
   });
 
-  // UI 초기화 후 성공화면
-  cart = {}; currentBoothId = null;
-  document.getElementById('steps').style.display = 'none';
-  document.getElementById('cart-bar').style.display = 'none';
-  showSuccessScreen(order);
-}
+  cart={}; currentBoothId=null;
+  document.getElementById('steps').style.display='none';
+  document.getElementById('cart-bar').style.display='none';
 
-/* ── SUCCESS SCREEN ── */
-function showSuccessScreen(order) {
-  document.getElementById('content').innerHTML = `
+  // 성공 화면 (트래커가 있으니 간단하게)
+  document.getElementById('content').innerHTML=`
     <div class="suc-screen">
       <div class="suc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
       <div class="suc-title">주문 완료!</div>
-      <div class="suc-sub">번호가 완료로 바뀌면 수령하세요</div>
-      <div class="order-nums" id="onum-list">
-        ${order.items.map((it,i) => `
-          <div class="onum-row${it.done?' done':''}" id="onum-row-${i}">
-            <span class="onum-badge">${it.num}</span>
-            <span class="onum-name">${it.n} ×${it.qty}</span>
-            <span class="onum-status ${it.done?'ready':'waiting'}">${it.done?'✓ 완료':'준비중'}</span>
-          </div>`).join('')}
-      </div>
-      <div class="order-sum-box">
-        ${order.items.map(it=>`<div class="os-row"><span>${it.n} ×${it.qty}</span><span style="font-family:'DM Mono',monospace">${(it.p*it.qty).toLocaleString()}원</span></div>`).join('')}
-        <div class="os-row" style="font-weight:700;border-top:1px solid var(--b);margin-top:7px;padding-top:7px">
-          <span>합계</span><span style="font-family:'DM Mono',monospace;color:var(--g)">${order.total.toLocaleString()}원</span>
-        </div>
-        <div style="font-size:11px;color:var(--t3);margin-top:4px">테이블 ${tableId} · ${order.time}</div>
-      </div>
+      <div class="suc-sub">아래 <strong>내 주문 현황</strong>에서<br>번호가 완료로 바뀌면 수령하세요</div>
       <button class="extra-btn" onclick="resetOrder()">추가 주문하기</button>
     </div>`;
+
+  // 트래커 자동으로 열기
+  trackerOpen=true;
+  document.getElementById('tracker-body').className='tracker-body open';
+  document.getElementById('tracker-toggle').textContent='▼ 접기';
 }
 
-// Firebase 구독에서 내 주문이 업데이트되면 호출
-function updateSuccessScreen(order) {
-  order.items.forEach((it, i) => {
-    const row = document.getElementById('onum-row-'+i);
-    if (!row) return;
-    row.className = 'onum-row' + (it.done?' done':'');
-    row.querySelector('.onum-status').className = 'onum-status '+(it.done?'ready':'waiting');
-    row.querySelector('.onum-status').textContent = it.done?'✓ 완료':'준비중';
-  });
-}
-
-function resetOrder() {
-  myOrderId = null;
-  document.getElementById('steps').style.display = 'flex';
-  cart = {}; currentBoothId = null;
+function resetOrder(){
+  document.getElementById('steps').style.display='flex';
+  cart={}; currentBoothId=null;
   renderBooth();
 }
 </script>
