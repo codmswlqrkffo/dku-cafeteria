@@ -10,12 +10,17 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;max-width:480px;margin:0 auto}
 
+.conn-bar{padding:6px 18px;font-size:11px;display:flex;align-items:center;gap:6px;background:var(--al);color:var(--am);border-bottom:1px solid #f5d5a0}
+.conn-bar.ok{background:var(--gl);border-color:#b3dfc9;color:var(--g)}
+.conn-dot{width:6px;height:6px;border-radius:50%;background:var(--am);flex-shrink:0;animation:blink 1s infinite}
+.conn-bar.ok .conn-dot{background:var(--g);animation:none}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
 .hd{background:var(--s);border-bottom:1px solid var(--b);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.hd-table{font-size:20px;font-weight:700}
-.hd-sub{font-size:11px;color:var(--t3);margin-top:1px}
+.hd-table{font-size:20px;font-weight:700}.hd-sub{font-size:11px;color:var(--t3);margin-top:1px}
 .hd-right{text-align:right}
 .cong-mini{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;display:inline-block}
-.cong-mini.low{background:var(--gl);color:var(--g)}.cong-mini.mid{background:var(--al);color:var(--am)}.cong-mini.high{background:var(--rl);color:var(--rd)}
+.cong-mini.low{background:var(--gl);color:var(--g)}.cong-mini.mid{background:var(--al);color:var(--am)}.cong-mini.high{background:var(--rl);color:var(--rd)}.cong-mini.none{background:var(--s2);color:var(--t3)}
 .hd-clock{font-size:11px;color:var(--t3);font-family:'DM Mono',monospace;margin-top:3px}
 
 .timer-bar{background:var(--s);border-bottom:1px solid var(--b);padding:9px 18px;display:flex;align-items:center;gap:10px}
@@ -26,6 +31,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
 .timer-fill{height:100%;border-radius:3px;background:var(--g);transition:width 1s linear}
 .timer-fill.warn{background:var(--am)}.timer-fill.danger{background:var(--rd)}
 .extend-btn{padding:5px 11px;border:1px solid var(--g);border-radius:20px;background:var(--gl);color:var(--g);font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.extend-btn:active{background:var(--g);color:#fff}
 
 .steps{display:flex;align-items:center;padding:10px 18px;background:var(--s);border-bottom:1px solid var(--b)}
 .step{flex:1;text-align:center;font-size:11px;color:var(--t3)}
@@ -36,7 +42,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
 .step-line{flex:none;width:36px;height:1px;background:var(--b);margin-bottom:22px}
 .step-line.done{background:var(--gm)}
 
-/* BOOTH */
 .booth-picker{padding:14px}
 .picker-title{font-size:13px;font-weight:700;margin-bottom:8px;color:var(--t2)}
 .min-notice{background:var(--al);border-radius:var(--rs);padding:8px 12px;font-size:12px;color:var(--am);margin-bottom:10px}
@@ -44,16 +49,14 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
 .booth-card:active{background:var(--gl);border-color:var(--g)}
 .bc-name{font-size:15px;font-weight:700}
 .bc-wait{font-size:12px;margin-top:2px}
-.bc-wait.low{color:var(--g)}.bc-wait.mid{color:var(--am)}.bc-wait.high{color:var(--rd)}
+.bc-wait.low{color:var(--g)}.bc-wait.mid{color:var(--am)}.bc-wait.high{color:var(--rd)}.bc-wait.none{color:var(--t3)}
 
-/* MENU */
 .menu-section{padding:0 14px 130px}
 .booth-hd{display:flex;align-items:center;gap:10px;padding:13px 0 10px;border-bottom:1px solid var(--b);margin-bottom:2px}
 .back-btn{width:32px;height:32px;border:1px solid var(--b);border-radius:var(--rs);background:var(--s);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
 .back-btn svg{width:15px;height:15px}
 .menu-item{display:flex;align-items:center;padding:11px 0;border-bottom:1px solid var(--b);gap:10px}
 .menu-item:last-child{border-bottom:none}
-.menu-item.soldout{opacity:.55;pointer-events:none}
 .mi-info{flex:1;min-width:0}
 .mi-name-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
 .mi-name{font-size:14px}
@@ -61,22 +64,20 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
 .badge-sold{font-size:10px;font-weight:700;background:var(--rl);color:var(--rd);padding:1px 6px;border-radius:10px}
 .mi-price{font-size:12px;color:var(--t3);font-family:'DM Mono',monospace;margin-top:2px}
 .qty-ctrl{display:flex;align-items:center;gap:7px}
-.qty-btn{width:30px;height:30px;border:1px solid var(--b);border-radius:8px;background:var(--s);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--t2);transition:all .1s}
+.qty-btn{width:30px;height:30px;border:1px solid var(--b);border-radius:8px;background:var(--s);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--t2)}
 .qty-btn:disabled{opacity:.3;cursor:default}
 .qty-btn.add:not(:disabled):active{border-color:var(--g);color:var(--g);background:var(--gl)}
 .qty-btn.sub:not(:disabled):active{border-color:var(--rd);color:var(--rd)}
 .qty-num{font-size:14px;font-weight:700;min-width:18px;text-align:center;font-family:'DM Mono',monospace}
 
-/* CART BAR */
 .cart-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--s);border-top:1px solid var(--b);padding:10px 14px;z-index:200}
 .cart-summary{display:flex;justify-content:space-between;font-size:12px;margin-bottom:7px;align-items:center}
 .min-warn{color:var(--rd);font-size:11px;font-weight:500}
 .cart-tv{font-family:'DM Mono',monospace;font-weight:700;color:var(--g)}
-.next-btn{width:100%;padding:13px;background:var(--g);color:#fff;border:none;border-radius:var(--rs);font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:background .15s}
+.next-btn{width:100%;padding:13px;background:var(--g);color:#fff;border:none;border-radius:var(--rs);font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:700;cursor:pointer}
 .next-btn:hover{background:#155f49}
 .next-btn:disabled{background:var(--s2);color:var(--t3);cursor:default}
 
-/* CART REVIEW */
 .cart-review{padding:14px 14px 130px}
 .sect-title{font-size:14px;font-weight:700;margin-bottom:10px}
 .ci-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--b);gap:8px}
@@ -99,31 +100,30 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
 .suc-icon svg{width:32px;height:32px;stroke:var(--g)}
 .suc-title{font-size:22px;font-weight:700}
 .suc-sub{font-size:13px;color:var(--t2);line-height:1.7}
-.order-nums{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
-.onum{font-family:'DM Mono',monospace;font-size:28px;font-weight:700;padding:12px 20px;border-radius:10px;min-width:70px;background:var(--g);color:#fff}
-.onum.done-chip{background:var(--s2);color:var(--t3);text-decoration:line-through}
+.order-nums{display:flex;flex-direction:column;gap:8px;width:100%}
+.onum-row{display:flex;align-items:center;justify-content:space-between;background:var(--s);border:1px solid var(--b);border-radius:var(--rs);padding:12px 16px;transition:all .3s}
+.onum-row.done{background:var(--s2);opacity:.7}
+.onum-badge{font-family:'DM Mono',monospace;font-size:22px;font-weight:700;color:var(--g);min-width:50px}
+.onum-row.done .onum-badge{color:var(--t3);text-decoration:line-through}
+.onum-name{flex:1;font-size:13px;text-align:left;padding:0 12px}
+.onum-row.done .onum-name{color:var(--t3);text-decoration:line-through}
+.onum-status{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.onum-status.waiting{background:var(--al);color:var(--am)}
+.onum-status.ready{background:var(--gl);color:var(--g)}
 .order-sum-box{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;text-align:left;width:100%;font-size:13px;line-height:1.9}
 .os-row{display:flex;justify-content:space-between}
 .extra-btn{width:100%;padding:12px;border:1.5px solid var(--b);border-radius:var(--rs);background:var(--s);font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;cursor:pointer;color:var(--t2)}
 .extra-btn:active{background:var(--s2)}
-
-/* CONNECTING */
-.conn-bar{background:var(--al);border-bottom:1px solid #f5d5a0;padding:6px 18px;font-size:11px;color:var(--am);display:flex;align-items:center;gap:6px}
-.conn-dot{width:6px;height:6px;border-radius:50%;background:var(--am);animation:pulse2 1s infinite}
-@keyframes pulse2{0%,100%{opacity:1}50%{opacity:.3}}
-.conn-bar.ok{background:var(--gl);border-color:#b3dfc9;color:var(--g)}
-.conn-bar.ok .conn-dot{background:var(--g);animation:none}
 </style>
 </head>
 <body>
-<!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <script src="data.js"></script>
 <script src="firebase.js"></script>
 
 <div class="conn-bar" id="conn-bar">
-  <div class="conn-dot" id="conn-dot"></div>
+  <div class="conn-dot"></div>
   <span id="conn-text">서버 연결 중...</span>
 </div>
 
@@ -133,7 +133,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
     <div class="hd-sub" id="hd-sub"></div>
   </div>
   <div class="hd-right">
-    <div class="cong-mini" id="hd-cong">연결 중</div>
+    <div class="cong-mini none" id="hd-cong">대기 중</div>
     <div class="hd-clock" id="hd-clock">00:00</div>
   </div>
 </header>
@@ -157,16 +157,16 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
 <div class="cart-bar" id="cart-bar" style="display:none"></div>
 
 <script>
-/* ── INIT ── */
+/* ── PARAMS & TABLE INFO ── */
 const params = new URLSearchParams(location.search);
 const tableId = params.get('id') || 'A1';
 const tableInfo = TABLES.find(t => t.id === tableId) || {id:tableId,zone:'A',type:1,minOrder:1};
 
+/* ── LIVE DATA (Firebase 구독으로 채워짐) ── */
+let soldoutMap = {};    // key: "boothId::itemName" → true
+let boothStateMap = {}; // key: boothId → {orders, wait, revenue, popular}
+let myOrderId = null;   // 이번 세션에서 방금 결제한 주문 ID
 let fbReady = false;
-let soldoutMap = {};
-let boothStateMap = {};
-let myOrders = []; // orders placed this session (for success screen live update)
-let cart = {}, cartBooth = null, payMethod = 'kakao';
 
 /* ── SESSION TIMER ── */
 const SK = 'dku_sess_' + tableId;
@@ -176,7 +176,6 @@ if (!session) {
   session = { startTs: Date.now(), endTs: Date.now() + DEFAULT_TIME * 60000, extended: 0 };
   sessionStorage.setItem(SK, JSON.stringify(session));
 }
-
 function saveSession() { sessionStorage.setItem(SK, JSON.stringify(session)); }
 
 function extendTime() {
@@ -194,8 +193,8 @@ function updateTimer() {
   const secs = Math.floor((rem % 60000) / 1000);
   const el = document.getElementById('timer-val');
   const fill = document.getElementById('timer-fill');
-  if (el) { el.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`; el.className = 'timer-val' + (mins<5?' danger':mins<10?' warn':''); }
-  if (fill) { fill.style.width = pct + '%'; fill.className = 'timer-fill' + (mins<5?' danger':mins<10?' warn':''); }
+  if (el) { el.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`; el.className = 'timer-val'+(mins<5?' danger':mins<10?' warn':''); }
+  if (fill) { fill.style.width = pct+'%'; fill.className = 'timer-fill'+(mins<5?' danger':mins<10?' warn':''); }
   if (rem === 0) showExpired();
 }
 setInterval(updateTimer, 1000); updateTimer();
@@ -218,87 +217,107 @@ function updateClock() { document.getElementById('hd-clock').textContent = new D
 setInterval(updateClock, 10000); updateClock();
 
 function updateCongHeader() {
-  const waits = BOOTHS.map(b => boothStateMap[b.id]?.wait || BASE_WAIT[b.id]);
+  const keys = Object.keys(boothStateMap);
+  const el = document.getElementById('hd-cong');
+  if (!keys.length) { el.className='cong-mini none'; el.textContent='주문 없음'; return; }
+  const waits = keys.map(k => boothStateMap[k]?.wait || 0);
   const avg = Math.round(waits.reduce((a,b)=>a+b,0)/waits.length);
   const l = avg<=5?'low':avg<=11?'mid':'high';
-  const el = document.getElementById('hd-cong');
   el.className = 'cong-mini ' + l;
-  el.textContent = '● ' + (l==='low'?'여유':l==='mid'?'보통':'혼잡') + ' · ' + avg + '분';
+  el.textContent = '● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · '+avg+'분';
 }
 
-/* ── FIREBASE INIT ── */
+/* ── FIREBASE ── */
 window.addEventListener('load', () => {
   const ok = initFirebase();
   const bar = document.getElementById('conn-bar');
   if (!ok) {
-    bar.innerHTML = '<span>⚠ Firebase 미설정 — firebase.js에 설정 값을 입력하세요</span>';
-    bar.style.background = 'var(--rl)'; bar.style.color = 'var(--rd)';
+    bar.style.cssText = 'background:var(--rl);color:var(--rd);padding:6px 18px;font-size:11px';
+    bar.textContent = '⚠ Firebase 미설정';
     return;
   }
   fbReady = true;
 
   // 연결 상태
   db.ref('.info/connected').on('value', snap => {
-    const conn = snap.val();
-    bar.className = 'conn-bar' + (conn ? ' ok' : '');
-    document.getElementById('conn-dot').style.animation = conn ? 'none' : '';
-    document.getElementById('conn-text').textContent = conn ? '실시간 연결됨' : '재연결 중...';
+    const c = snap.val();
+    bar.className = 'conn-bar' + (c?' ok':'');
+    bar.innerHTML = `<div class="conn-dot"></div><span>${c?'실시간 연결됨':'재연결 중...'}</span>`;
   });
 
   // 좌석 등록
   setSeat(tableId, { occupied: true, since: session.startTs, endTs: session.endTs });
 
-  // 품절 실시간 구독
-  subscribeSoldout(data => {
-    soldoutMap = data;
-    if (cartBooth) renderMenu(cartBooth); // 메뉴 화면이면 즉시 갱신
+  // ── 품절 실시간 구독 ── Firebase 값 변경 즉시 반영
+  db.ref('soldout').on('value', snap => {
+    soldoutMap = snap.val() || {};
+    // 현재 메뉴 화면이면 즉시 다시 렌더
+    if (currentBoothId) renderMenu(currentBoothId);
   });
 
-  // 부스 상태 실시간 구독
-  subscribeBoothState(data => {
-    boothStateMap = data;
+  // ── 부스 상태 실시간 구독 ──
+  db.ref('boothState').on('value', snap => {
+    boothStateMap = snap.val() || {};
     updateCongHeader();
-    if (document.getElementById('panel-booth')) renderBooth();
-    if (cartBooth) {
+    // 부스 선택 화면이면 대기시간 업데이트
+    if (!currentBoothId) renderBooth();
+    else {
       const waitEl = document.getElementById('booth-wait-label');
       if (waitEl) {
-        const w = data[cartBooth]?.wait || BASE_WAIT[cartBooth];
-        const l = w<=5?'low':w<=11?'mid':'high';
+        const w = boothStateMap[currentBoothId]?.wait || 0;
+        const l = w===0?'none':w<=5?'low':w<=11?'mid':'high';
         waitEl.className = 'bc-wait ' + l;
-        waitEl.textContent = '● ' + (l==='low'?'여유':l==='mid'?'보통':'혼잡') + ' · 약 ' + w + '분 대기';
+        waitEl.textContent = w===0?'대기 없음':'● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+w+'분 대기';
       }
     }
   });
 
-  // 내 주문 실시간 구독 (완료 상태 반영)
-  subscribeOrders(orders => {
-    const mine = orders.filter(o => myOrders.includes(o.id));
-    mine.forEach(o => updateSuccessChips(o));
+  // ── 내 주문 실시간 구독 (완료 상태 수신) ──
+  db.ref('orders').on('value', snap => {
+    if (!myOrderId) return;
+    const data = snap.val() || {};
+    const order = data[myOrderId];
+    if (order) updateSuccessScreen(order);
   });
 
   renderBooth();
 });
 
-/* ── STEP INDICATOR ── */
+/* ── STEP ── */
 function setStep(n) {
-  [1,2,3].forEach(i => { document.getElementById('step'+i).className = 'step'+(i===n?' active':i<n?' done':''); });
+  [1,2,3].forEach(i => { document.getElementById('step'+i).className='step'+(i===n?' active':i<n?' done':''); });
   [1,2].forEach(i => { const l=document.getElementById('sl'+i); if(l) l.className='step-line'+(i<n?' done':''); });
+}
+
+/* ── CART STATE ── */
+let cart = {}, currentBoothId = null, payMethod = 'kakao';
+function cartCount() {
+  let cnt=0, total=0;
+  Object.values(cart).forEach(b => Object.values(b).forEach(it => { cnt+=it.qty; total+=it.p*it.qty; }));
+  return {cnt, total};
 }
 
 /* ── STEP 1: BOOTH ── */
 function renderBooth() {
+  if (currentBoothId) return; // 메뉴 화면 중이면 무시
   setStep(1);
   document.getElementById('cart-bar').style.display = 'none';
   const minO = tableInfo.minOrder;
   document.getElementById('content').innerHTML = `
-    <div class="booth-picker" id="panel-booth">
+    <div class="booth-picker">
       <div class="picker-title">어느 부스에서 주문하시겠어요?</div>
-      ${minO>1?`<div class="min-notice">⚠ ${tableInfo.type}인석은 최소 ${minO}개 메뉴를 주문해야 합니다</div>`:''}
+      ${minO>1?`<div class="min-notice">⚠ ${tableInfo.type}인석 최소 ${minO}개 주문</div>`:''}
       ${BOOTHS.map(b => {
-        const w = boothStateMap[b.id]?.wait || BASE_WAIT[b.id];
-        const l = w<=5?'low':w<=11?'mid':'high';
+        const s = boothStateMap[b.id];
+        const w = s?.wait || 0;
+        const hasOrders = !!s;
+        const l = !hasOrders?'none':w<=5?'low':w<=11?'mid':'high';
+        const lbl = !hasOrders?'대기 없음':w<=5?'여유':w<=11?'보통':'혼잡';
         return `<div class="booth-card" onclick="selectBooth('${b.id}')">
-          <div><div class="bc-name">${b.name}</div><div class="bc-wait ${l}">● ${l==='low'?'여유':l==='mid'?'보통':'혼잡'} · 약 ${w}분</div></div>
+          <div>
+            <div class="bc-name">${b.name}</div>
+            <div class="bc-wait ${l}">${!hasOrders?'대기 없음':'● '+lbl+' · 약 '+w+'분'}</div>
+          </div>
           <span style="font-size:20px;color:var(--t3)">›</span>
         </div>`;
       }).join('')}
@@ -306,41 +325,49 @@ function renderBooth() {
 }
 
 /* ── STEP 2: MENU ── */
-function selectBooth(id) { cartBooth = id; if (!cart[id]) cart[id] = {}; renderMenu(id); }
+function selectBooth(id) {
+  currentBoothId = id;
+  if (!cart[id]) cart[id] = {};
+  renderMenu(id);
+}
 
 function renderMenu(id) {
   setStep(2);
   const b = BOOTHS.find(x => x.id === id);
-  const w = boothStateMap[id]?.wait || BASE_WAIT[id];
-  const l = w<=5?'low':w<=11?'mid':'high';
+  const s = boothStateMap[id];
+  const w = s?.wait || 0;
+  const hasOrders = !!s;
+  const l = !hasOrders?'none':w<=5?'low':w<=11?'mid':'high';
+  const popular = s?.popular || {};
+
   document.getElementById('content').innerHTML = `
     <div class="menu-section">
       <div class="booth-hd">
-        <button class="back-btn" onclick="renderBooth()">
+        <button class="back-btn" onclick="currentBoothId=null;cart={};renderBooth()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
         <div>
           <div style="font-size:16px;font-weight:700">${b.name}</div>
-          <div id="booth-wait-label" class="bc-wait ${l}">● ${l==='low'?'여유':l==='mid'?'보통':'혼잡'} · 약 ${w}분 대기</div>
+          <div id="booth-wait-label" class="bc-wait ${l}">${!hasOrders?'대기 없음':'● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+w+'분 대기'}</div>
         </div>
       </div>
       ${b.items.map((item,i) => {
         const qty = cart[id][item.n]?.qty || 0;
         const key = id+'::'+item.n;
-        const isSold = !!soldoutMap[key];
-        const popCount = (boothStateMap[id]?.popular?.[item.n] || 0);
-        const isPop = popCount >= POPULAR_THRESHOLD;
-        return `<div class="menu-item${isSold?' soldout':''}">
+        const isSold = soldoutMap[key] === true;
+        const popCnt = popular[item.n] || 0;
+        const isPop = popCnt >= POPULAR_THRESHOLD && !isSold;
+        return `<div class="menu-item" id="mi-row-${i}">
           <div class="mi-info">
             <div class="mi-name-row">
               <span class="mi-name">${item.n}</span>
-              ${isPop&&!isSold?'<span class="badge-pop">🔥 인기</span>':''}
+              ${isPop?'<span class="badge-pop">🔥 인기</span>':''}
               ${isSold?'<span class="badge-sold">품절</span>':''}
             </div>
             <div class="mi-price">${item.p.toLocaleString()}원</div>
           </div>
           ${isSold
-            ? '<div style="font-size:12px;color:var(--rd);font-weight:500">품절</div>'
+            ? '<div style="font-size:12px;color:var(--rd);font-weight:500;flex-shrink:0">품절</div>'
             : `<div class="qty-ctrl">
                 <button class="qty-btn sub" id="sub-${i}" onclick="chgQty('${id}',${i},'${item.n}',${item.p},-1)" ${qty===0?'disabled':''}>−</button>
                 <span class="qty-num" id="qn-${i}">${qty}</span>
@@ -354,32 +381,21 @@ function renderMenu(id) {
 }
 
 function chgQty(bid, idx, name, price, delta) {
-  // re-check soldout at moment of click
-  if (!!soldoutMap[bid+'::'+name] && delta > 0) return;
+  if (soldoutMap[bid+'::'+name] === true && delta > 0) { alert('방금 품절 처리된 메뉴입니다.'); renderMenu(bid); return; }
   if (!cart[bid]) cart[bid] = {};
-  const cur = cart[bid][name]?.qty || 0;
-  const nw = Math.max(0, cur + delta);
-  if (nw === 0) delete cart[bid][name]; else cart[bid][name] = {n:name, p:price, qty:nw};
-  const el = document.getElementById('qn-'+idx);
-  if (el) el.textContent = nw;
-  const sub = document.getElementById('sub-'+idx);
-  if (sub) sub.disabled = nw === 0;
+  const nw = Math.max(0, (cart[bid][name]?.qty||0) + delta);
+  if (nw===0) delete cart[bid][name]; else cart[bid][name]={n:name,p:price,qty:nw};
+  const el=document.getElementById('qn-'+idx); if(el) el.textContent=nw;
+  const sub=document.getElementById('sub-'+idx); if(sub) sub.disabled=nw===0;
   updateCartBar();
 }
 
-function cartCount() {
-  let cnt=0, total=0;
-  Object.values(cart).forEach(b => Object.values(b).forEach(it => { cnt+=it.qty; total+=it.p*it.qty; }));
-  return {cnt, total};
-}
-
 function updateCartBar() {
-  const {cnt, total} = cartCount();
-  const minO = tableInfo.minOrder;
-  const ok = cnt >= minO;
+  const {cnt,total} = cartCount();
+  const minO = tableInfo.minOrder, ok = cnt>=minO;
   document.getElementById('cart-bar').innerHTML = `
     <div class="cart-summary">
-      <span class="${ok?'':'min-warn'}">${cnt<minO?`최소 ${minO}개 필요 (현재 ${cnt}개)`:cnt+'개 선택'}</span>
+      <span class="${ok?'cart-count':'min-warn'}">${cnt<minO?`최소 ${minO}개 필요 (현재 ${cnt}개)`:cnt+'개 선택'}</span>
       <span class="cart-tv">${total.toLocaleString()}원</span>
     </div>
     <button class="next-btn" ${!ok?'disabled':''} onclick="goCart()">주문 확인하기</button>`;
@@ -389,13 +405,13 @@ function updateCartBar() {
 function goCart() {
   setStep(3);
   document.getElementById('cart-bar').style.display = 'none';
-  const b = BOOTHS.find(x => x.id === cartBooth);
-  const items = Object.values(cart[cartBooth]||{});
-  const total = items.reduce((a,i)=>a+i.p*i.qty, 0);
+  const b = BOOTHS.find(x=>x.id===currentBoothId);
+  const items = Object.values(cart[currentBoothId]||{});
+  const total = items.reduce((a,i)=>a+i.p*i.qty,0);
   document.getElementById('content').innerHTML = `
     <div class="cart-review">
       <div class="sect-title">${b.name} 주문 내역</div>
-      ${items.map((it,i)=>`
+      ${items.map(it=>`
         <div class="ci-row">
           <span class="ci-name">${it.n}</span>
           <span class="ci-qty">×${it.qty}</span>
@@ -411,77 +427,99 @@ function goCart() {
       </div>
       <button class="next-btn" onclick="doPayment()">결제하기 · ${total.toLocaleString()}원</button>
     </div>`;
-  payMethod = 'kakao';
+  payMethod='kakao';
 }
 
 function setPay(m) {
-  payMethod = m;
-  ['kakao','toss','card'].forEach(x => { const el=document.getElementById('pm-'+x); if(el) el.className='pay-btn2'+(x===m?' active':''); });
+  payMethod=m;
+  ['kakao','toss','card'].forEach(x=>{ const el=document.getElementById('pm-'+x); if(el) el.className='pay-btn2'+(x===m?' active':''); });
 }
 
 function rmItem(name) {
-  if (cart[cartBooth]) delete cart[cartBooth][name];
-  const {cnt} = cartCount();
-  if (cnt < tableInfo.minOrder) renderMenu(cartBooth); else goCart();
+  if(cart[currentBoothId]) delete cart[currentBoothId][name];
+  const {cnt}=cartCount();
+  if(cnt<tableInfo.minOrder){renderMenu(currentBoothId);}else{goCart();}
 }
 
 /* ── PAYMENT ── */
 async function doPayment() {
   if (!fbReady) { alert('서버에 연결되지 않았습니다. 잠시 후 다시 시도해주세요.'); return; }
-  const b = BOOTHS.find(x => x.id === cartBooth);
-  const items = Object.values(cart[cartBooth]||{});
+  const b = BOOTHS.find(x=>x.id===currentBoothId);
+  const items = Object.values(cart[currentBoothId]||{});
   if (!items.length) return;
 
   // 품절 최종 확인
-  const soldItems = items.filter(it => soldoutMap[cartBooth+'::'+it.n]);
-  if (soldItems.length) { alert('품절된 메뉴가 포함되어 있습니다: ' + soldItems.map(i=>i.n).join(', ')); renderMenu(cartBooth); return; }
+  const soldItems = items.filter(it => soldoutMap[currentBoothId+'::'+it.n]===true);
+  if (soldItems.length) { alert('품절된 메뉴가 포함되어 있습니다:\n'+soldItems.map(i=>i.n).join(', ')); renderMenu(currentBoothId); return; }
 
-  const total = items.reduce((a,i)=>a+i.p*i.qty, 0);
+  const total = items.reduce((a,i)=>a+i.p*i.qty,0);
   const now = new Date();
   const timeStr = now.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
 
-  // 번호 채번 (아이템별 순서)
+  // 아이템별 번호 채번 — 트랜잭션으로 순차 증가
   const baseNum = await nextOrderNum();
-  const assigned = items.map((it,i) => ({...it, num: baseNum + i, done: false}));
+  // 아이템이 여러 개면 추가로 카운터 증가
+  if (items.length > 1) {
+    await REF.counter().set(baseNum + items.length - 1);
+  }
 
-  // 마지막 아이템도 카운터 반영
-  await REF.counter().set(baseNum + items.length - 1);
+  // items 배열 구성 — 인덱스 기반으로 done 처리되므로 배열 순서 유지
+  const assignedItems = items.map((it, i) => ({
+    n: it.n,
+    p: it.p,
+    qty: it.qty,
+    num: baseNum + i,
+    done: false
+  }));
 
   const orderId = 'ord_' + Date.now() + '_' + Math.random().toString(36).slice(2,6);
   const order = {
-    id: orderId, booth: b.name, boothId: cartBooth,
-    table: tableId, items: assigned, total, time: timeStr,
-    pay: payMethod, ts: Date.now()
+    id: orderId,
+    booth: b.name,
+    boothId: currentBoothId,
+    table: tableId,
+    items: assignedItems,  // 배열로 저장
+    total,
+    time: timeStr,
+    pay: payMethod,
+    ts: Date.now()
   };
 
   await saveOrder(order);
-  myOrders.push(orderId);
+  myOrderId = orderId; // 구독 시 이 ID의 변경사항만 추적
 
   // 부스 상태 업데이트
-  const cur = boothStateMap[cartBooth] || {orders:0, wait:BASE_WAIT[cartBooth], revenue:0, popular:{}};
-  const popular = cur.popular || {};
-  assigned.forEach(it => { popular[it.n] = (popular[it.n]||0) + it.qty; });
-  await updateBoothState(cartBooth, {
+  const cur = boothStateMap[currentBoothId] || {orders:0, wait:0, revenue:0, popular:{}};
+  const popular = {...(cur.popular||{})};
+  assignedItems.forEach(it => { popular[it.n] = (popular[it.n]||0) + it.qty; });
+  await updateBoothState(currentBoothId, {
     orders: (cur.orders||0) + 1,
     revenue: (cur.revenue||0) + total,
-    wait: Math.min(25, BASE_WAIT[cartBooth] + Math.floor(((cur.orders||0)+1) * 1.4)),
+    wait: Math.min(25, ((cur.orders||0)+1) * 2),  // 주문 1건당 2분 증가
     popular
   });
 
-  cart = {}; cartBooth = null;
+  // UI 초기화 후 성공화면
+  cart = {}; currentBoothId = null;
   document.getElementById('steps').style.display = 'none';
   document.getElementById('cart-bar').style.display = 'none';
-  showSuccess(order);
+  showSuccessScreen(order);
 }
 
-function showSuccess(order) {
+/* ── SUCCESS SCREEN ── */
+function showSuccessScreen(order) {
   document.getElementById('content').innerHTML = `
-    <div class="suc-screen" id="suc-screen">
+    <div class="suc-screen">
       <div class="suc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
       <div class="suc-title">주문 완료!</div>
-      <div class="suc-sub">아래 번호가 완료되면 수령하세요</div>
-      <div class="order-nums" id="onum-wrap">
-        ${order.items.map(it=>`<div class="onum" id="onum-${it.num}">${it.num}</div>`).join('')}
+      <div class="suc-sub">번호가 완료로 바뀌면 수령하세요</div>
+      <div class="order-nums" id="onum-list">
+        ${order.items.map((it,i) => `
+          <div class="onum-row${it.done?' done':''}" id="onum-row-${i}">
+            <span class="onum-badge">${it.num}</span>
+            <span class="onum-name">${it.n} ×${it.qty}</span>
+            <span class="onum-status ${it.done?'ready':'waiting'}">${it.done?'✓ 완료':'준비중'}</span>
+          </div>`).join('')}
       </div>
       <div class="order-sum-box">
         ${order.items.map(it=>`<div class="os-row"><span>${it.n} ×${it.qty}</span><span style="font-family:'DM Mono',monospace">${(it.p*it.qty).toLocaleString()}원</span></div>`).join('')}
@@ -494,16 +532,21 @@ function showSuccess(order) {
     </div>`;
 }
 
-function updateSuccessChips(order) {
-  order.items.forEach(it => {
-    const el = document.getElementById('onum-' + it.num);
-    if (el) { el.className = 'onum' + (it.done ? ' done-chip' : ''); }
+// Firebase 구독에서 내 주문이 업데이트되면 호출
+function updateSuccessScreen(order) {
+  order.items.forEach((it, i) => {
+    const row = document.getElementById('onum-row-'+i);
+    if (!row) return;
+    row.className = 'onum-row' + (it.done?' done':'');
+    row.querySelector('.onum-status').className = 'onum-status '+(it.done?'ready':'waiting');
+    row.querySelector('.onum-status').textContent = it.done?'✓ 완료':'준비중';
   });
 }
 
 function resetOrder() {
+  myOrderId = null;
   document.getElementById('steps').style.display = 'flex';
-  cart = {}; cartBooth = null;
+  cart = {}; currentBoothId = null;
   renderBooth();
 }
 </script>

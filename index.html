@@ -24,9 +24,9 @@ nav{background:var(--s);border-bottom:1px solid var(--b);padding:0 22px;height:5
 
 .conn-bar{padding:6px 22px;font-size:11px;display:flex;align-items:center;gap:6px;background:var(--al);color:var(--am)}
 .conn-bar.ok{background:var(--gl);color:var(--g)}
-.conn-dot{width:6px;height:6px;border-radius:50%;background:var(--am);animation:pulse 1s infinite}
+.conn-dot{width:6px;height:6px;border-radius:50%;background:var(--am);animation:blink 1s infinite;flex-shrink:0}
 .conn-bar.ok .conn-dot{background:var(--g);animation:none}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
 .tabs{display:flex;background:var(--s);border-bottom:1px solid var(--b);padding:0 22px}
 .tab{padding:12px 16px;font-size:13px;font-weight:500;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent}
@@ -36,8 +36,8 @@ nav{background:var(--s);border-bottom:1px solid var(--b);padding:0 22px;height:5
 .page.active{display:block}
 
 .live{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--rd)}
-.live::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--rd);animation:pulse2 1.4s infinite}
-@keyframes pulse2{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+.live::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--rd);animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
 .sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .sec-hd h2{font-size:15px;font-weight:700}
 
@@ -47,19 +47,19 @@ nav{background:var(--s);border-bottom:1px solid var(--b);padding:0 22px;height:5
 .cong-card.flash{background:#fffde7;border-color:var(--am);transform:scale(1.02)}
 .cc-name{font-size:13px;font-weight:700;margin-bottom:6px}
 .cbadge{display:inline-block;font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;margin-bottom:6px}
-.cbadge.low{background:var(--gl);color:var(--g)}.cbadge.mid{background:var(--al);color:var(--am)}.cbadge.high{background:var(--rl);color:var(--rd)}
-.cw{font-size:24px;font-weight:700;font-family:'DM Mono',monospace}
+.cbadge.low{background:var(--gl);color:var(--g)}.cbadge.mid{background:var(--al);color:var(--am)}.cbadge.high{background:var(--rl);color:var(--rd)}.cbadge.none{background:var(--s2);color:var(--t3)}
+.cw{font-size:24px;font-weight:700;font-family:'DM Mono',monospace;color:var(--t)}
 .cw span{font-size:12px;font-weight:400;color:var(--t3)}
 .co{font-size:11px;color:var(--t3);margin-top:3px}
 .cbar{height:4px;background:var(--b);border-radius:2px;margin-top:8px;overflow:hidden}
 .cfill{height:100%;border-radius:2px;transition:width .5s}
-.cfill.low{background:var(--g)}.cfill.mid{background:var(--am)}.cfill.high{background:var(--rd)}
+.cfill.low{background:var(--g)}.cfill.mid{background:var(--am)}.cfill.high{background:var(--rd)}.cfill.none{background:var(--b)}
 
 /* SEATS */
 .seats-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:18px;margin-bottom:24px}
 .zone-hd{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
 .seat-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
-.seat-chip{padding:8px 12px;border:1px solid var(--b);border-radius:var(--rs);background:var(--s);font-size:12px;font-weight:700;text-align:center;min-width:56px;transition:all .3s;cursor:default}
+.seat-chip{padding:8px 12px;border:1px solid var(--b);border-radius:var(--rs);background:var(--s);font-size:12px;font-weight:700;text-align:center;min-width:56px;transition:all .3s}
 .seat-chip.occ{background:var(--g);border-color:var(--g);color:#fff}
 .seat-chip.exp{background:var(--al);border-color:var(--am);color:var(--am)}
 .seat-chip .stype{font-size:9px;font-weight:400;opacity:.75;display:block}
@@ -70,20 +70,20 @@ nav{background:var(--s);border-bottom:1px solid var(--b);padding:0 22px;height:5
 .leg-d{width:10px;height:10px;border-radius:3px}
 
 /* ORDERS */
-.order-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px}
-.order-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;transition:border .3s}
+.order-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.order-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;transition:border-color .3s,background .3s}
 .order-card.new-flash{border-color:var(--g);background:var(--gl)}
 .oc-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .oc-booth{font-size:13px;font-weight:700}
-.oc-meta{font-size:11px;color:var(--t3)}
-.order-items{display:flex;flex-direction:column;gap:0}
-.oi{display:flex;align-items:center;gap:8px;font-size:13px;padding:6px 0;border-bottom:1px solid var(--b)}
+.oc-meta{font-size:11px;color:var(--t3);margin-top:2px}
+.order-items{display:flex;flex-direction:column}
+.oi{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--b)}
 .oi:last-child{border-bottom:none}
-.oi-num{font-family:'DM Mono',monospace;font-size:18px;font-weight:700;min-width:40px;color:var(--g);transition:all .2s}
+.oi-num{font-family:'DM Mono',monospace;font-size:20px;font-weight:700;min-width:44px;color:var(--g);transition:all .2s}
 .oi-num.done{color:var(--t3);text-decoration:line-through}
 .oi-name{flex:1;font-size:13px}
 .oi.done-row .oi-name{color:var(--t3);text-decoration:line-through}
-.done-btn{padding:4px 10px;border:1px solid var(--b);border-radius:6px;background:var(--s);font-family:'Noto Sans KR',sans-serif;font-size:11px;cursor:pointer;color:var(--t2);white-space:nowrap;transition:all .15s}
+.done-btn{padding:5px 12px;border:1px solid var(--b);border-radius:6px;background:var(--s);font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:500;cursor:pointer;color:var(--t2);white-space:nowrap;transition:all .15s}
 .done-btn:hover{border-color:var(--g);color:var(--g)}
 .done-btn.done{background:var(--gl);border-color:var(--gm);color:var(--g);font-weight:700}
 
@@ -97,10 +97,10 @@ nav{background:var(--s);border-bottom:1px solid var(--b);padding:0 22px;height:5
 .sold-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
 .sold-booth{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px}
 .sold-booth-name{font-size:13px;font-weight:700;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--b)}
-.sold-item{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--b);font-size:13px;gap:8px}
+.sold-item{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--b);gap:8px}
 .sold-item:last-child{border-bottom:none}
-.sold-item-name{flex:1}
-.sold-toggle{padding:4px 10px;border:1px solid var(--b);border-radius:6px;background:var(--s);font-family:'Noto Sans KR',sans-serif;font-size:11px;cursor:pointer;color:var(--t2);white-space:nowrap;transition:all .15s}
+.sold-item-name{flex:1;font-size:13px}
+.sold-toggle{padding:4px 10px;border:1px solid var(--b);border-radius:6px;background:var(--s);font-family:'Noto Sans KR',sans-serif;font-size:11px;cursor:pointer;color:var(--t2);white-space:nowrap}
 .sold-toggle.on{background:var(--rl);border-color:var(--rd);color:var(--rd);font-weight:700}
 </style>
 </head>
@@ -122,7 +122,7 @@ nav{background:var(--s);border-bottom:1px solid var(--b);padding:0 22px;height:5
 </nav>
 
 <div class="conn-bar" id="conn-bar">
-  <div class="conn-dot" id="conn-dot"></div>
+  <div class="conn-dot"></div>
   <span id="conn-text">Firebase 연결 중...</span>
 </div>
 
@@ -132,7 +132,6 @@ nav{background:var(--s);border-bottom:1px solid var(--b);padding:0 22px;height:5
   <div class="tab" onclick="switchTab('soldout')">품절 관리</div>
 </div>
 
-<!-- DASH -->
 <div id="page-dash" class="page active">
   <br>
   <div class="sec-hd"><h2>실시간 혼잡도</h2><span class="live">LIVE</span></div>
@@ -149,18 +148,16 @@ nav{background:var(--s);border-bottom:1px solid var(--b);padding:0 22px;height:5
   <div class="stat-grid" id="stat-grid"></div>
 </div>
 
-<!-- ORDERS -->
 <div id="page-orders" class="page">
   <br>
-  <div class="sec-hd"><h2>주문 현황 — 번호 완료 처리</h2><span class="live">LIVE</span></div>
+  <div class="sec-hd"><h2>주문 현황</h2><span class="live">LIVE</span></div>
   <div class="order-grid" id="order-grid"></div>
 </div>
 
-<!-- SOLDOUT -->
 <div id="page-soldout" class="page">
   <br>
   <div class="sec-hd"><h2>품절 설정</h2><button class="btn btn-o" onclick="clearAllSoldout()">전체 해제</button></div>
-  <p style="font-size:12px;color:var(--t3);margin-bottom:14px">품절 설정 즉시 학생 주문 화면에 반영됩니다.</p>
+  <p style="font-size:12px;color:var(--t3);margin-bottom:14px">품절 설정 즉시 주문자 화면에 반영됩니다.</p>
   <div class="sold-grid" id="sold-grid"></div>
 </div>
 
@@ -171,76 +168,85 @@ let knownOrderIds = new Set();
 
 function switchTab(t) {
   curTab = t;
-  document.querySelectorAll('.tab').forEach((el,i) => el.classList.toggle('active', ['dash','orders','soldout'][i] === t));
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',['dash','orders','soldout'][i]===t));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+t).classList.add('active');
 }
 
-function tick() { document.getElementById('nav-time').textContent = new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}); }
-setInterval(tick, 1000); tick();
+function tick(){document.getElementById('nav-time').textContent=new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});}
+setInterval(tick,1000);tick();
 
-function lv(w){return w<=5?'low':w<=11?'mid':'high'}
-function lvL(l){return l==='low'?'여유':l==='mid'?'보통':'혼잡'}
+function lv(w){return w===0?'none':w<=5?'low':w<=11?'mid':'high'}
+function lvL(l){return l==='none'?'주문 없음':l==='low'?'여유':l==='mid'?'보통':'혼잡'}
 
-/* ── INIT ── */
 window.addEventListener('load', () => {
   const ok = initFirebase();
   const bar = document.getElementById('conn-bar');
   if (!ok) {
-    bar.innerHTML = '<span>⚠ Firebase 미설정 — firebase.js에 설정 값을 입력하세요</span>';
-    bar.style.background = 'var(--rl)'; bar.style.color = 'var(--rd)';
+    bar.style.cssText='background:var(--rl);color:var(--rd);padding:6px 22px;font-size:11px';
+    bar.textContent='⚠ Firebase 미설정 — firebase.js를 확인하세요';
     renderCong(); renderSeats(); renderStats(); renderSoldout();
     return;
   }
 
   db.ref('.info/connected').on('value', snap => {
     const c = snap.val();
-    bar.className = 'conn-bar' + (c ? ' ok' : '');
-    document.getElementById('conn-dot').style.animation = c ? 'none' : '';
-    document.getElementById('conn-text').textContent = c ? '실시간 연결됨 — 모든 기기와 동기화 중' : '재연결 중...';
+    bar.className = 'conn-bar'+(c?' ok':'');
+    bar.innerHTML = `<div class="conn-dot"></div><span>${c?'실시간 연결됨 — 모든 기기 동기화 중':'재연결 중...'}</span>`;
   });
 
-  subscribeBoothState(data => {
-    boothState = data;
-    renderCong(); renderStats();
+  // ── 부스 상태 구독 ──
+  db.ref('boothState').on('value', snap => {
+    boothState = snap.val() || {};
+    renderCong();
+    if (curTab==='dash') renderStats();
   });
 
-  subscribeSeats(data => {
-    seatsState = data;
+  // ── 좌석 구독 ──
+  db.ref('seats').on('value', snap => {
+    seatsState = snap.val() || {};
     renderSeats();
   });
 
-  subscribeOrders(orders => {
-    // detect new
-    orders.forEach(o => {
+  // ── 주문 구독 ──
+  db.ref('orders').on('value', snap => {
+    const data = snap.val() || {};
+    const list = Object.values(data).sort((a,b)=>b.ts-a.ts);
+    // 새 주문 감지 → 혼잡도 카드 flash
+    list.forEach(o => {
       if (!knownOrderIds.has(o.id) && knownOrderIds.size > 0) {
-        // flash booth card
-        const cc = document.getElementById('cc-' + o.boothId);
-        if (cc) { cc.classList.add('flash'); setTimeout(()=>cc.classList.remove('flash'), 1200); }
+        const cc = document.getElementById('cc-'+o.boothId);
+        if(cc){cc.classList.add('flash');setTimeout(()=>cc.classList.remove('flash'),1200);}
       }
       knownOrderIds.add(o.id);
     });
-    allOrders = orders;
-    renderOrders();
-    renderStats();
+    allOrders = list;
+    if(curTab==='orders') renderOrders();
+    if(curTab==='dash') renderStats();
   });
 
-  subscribeSoldout(data => {
-    soldoutState = data;
-    renderSoldout();
+  // ── 품절 구독 ──
+  db.ref('soldout').on('value', snap => {
+    soldoutState = snap.val() || {};
+    if(curTab==='soldout') renderSoldout();
   });
+
+  renderCong(); renderSeats(); renderStats(); renderSoldout();
 });
 
-/* ── CONG ── */
+/* ── CONG — 주문 없으면 0, 있으면 실제값 ── */
 function renderCong() {
   document.getElementById('cong-grid').innerHTML = BOOTHS.map(b => {
-    const s = {orders:0, wait:BASE_WAIT[b.id], revenue:0, ...(boothState[b.id]||{})};
-    const l = lv(s.wait), p = Math.min(100, Math.round((s.wait/22)*100));
+    const s = boothState[b.id]; // undefined = 주문 없음
+    const hasData = !!s;
+    const w = hasData ? (s.wait||0) : 0;
+    const l = lv(w);
+    const p = hasData ? Math.min(100,Math.round((w/22)*100)) : 0;
     return `<div class="cong-card" id="cc-${b.id}">
       <div class="cc-name">${b.name}</div>
       <span class="cbadge ${l}">${lvL(l)}</span>
-      <div class="cw">${s.wait}<span>분</span></div>
-      <div class="co">주문 ${s.orders}건 · ${(s.revenue||0).toLocaleString()}원</div>
+      <div class="cw">${hasData?w:'—'}<span>${hasData?'분':''}</span></div>
+      <div class="co">${hasData?`주문 ${s.orders}건 · ${(s.revenue||0).toLocaleString()}원`:'주문 없음'}</div>
       <div class="cbar"><div class="cfill ${l}" style="width:${p}%"></div></div>
     </div>`;
   }).join('');
@@ -249,16 +255,16 @@ function renderCong() {
 /* ── SEATS ── */
 function renderSeats() {
   const zones = {};
-  TABLES.forEach(t => { if(!zones[t.zone]) zones[t.zone]=[]; zones[t.zone].push(t); });
-  const zl = {A:'A구역 (1인석)',B:'B구역 (2인석)',C:'C구역 (4인석)',D:'D구역 (6인석)'};
-  document.getElementById('seats-wrap').innerHTML = Object.entries(zones).map(([z,tables]) => `
+  TABLES.forEach(t=>{if(!zones[t.zone])zones[t.zone]=[];zones[t.zone].push(t);});
+  const zl={A:'A구역 (1인석)',B:'B구역 (2인석)',C:'C구역 (4인석)',D:'D구역 (6인석)'};
+  document.getElementById('seats-wrap').innerHTML = Object.entries(zones).map(([z,tables])=>`
     <div class="zone-hd">${zl[z]||z}</div>
-    <div class="seat-row">${tables.map(t => {
-      const s = seatsState[t.id];
-      const occ = s?.occupied;
-      const rem = occ&&s.endTs ? Math.max(0,Math.floor((s.endTs-Date.now())/60000)) : null;
-      const exp = rem!==null && rem<=10;
-      return `<div class="seat-chip${occ?(exp?' exp':' occ'):''}">
+    <div class="seat-row">${tables.map(t=>{
+      const s=seatsState[t.id];
+      const occ=s?.occupied;
+      const rem=occ&&s.endTs?Math.max(0,Math.floor((s.endTs-Date.now())/60000)):null;
+      const exp=rem!==null&&rem<=10;
+      return`<div class="seat-chip${occ?(exp?' exp':' occ'):''}">
         ${t.id}<span class="stype">${t.type}인</span>${occ&&rem!==null?`<span class="stime">${rem}분</span>`:''}
       </div>`;
     }).join('')}</div>`).join('');
@@ -267,21 +273,24 @@ function renderSeats() {
 /* ── ORDERS ── */
 function renderOrders() {
   if (!allOrders.length) {
-    document.getElementById('order-grid').innerHTML = '<div style="font-size:13px;color:var(--t3)">주문이 없습니다</div>';
+    document.getElementById('order-grid').innerHTML='<div style="font-size:13px;color:var(--t3)">주문이 없습니다</div>';
     return;
   }
-  document.getElementById('order-grid').innerHTML = allOrders.slice(0,50).map(o => `
+  document.getElementById('order-grid').innerHTML = allOrders.slice(0,60).map(o=>`
     <div class="order-card" id="oc-${o.id}">
       <div class="oc-hd">
-        <div><div class="oc-booth">${o.booth}</div><div class="oc-meta">테이블 ${o.table} · ${o.time}</div></div>
-        <div style="font-size:13px;font-weight:700;font-family:'DM Mono',monospace;color:var(--g)">${(o.total||0).toLocaleString()}원</div>
+        <div>
+          <div class="oc-booth">${o.booth}</div>
+          <div class="oc-meta">테이블 ${o.table} · ${o.time} · ${(o.total||0).toLocaleString()}원</div>
+        </div>
       </div>
       <div class="order-items">
-        ${(o.items||[]).map((it,idx) => `
+        ${(o.items||[]).map((it,idx)=>`
           <div class="oi${it.done?' done-row':''}" id="oi-${o.id}-${idx}">
             <span class="oi-num${it.done?' done':''}">${it.num}</span>
             <span class="oi-name">${it.n} ×${it.qty}</span>
-            <button class="done-btn${it.done?' done':''}" onclick="toggleDone('${o.id}',${idx},${!it.done})">
+            <button class="done-btn${it.done?' done':''}"
+              onclick="toggleDone('${o.id}',${idx},${!it.done})">
               ${it.done?'✓ 완료':'완료처리'}
             </button>
           </div>`).join('')}
@@ -289,41 +298,43 @@ function renderOrders() {
     </div>`).join('');
 }
 
+/* ── DONE 처리 — Firebase items/{idx}/done 직접 업데이트 ── */
 async function toggleDone(orderId, itemIdx, val) {
-  await markItemDone(orderId, itemIdx, val);
-  // Firebase subscription will auto-update renderOrders
+  // Firebase Realtime DB에서 배열 인덱스로 직접 접근
+  await db.ref(`orders/${orderId}/items/${itemIdx}/done`).set(val);
+  // 구독에 의해 renderOrders 자동 호출
 }
 
 /* ── STATS ── */
 function renderStats() {
   const popular = {};
-  allOrders.forEach(o => (o.items||[]).forEach(it => { popular[it.n]=(popular[it.n]||0)+it.qty; }));
-  const top = Object.entries(popular).sort((a,b)=>b[1]-a[1]).slice(0,3);
-  const totalOrders = allOrders.length;
-  const totalRev = allOrders.reduce((a,o)=>a+(o.total||0),0);
-  const sorted = [...BOOTHS].sort((a,b)=>(boothState[b.id]?.wait||BASE_WAIT[b.id])-(boothState[a.id]?.wait||BASE_WAIT[a.id]));
-  document.getElementById('stat-grid').innerHTML = `
-    <div class="stat-card"><div class="stat-v" style="color:var(--g)">${totalOrders}</div><div class="stat-l">총 주문 건수</div></div>
+  allOrders.forEach(o=>(o.items||[]).forEach(it=>{popular[it.n]=(popular[it.n]||0)+it.qty;}));
+  const top=Object.entries(popular).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  const totalRev=allOrders.reduce((a,o)=>a+(o.total||0),0);
+  const hasOrders=Object.keys(boothState).length>0;
+  const sorted=[...BOOTHS].sort((a,b)=>(boothState[b.id]?.wait||0)-(boothState[a.id]?.wait||0));
+  document.getElementById('stat-grid').innerHTML=`
+    <div class="stat-card"><div class="stat-v" style="color:var(--g)">${allOrders.length}</div><div class="stat-l">총 주문 건수</div></div>
     <div class="stat-card"><div class="stat-v" style="color:var(--am)">${totalRev.toLocaleString()}</div><div class="stat-l">총 매출(원)</div></div>
-    <div class="stat-card"><div class="stat-v" style="color:var(--rd);font-size:14px">${sorted[0]?.name||'—'}</div><div class="stat-l">가장 혼잡한 부스</div></div>
-    <div class="stat-card"><div class="stat-v" style="color:var(--g);font-size:14px">${sorted[sorted.length-1]?.name||'—'}</div><div class="stat-l">가장 여유로운 부스</div></div>
+    <div class="stat-card"><div class="stat-v" style="color:var(--rd);font-size:14px">${hasOrders?sorted[0]?.name:'—'}</div><div class="stat-l">가장 혼잡한 부스</div></div>
+    <div class="stat-card"><div class="stat-v" style="color:var(--g);font-size:14px">${hasOrders?sorted[sorted.length-1]?.name:'—'}</div><div class="stat-l">가장 여유로운 부스</div></div>
     <div class="stat-card" style="grid-column:1/-1">
-      <div class="stat-v" style="font-size:13px;line-height:2">${top.map(([n,c])=>`🔥 ${n} <span style="color:var(--t3);font-size:12px">${c}건</span>`).join(' &nbsp;·&nbsp; ')||'—'}</div>
+      <div class="stat-v" style="font-size:13px;line-height:2">${top.length?top.map(([n,c])=>`🔥 ${n} <span style="color:var(--t3);font-size:12px">${c}건</span>`).join(' &nbsp;·&nbsp; '):'주문 데이터 없음'}</div>
       <div class="stat-l">인기 메뉴 TOP 3</div>
     </div>`;
 }
 
 /* ── SOLDOUT ── */
 function renderSoldout() {
-  document.getElementById('sold-grid').innerHTML = BOOTHS.map(b => `
+  document.getElementById('sold-grid').innerHTML=BOOTHS.map(b=>`
     <div class="sold-booth">
       <div class="sold-booth-name">${b.name}</div>
-      ${b.items.map(item => {
-        const key = b.id+'::'+item.n;
-        const on = !!soldoutState[key];
-        return `<div class="sold-item">
+      ${b.items.map(item=>{
+        const key=b.id+'::'+item.n;
+        const on=soldoutState[key]===true;
+        return`<div class="sold-item">
           <span class="sold-item-name">${item.n}</span>
-          <span style="font-size:11px;color:var(--t3);font-family:'DM Mono',monospace;margin-right:6px">${item.p.toLocaleString()}원</span>
+          <span style="font-size:11px;color:var(--t3);font-family:'DM Mono',monospace;flex-shrink:0">${item.p.toLocaleString()}원</span>
           <button class="sold-toggle${on?' on':''}" onclick="toggleSold('${key}')">
             ${on?'품절':'정상'}
           </button>
@@ -333,7 +344,7 @@ function renderSoldout() {
 }
 
 async function toggleSold(key) {
-  const val = !soldoutState[key];
+  const val = soldoutState[key] !== true;
   await setSoldout(key, val);
 }
 
