@@ -3,25 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>단국대 학식당 주문</title>
+<title>DKU 학식당 주문</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--g:#1a7a5e;--gl:#e8f5f0;--gm:#4caf8a;--am:#c97c2a;--al:#fef3e2;--rd:#c0392b;--rl:#fdf0ef;--bg:#f5f3ee;--s:#fff;--s2:#f0ede6;--b:#e0dbd2;--t:#1a1814;--t2:#6b6560;--t3:#a09b94;--r:14px;--rs:10px;}
+:root{
+  --g:#003DA5;--gl:#EEF3FF;--gm:#6B8FD4;
+  --am:#c97c2a;--al:#fef3e2;
+  --rd:#c0392b;--rl:#fdf0ef;
+  --bg:#f5f6fa;--s:#fff;--s2:#eef0f7;
+  --b:#dde1f0;--t:#0d1a3a;--t2:#4a5580;--t3:#8e97b8;
+  --r:14px;--rs:10px;
+}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;max-width:480px;margin:0 auto}
 
-.conn-bar{padding:6px 18px;font-size:11px;display:flex;align-items:center;gap:6px;background:var(--al);color:var(--am);border-bottom:1px solid #f5d5a0}
-.conn-bar.ok{background:var(--gl);border-color:#b3dfc9;color:var(--g)}
+.conn-bar{padding:6px 18px;font-size:11px;display:flex;align-items:center;gap:6px;background:#fef6e4;color:var(--am);border-bottom:1px solid #f5d5a0}
+.conn-bar.ok{background:var(--gl);border-color:#b3c8f0;color:var(--g)}
 .conn-dot{width:6px;height:6px;border-radius:50%;background:var(--am);flex-shrink:0;animation:blink 1s infinite}
 .conn-bar.ok .conn-dot{background:var(--g);animation:none}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
-.hd{background:var(--s);border-bottom:1px solid var(--b);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.hd-table{font-size:20px;font-weight:700}.hd-sub{font-size:11px;color:var(--t3);margin-top:1px}
+.hd{background:var(--g);padding:13px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,61,165,.18)}
+.hd-table{font-size:20px;font-weight:700;color:#fff}
+.hd-sub{font-size:11px;color:rgba(255,255,255,.7);margin-top:1px}
 .hd-right{text-align:right}
 .cong-mini{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;display:inline-block}
-.cong-mini.low{background:var(--gl);color:var(--g)}.cong-mini.mid{background:var(--al);color:var(--am)}.cong-mini.high{background:var(--rl);color:var(--rd)}.cong-mini.none{background:var(--s2);color:var(--t3)}
-.hd-clock{font-size:11px;color:var(--t3);font-family:'DM Mono',monospace;margin-top:3px}
+.cong-mini.low{background:rgba(255,255,255,.2);color:#fff}
+.cong-mini.mid{background:var(--al);color:var(--am)}
+.cong-mini.high{background:var(--rl);color:var(--rd)}
+.cong-mini.none{background:rgba(255,255,255,.15);color:rgba(255,255,255,.8)}
+.hd-clock{font-size:11px;color:rgba(255,255,255,.65);font-family:'DM Mono',monospace;margin-top:3px}
 
 .timer-bar{background:var(--s);border-bottom:1px solid var(--b);padding:9px 18px;display:flex;align-items:center;gap:10px}
 .timer-label{font-size:11px;color:var(--t2);white-space:nowrap}
@@ -32,32 +43,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
 .timer-fill.warn{background:var(--am)}.timer-fill.danger{background:var(--rd)}
 .extend-btn{padding:5px 11px;border:1px solid var(--g);border-radius:20px;background:var(--gl);color:var(--g);font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
 .extend-btn:active{background:var(--g);color:#fff}
-
-/* ── 이전 주문 트래커 (하단 고정) ── */
-.order-tracker{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--s);border-top:2px solid var(--b);z-index:300;transition:all .3s}
-.order-tracker.has-pending{border-top-color:var(--am)}
-.order-tracker.all-done{border-top-color:var(--g)}
-.tracker-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;cursor:pointer;user-select:none}
-.tracker-title{font-size:13px;font-weight:700;display:flex;align-items:center;gap:7px}
-.tracker-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px}
-.tracker-badge.pending{background:var(--al);color:var(--am)}
-.tracker-badge.done{background:var(--gl);color:var(--g)}
-.tracker-toggle{font-size:11px;color:var(--t3)}
-.tracker-body{padding:0 16px;max-height:0;overflow:hidden;transition:max-height .3s ease}
-.tracker-body.open{max-height:300px;padding-bottom:14px}
-.tracker-order-group{margin-bottom:10px}
-.tog-booth{font-size:11px;font-weight:700;color:var(--t3);margin-bottom:5px}
-.tog-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--b)}
-.tog-item:last-child{border-bottom:none}
-.tog-num{font-family:'DM Mono',monospace;font-size:18px;font-weight:700;min-width:40px;color:var(--g)}
-.tog-num.done{color:var(--t3);text-decoration:line-through}
-.tog-name{flex:1;font-size:12px}
-.tog-item.done-row .tog-name{color:var(--t3);text-decoration:line-through}
-.tog-status{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap}
-.tog-status.waiting{background:var(--al);color:var(--am)}
-.tog-status.ready{background:var(--gl);color:var(--g)}
-.tracker-clear{width:100%;padding:8px;border:1px solid var(--b);border-radius:var(--rs);background:var(--s2);font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:500;cursor:pointer;color:var(--t2);margin-top:6px}
-.tracker-clear:active{background:var(--b)}
 
 .steps{display:flex;align-items:center;padding:10px 18px;background:var(--s);border-bottom:1px solid var(--b)}
 .step{flex:1;text-align:center;font-size:11px;color:var(--t3)}
@@ -71,7 +56,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
 .booth-picker{padding:14px}
 .picker-title{font-size:13px;font-weight:700;margin-bottom:8px;color:var(--t2)}
 .min-notice{background:var(--al);border-radius:var(--rs);padding:8px 12px;font-size:12px;color:var(--am);margin-bottom:10px}
-.booth-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:7px}
+.booth-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:7px;transition:all .12s}
 .booth-card:active{background:var(--gl);border-color:var(--g)}
 .bc-name{font-size:15px;font-weight:700}
 .bc-wait{font-size:12px;margin-top:2px}
@@ -96,13 +81,37 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
 .qty-btn.sub:not(:disabled):active{border-color:var(--rd);color:var(--rd)}
 .qty-num{font-size:14px;font-weight:700;min-width:18px;text-align:center;font-family:'DM Mono',monospace}
 
+/* TRACKER */
+.order-tracker{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--s);border-top:2px solid var(--b);z-index:300;transition:all .3s}
+.order-tracker.has-pending{border-top-color:var(--am)}
+.order-tracker.all-done{border-top-color:var(--g)}
+.tracker-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;cursor:pointer;user-select:none}
+.tracker-title{font-size:13px;font-weight:700;display:flex;align-items:center;gap:7px}
+.tracker-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px}
+.tracker-badge.pending{background:var(--al);color:var(--am)}
+.tracker-badge.done{background:var(--gl);color:var(--g)}
+.tracker-toggle{font-size:11px;color:var(--t3)}
+.tracker-body{padding:0 16px;max-height:0;overflow:hidden;transition:max-height .3s ease}
+.tracker-body.open{max-height:300px;padding-bottom:14px}
+.tracker-order-group{margin-bottom:10px}
+.tog-booth{font-size:11px;font-weight:700;color:var(--t3);margin-bottom:5px}
+.tog-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--b)}
+.tog-item:last-child{border-bottom:none}
+.tog-num{font-family:'DM Mono',monospace;font-size:18px;font-weight:700;min-width:40px;color:var(--g)}
+.tog-num.done{color:var(--t3);text-decoration:line-through}
+.tog-name{flex:1;font-size:12px}
+.tog-item.done-row .tog-name{color:var(--t3);text-decoration:line-through}
+.tog-status{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap}
+.tog-status.waiting{background:var(--al);color:var(--am)}
+.tog-status.ready{background:var(--gl);color:var(--g)}
+.tracker-clear{width:100%;padding:8px;border:1px solid var(--b);border-radius:var(--rs);background:var(--s2);font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:500;cursor:pointer;color:var(--t2);margin-top:6px}
+
 .cart-bar{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--s);border-top:1px solid var(--b);padding:10px 14px;z-index:200}
-.cart-bar.tracker-open-adj{bottom:200px}
 .cart-summary{display:flex;justify-content:space-between;font-size:12px;margin-bottom:7px;align-items:center}
 .min-warn{color:var(--rd);font-size:11px;font-weight:500}
 .cart-tv{font-family:'DM Mono',monospace;font-weight:700;color:var(--g)}
-.next-btn{width:100%;padding:13px;background:var(--g);color:#fff;border:none;border-radius:var(--rs);font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:700;cursor:pointer}
-.next-btn:hover{background:#155f49}
+.next-btn{width:100%;padding:13px;background:var(--g);color:#fff;border:none;border-radius:var(--rs);font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:background .15s}
+.next-btn:hover{background:#002d7a}
 .next-btn:disabled{background:var(--s2);color:var(--t3);cursor:default}
 
 .cart-review{padding:14px 14px 180px}
@@ -127,7 +136,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
 .suc-title{font-size:22px;font-weight:700}
 .suc-sub{font-size:13px;color:var(--t2);line-height:1.7}
 .extra-btn{width:100%;padding:12px;border:1.5px solid var(--b);border-radius:var(--rs);background:var(--s);font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;cursor:pointer;color:var(--t2)}
-.extra-btn:active{background:var(--s2)}
 </style>
 </head>
 <body>
@@ -170,7 +178,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
 <div id="content"></div>
 <div class="cart-bar" id="cart-bar" style="display:none"></div>
 
-<!-- 이전 주문 트래커 (항상 하단 고정) -->
 <div class="order-tracker" id="order-tracker" style="display:none">
   <div class="tracker-header" onclick="toggleTracker()">
     <div class="tracker-title">
@@ -183,301 +190,148 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
 </div>
 
 <script>
-/* ── PARAMS ── */
 const params = new URLSearchParams(location.search);
 const tableId = params.get('id') || 'A1';
 const tableInfo = TABLES.find(t => t.id === tableId) || {id:tableId,zone:'A',type:1,minOrder:1};
 
-/* ── PERSISTENT ORDER TRACKING ──
-   localStorage에 이 테이블에서 주문한 orderId 목록 저장
-   새로고침/추가주문 후에도 유지됨 */
 const ORDER_KEY = 'dku_orders_' + tableId;
-function getSavedOrderIds() { try { return JSON.parse(localStorage.getItem(ORDER_KEY)) || []; } catch { return []; } }
-function addSavedOrderId(id) {
-  const ids = getSavedOrderIds();
-  if (!ids.includes(id)) ids.push(id);
-  // 오래된 것은 최대 10개만 유지
-  if (ids.length > 10) ids.splice(0, ids.length - 10);
-  localStorage.setItem(ORDER_KEY, JSON.stringify(ids));
-}
-function clearSavedOrderIds() { localStorage.removeItem(ORDER_KEY); }
+function getSavedOrderIds(){try{return JSON.parse(localStorage.getItem(ORDER_KEY))||[];}catch{return[];}}
+function addSavedOrderId(id){const ids=getSavedOrderIds();if(!ids.includes(id))ids.push(id);if(ids.length>10)ids.splice(0,ids.length-10);localStorage.setItem(ORDER_KEY,JSON.stringify(ids));}
+function clearSavedOrderIds(){localStorage.removeItem(ORDER_KEY);}
 
-/* ── LIVE DATA ── */
-let soldoutMap = {};
-let boothStateMap = {};
-let trackedOrders = {}; // orderId → order 객체 (Firebase 실시간)
-let trackerOpen = false;
-let fbReady = false;
+let soldoutMap={}, boothStateMap={}, trackedOrders={}, trackerOpen=false, fbReady=false;
 
-/* ── SESSION TIMER ── */
-const SK = 'dku_sess_' + tableId;
+const SK='dku_sess_'+tableId;
 let session;
-try { session = JSON.parse(sessionStorage.getItem(SK)); } catch {}
-if (!session) {
-  session = { startTs: Date.now(), endTs: Date.now() + DEFAULT_TIME * 60000, extended: 0 };
-  sessionStorage.setItem(SK, JSON.stringify(session));
-}
-function saveSession() { sessionStorage.setItem(SK, JSON.stringify(session)); }
+try{session=JSON.parse(sessionStorage.getItem(SK));}catch{}
+if(!session){session={startTs:Date.now(),endTs:Date.now()+DEFAULT_TIME*60000,extended:0};sessionStorage.setItem(SK,JSON.stringify(session));}
+function saveSession(){sessionStorage.setItem(SK,JSON.stringify(session));}
 
-function extendTime() {
-  session.endTs += EXTEND_TIME * 60000;
-  session.extended = (session.extended || 0) + 1;
-  saveSession();
-  if (fbReady) setSeat(tableId, { occupied: true, since: session.startTs, endTs: session.endTs });
-}
+function extendTime(){session.endTs+=EXTEND_TIME*60000;session.extended=(session.extended||0)+1;saveSession();if(fbReady)setSeat(tableId,{occupied:true,since:session.startTs,endTs:session.endTs});}
 
-function updateTimer() {
-  const rem = Math.max(0, session.endTs - Date.now());
-  const total = (DEFAULT_TIME + (session.extended||0) * EXTEND_TIME) * 60000;
-  const pct = (rem / total) * 100;
-  const mins = Math.floor(rem / 60000), secs = Math.floor((rem % 60000) / 1000);
-  const el = document.getElementById('timer-val'), fill = document.getElementById('timer-fill');
-  if (el) { el.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`; el.className='timer-val'+(mins<5?' danger':mins<10?' warn':''); }
-  if (fill) { fill.style.width=pct+'%'; fill.className='timer-fill'+(mins<5?' danger':mins<10?' warn':''); }
-  if (rem === 0) showExpired();
+function updateTimer(){
+  const rem=Math.max(0,session.endTs-Date.now());
+  const total=(DEFAULT_TIME+(session.extended||0)*EXTEND_TIME)*60000;
+  const pct=(rem/total)*100;
+  const mins=Math.floor(rem/60000),secs=Math.floor((rem%60000)/1000);
+  const el=document.getElementById('timer-val'),fill=document.getElementById('timer-fill');
+  if(el){el.textContent=`${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;el.className='timer-val'+(mins<5?' danger':mins<10?' warn':'');}
+  if(fill){fill.style.width=pct+'%';fill.className='timer-fill'+(mins<5?' danger':mins<10?' warn':'');}
+  if(rem===0)showExpired();
 }
-setInterval(updateTimer, 1000); updateTimer();
+setInterval(updateTimer,1000);updateTimer();
 
-function showExpired() {
-  document.getElementById('steps').style.display = 'none';
-  document.getElementById('cart-bar').style.display = 'none';
-  document.getElementById('content').innerHTML = `
-    <div class="suc-screen">
-      <div class="suc-icon" style="background:var(--rl)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--rd)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
-      <div class="suc-title" style="color:var(--rd)">이용시간 종료</div>
-      <div class="suc-sub">이용시간이 만료되었습니다.<br>자리를 비워주시면 감사합니다.</div>
-    </div>`;
+function showExpired(){
+  document.getElementById('steps').style.display='none';
+  document.getElementById('cart-bar').style.display='none';
+  document.getElementById('content').innerHTML=`<div class="suc-screen"><div class="suc-icon" style="background:var(--rl)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--rd)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div><div class="suc-title" style="color:var(--rd)">이용시간 종료</div><div class="suc-sub">이용시간이 만료되었습니다.<br>자리를 비워주시면 감사합니다.</div></div>`;
 }
 
-/* ── HEADER ── */
-document.getElementById('hd-table').textContent = '테이블 ' + tableId;
-document.getElementById('hd-sub').textContent = tableInfo.type + '인석';
-function updateClock() { document.getElementById('hd-clock').textContent = new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}); }
-setInterval(updateClock, 10000); updateClock();
+document.getElementById('hd-table').textContent='테이블 '+tableId;
+document.getElementById('hd-sub').textContent=tableInfo.type+'인석';
+function updateClock(){document.getElementById('hd-clock').textContent=new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});}
+setInterval(updateClock,10000);updateClock();
 
-function updateCongHeader() {
-  const keys = Object.keys(boothStateMap);
-  const el = document.getElementById('hd-cong');
-  if (!keys.length) { el.className='cong-mini none'; el.textContent='주문 없음'; return; }
-  const waits = keys.map(k => boothStateMap[k]?.wait || 0);
-  const avg = Math.round(waits.reduce((a,b)=>a+b,0)/waits.length);
-  const l = avg<=5?'low':avg<=11?'mid':'high';
+function updateCongHeader(){
+  const keys=Object.keys(boothStateMap);
+  const el=document.getElementById('hd-cong');
+  if(!keys.length){el.className='cong-mini none';el.textContent='주문 없음';return;}
+  const waits=keys.map(k=>boothStateMap[k]?.wait||0);
+  const avg=Math.round(waits.reduce((a,b)=>a+b,0)/waits.length);
+  const l=avg<=5?'low':avg<=11?'mid':'high';
   el.className='cong-mini '+l;
   el.textContent='● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · '+avg+'분';
 }
 
-/* ── ORDER TRACKER 렌더 ── */
-function renderTracker() {
-  const orders = Object.values(trackedOrders);
-  if (!orders.length) { document.getElementById('order-tracker').style.display='none'; return; }
+window.addEventListener('load',()=>{
+  const ok=initFirebase();
+  const bar=document.getElementById('conn-bar');
+  if(!ok){bar.style.cssText='background:var(--rl);color:var(--rd);padding:6px 18px;font-size:11px';bar.textContent='⚠ Firebase 미설정';return;}
+  fbReady=true;
+  db.ref('.info/connected').on('value',snap=>{const c=snap.val();bar.className='conn-bar'+(c?' ok':'');bar.innerHTML=`<div class="conn-dot"></div><span>${c?'실시간 연결됨':'재연결 중...'}</span>`;});
+  setSeat(tableId,{occupied:true,since:session.startTs,endTs:session.endTs});
+  db.ref('soldout').on('value',snap=>{soldoutMap=snap.val()||{};if(currentBoothId)renderMenu(currentBoothId);});
+  db.ref('boothState').on('value',snap=>{
+    boothStateMap=snap.val()||{};updateCongHeader();
+    if(!currentBoothId)renderBooth();
+    else{const w=document.getElementById('booth-wait-label');if(w){const bw=boothStateMap[currentBoothId]?.wait||0;const l=bw===0?'none':bw<=5?'low':bw<=11?'mid':'high';w.className='bc-wait '+l;w.textContent=bw===0?'대기 없음':'● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+bw+'분 대기';}}
+  });
+  db.ref('orders').on('value',snap=>{if(!Object.keys(trackedOrders).length&&!getSavedOrderIds().length)return;const data=snap.val()||{};getSavedOrderIds().forEach(id=>{if(data[id]){trackedOrders[id]=data[id];}});renderTracker();});
+  getSavedOrderIds().forEach(id=>subscribeOrder(id));
+  renderBooth();
+});
 
-  // 전체 완료 여부
-  const allItems = orders.flatMap(o => o.items||[]);
-  const allDone = allItems.length > 0 && allItems.every(it => it.done);
-  const pendingCount = allItems.filter(it => !it.done).length;
+function subscribeOrder(orderId){
+  db.ref('orders/'+orderId).on('value',snap=>{
+    const order=snap.val();
+    if(order){trackedOrders[orderId]=order;}else{delete trackedOrders[orderId];}
+    renderTracker();
+  });
+}
 
-  const tracker = document.getElementById('order-tracker');
-  tracker.style.display = 'block';
-  tracker.className = 'order-tracker ' + (allDone ? 'all-done' : 'has-pending');
-
-  const badge = document.getElementById('tracker-badge');
-  badge.className = 'tracker-badge ' + (allDone ? 'done' : 'pending');
-  badge.textContent = allDone ? '✓ 전체 완료' : `준비중 ${pendingCount}개`;
-
-  // cart-bar 위치 조정
-  const cartBar = document.getElementById('cart-bar');
-  if (cartBar.style.display !== 'none') {
-    cartBar.style.bottom = trackerOpen ? '210px' : '62px';
-  }
-
-  // body
-  const body = document.getElementById('tracker-body');
-  body.innerHTML = orders.map(o => `
+function renderTracker(){
+  const orders=Object.values(trackedOrders);
+  if(!orders.length){document.getElementById('order-tracker').style.display='none';return;}
+  const allItems=orders.flatMap(o=>o.items||[]);
+  const allDone=allItems.length>0&&allItems.every(it=>it.done);
+  const pendingCount=allItems.filter(it=>!it.done).length;
+  const tracker=document.getElementById('order-tracker');
+  tracker.style.display='block';
+  tracker.className='order-tracker '+(allDone?'all-done':'has-pending');
+  const badge=document.getElementById('tracker-badge');
+  badge.className='tracker-badge '+(allDone?'done':'pending');
+  badge.textContent=allDone?'✓ 전체 완료':`준비중 ${pendingCount}개`;
+  const cartBar=document.getElementById('cart-bar');
+  if(cartBar.style.display!=='none')cartBar.style.bottom=trackerOpen?'210px':'62px';
+  document.getElementById('tracker-body').innerHTML=orders.map(o=>`
     <div class="tracker-order-group">
       <div class="tog-booth">${o.booth} · ${o.time}</div>
-      ${(o.items||[]).map((it,i) => `
+      ${(o.items||[]).map((it,i)=>`
         <div class="tog-item${it.done?' done-row':''}">
           <span class="tog-num${it.done?' done':''}">${it.num}</span>
           <span class="tog-name">${it.n} ×${it.qty}</span>
           <span class="tog-status ${it.done?'ready':'waiting'}">${it.done?'✓ 완료':'준비중'}</span>
         </div>`).join('')}
-    </div>`).join('') +
-    (allDone ? `<button class="tracker-clear" onclick="clearTracker()">완료된 주문 지우기</button>` : '');
+    </div>`).join('')+(allDone?`<button class="tracker-clear" onclick="clearTracker()">완료된 주문 지우기</button>`:'');
 }
 
-function toggleTracker() {
-  trackerOpen = !trackerOpen;
-  const body = document.getElementById('tracker-body');
-  const toggle = document.getElementById('tracker-toggle');
-  body.className = 'tracker-body' + (trackerOpen ? ' open' : '');
-  toggle.textContent = trackerOpen ? '▼ 접기' : '▲ 펼치기';
-  // cart-bar 위치 조정
-  const cartBar = document.getElementById('cart-bar');
-  if (cartBar.style.display !== 'none') {
-    cartBar.style.bottom = trackerOpen ? '210px' : '62px';
-  }
+function toggleTracker(){
+  trackerOpen=!trackerOpen;
+  document.getElementById('tracker-body').className='tracker-body'+(trackerOpen?' open':'');
+  document.getElementById('tracker-toggle').textContent=trackerOpen?'▼ 접기':'▲ 펼치기';
+  const cartBar=document.getElementById('cart-bar');
+  if(cartBar.style.display!=='none')cartBar.style.bottom=trackerOpen?'210px':'62px';
 }
 
-function clearTracker() {
-  clearSavedOrderIds();
-  trackedOrders = {};
-  trackerOpen = false;
-  document.getElementById('tracker-body').className = 'tracker-body';
-  document.getElementById('tracker-toggle').textContent = '▲ 펼치기';
-  document.getElementById('order-tracker').style.display = 'none';
-}
+function clearTracker(){clearSavedOrderIds();trackedOrders={};trackerOpen=false;document.getElementById('tracker-body').className='tracker-body';document.getElementById('tracker-toggle').textContent='▲ 펼치기';document.getElementById('order-tracker').style.display='none';}
 
-/* ── FIREBASE ── */
-window.addEventListener('load', () => {
-  const ok = initFirebase();
-  const bar = document.getElementById('conn-bar');
-  if (!ok) {
-    bar.style.cssText='background:var(--rl);color:var(--rd);padding:6px 18px;font-size:11px';
-    bar.textContent='⚠ Firebase 미설정';
-    return;
-  }
-  fbReady = true;
+function setStep(n){[1,2,3].forEach(i=>{document.getElementById('step'+i).className='step'+(i===n?' active':i<n?' done':'');});[1,2].forEach(i=>{const l=document.getElementById('sl'+i);if(l)l.className='step-line'+(i<n?' done':'');});}
 
-  db.ref('.info/connected').on('value', snap => {
-    const c = snap.val();
-    bar.className='conn-bar'+(c?' ok':'');
-    bar.innerHTML=`<div class="conn-dot"></div><span>${c?'실시간 연결됨':'재연결 중...'}</span>`;
-  });
+let cart={},currentBoothId=null,payMethod='kakao';
+function cartCount(){let cnt=0,total=0;Object.values(cart).forEach(b=>Object.values(b).forEach(it=>{cnt+=it.qty;total+=it.p*it.qty;}));return{cnt,total};}
 
-  setSeat(tableId, { occupied: true, since: session.startTs, endTs: session.endTs });
-
-  // 품절 구독
-  db.ref('soldout').on('value', snap => {
-    soldoutMap = snap.val() || {};
-    if (currentBoothId) renderMenu(currentBoothId);
-  });
-
-  // 부스 상태 구독
-  db.ref('boothState').on('value', snap => {
-    boothStateMap = snap.val() || {};
-    updateCongHeader();
-    if (!currentBoothId) renderBooth();
-    else {
-      const waitEl = document.getElementById('booth-wait-label');
-      if (waitEl) {
-        const w = boothStateMap[currentBoothId]?.wait || 0;
-        const l = w===0?'none':w<=5?'low':w<=11?'mid':'high';
-        waitEl.className='bc-wait '+l;
-        waitEl.textContent=w===0?'대기 없음':'● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+w+'분 대기';
-      }
-    }
-  });
-
-  // ── 저장된 주문들 실시간 구독 ──
-  // localStorage에서 이 테이블의 주문 ID 불러와서 각각 구독
-  const savedIds = getSavedOrderIds();
-  savedIds.forEach(id => subscribeOrder(id));
-
-  renderBooth();
-});
-
-/* ── 단일 주문 실시간 구독 ── */
-function subscribeOrder(orderId) {
-  db.ref('orders/' + orderId).on('value', snap => {
-    const order = snap.val();
-    if (order) {
-      trackedOrders[orderId] = order;
-    } else {
-      delete trackedOrders[orderId];
-    }
-    renderTracker();
-  });
-}
-
-/* ── STEP ── */
-function setStep(n) {
-  [1,2,3].forEach(i=>{ document.getElementById('step'+i).className='step'+(i===n?' active':i<n?' done':''); });
-  [1,2].forEach(i=>{ const l=document.getElementById('sl'+i); if(l) l.className='step-line'+(i<n?' done':''); });
-}
-
-/* ── CART STATE ── */
-let cart = {}, currentBoothId = null, payMethod = 'kakao';
-function cartCount() {
-  let cnt=0,total=0;
-  Object.values(cart).forEach(b=>Object.values(b).forEach(it=>{cnt+=it.qty;total+=it.p*it.qty;}));
-  return {cnt,total};
-}
-
-/* ── STEP 1: BOOTH ── */
-function renderBooth() {
-  if (currentBoothId) return;
-  setStep(1);
-  document.getElementById('cart-bar').style.display='none';
+function renderBooth(){
+  if(currentBoothId)return;
+  setStep(1);document.getElementById('cart-bar').style.display='none';
   const minO=tableInfo.minOrder;
-  document.getElementById('content').innerHTML=`
-    <div class="booth-picker">
-      <div class="picker-title">어느 부스에서 주문하시겠어요?</div>
-      ${minO>1?`<div class="min-notice">⚠ ${tableInfo.type}인석 최소 ${minO}개 주문</div>`:''}
-      ${BOOTHS.map(b=>{
-        const s=boothStateMap[b.id];
-        const w=s?.wait||0; const hasO=!!s;
-        const l=!hasO?'none':w<=5?'low':w<=11?'mid':'high';
-        return`<div class="booth-card" onclick="selectBooth('${b.id}')">
-          <div>
-            <div class="bc-name">${b.name}</div>
-            <div class="bc-wait ${l}">${!hasO?'대기 없음':'● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+w+'분'}</div>
-          </div>
-          <span style="font-size:20px;color:var(--t3)">›</span>
-        </div>`;
-      }).join('')}
-    </div>`;
+  document.getElementById('content').innerHTML=`<div class="booth-picker"><div class="picker-title">어느 부스에서 주문하시겠어요?</div>${minO>1?`<div class="min-notice">⚠ ${tableInfo.type}인석 최소 ${minO}개 주문</div>`:''}${BOOTHS.map(b=>{const s=boothStateMap[b.id];const w=s?.wait||0;const hasO=!!s&&s.orders>0;const l=!hasO?'none':w<=5?'low':w<=11?'mid':'high';return`<div class="booth-card" onclick="selectBooth('${b.id}')"><div><div class="bc-name">${b.name}</div><div class="bc-wait ${l}">${!hasO?'대기 없음':'● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+w+'분'}</div></div><span style="font-size:20px;color:var(--t3)">›</span></div>`;}).join('')}</div>`;
 }
 
-/* ── STEP 2: MENU ── */
-function selectBooth(id) { currentBoothId=id; if(!cart[id]) cart[id]={}; renderMenu(id); }
+function selectBooth(id){currentBoothId=id;if(!cart[id])cart[id]={};renderMenu(id);}
 
-function renderMenu(id) {
+function renderMenu(id){
   setStep(2);
   const b=BOOTHS.find(x=>x.id===id);
-  const s=boothStateMap[id]; const w=s?.wait||0; const hasO=!!s;
+  const s=boothStateMap[id];const w=s?.wait||0;const hasO=!!s&&s.orders>0;
   const l=!hasO?'none':w<=5?'low':w<=11?'mid':'high';
   const popular=s?.popular||{};
-  document.getElementById('content').innerHTML=`
-    <div class="menu-section">
-      <div class="booth-hd">
-        <button class="back-btn" onclick="currentBoothId=null;cart={};renderBooth()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div>
-          <div style="font-size:16px;font-weight:700">${b.name}</div>
-          <div id="booth-wait-label" class="bc-wait ${l}">${!hasO?'대기 없음':'● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+w+'분 대기'}</div>
-        </div>
-      </div>
-      ${b.items.map((item,i)=>{
-        const qty=cart[id][item.n]?.qty||0;
-        const key=id+'::'+item.n;
-        const isSold=soldoutMap[key]===true;
-        const isPop=(popular[item.n]||0)>=POPULAR_THRESHOLD&&!isSold;
-        return`<div class="menu-item">
-          <div class="mi-info">
-            <div class="mi-name-row">
-              <span class="mi-name">${item.n}</span>
-              ${isPop?'<span class="badge-pop">🔥 인기</span>':''}
-              ${isSold?'<span class="badge-sold">품절</span>':''}
-            </div>
-            <div class="mi-price">${item.p.toLocaleString()}원</div>
-          </div>
-          ${isSold
-            ?'<div style="font-size:12px;color:var(--rd);font-weight:500;flex-shrink:0">품절</div>'
-            :`<div class="qty-ctrl">
-                <button class="qty-btn sub" id="sub-${i}" onclick="chgQty('${id}',${i},'${item.n}',${item.p},-1)" ${qty===0?'disabled':''}>−</button>
-                <span class="qty-num" id="qn-${i}">${qty}</span>
-                <button class="qty-btn add" onclick="chgQty('${id}',${i},'${item.n}',${item.p},1)">+</button>
-              </div>`}
-        </div>`;
-      }).join('')}
-    </div>`;
+  document.getElementById('content').innerHTML=`<div class="menu-section"><div class="booth-hd"><button class="back-btn" onclick="currentBoothId=null;cart={};renderBooth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button><div><div style="font-size:16px;font-weight:700">${b.name}</div><div id="booth-wait-label" class="bc-wait ${l}">${!hasO?'대기 없음':'● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+w+'분 대기'}</div></div></div>${b.items.map((item,i)=>{const qty=cart[id][item.n]?.qty||0;const key=id+'::'+item.n;const isSold=soldoutMap[key]===true;const isPop=(popular[item.n]||0)>=POPULAR_THRESHOLD&&!isSold;return`<div class="menu-item"><div class="mi-info"><div class="mi-name-row"><span class="mi-name">${item.n}</span>${isPop?'<span class="badge-pop">🔥 인기</span>':''}${isSold?'<span class="badge-sold">품절</span>':''}</div><div class="mi-price">${item.p.toLocaleString()}원</div></div>${isSold?'<div style="font-size:12px;color:var(--rd);font-weight:500;flex-shrink:0">품절</div>':`<div class="qty-ctrl"><button class="qty-btn sub" id="sub-${i}" onclick="chgQty('${id}',${i},'${item.n}',${item.p},-1)" ${qty===0?'disabled':''}>−</button><span class="qty-num" id="qn-${i}">${qty}</span><button class="qty-btn add" onclick="chgQty('${id}',${i},'${item.n}',${item.p},1)">+</button></div>`}</div>`;}).join('')}</div>`;
   document.getElementById('cart-bar').style.display='block';
-  document.getElementById('cart-bar').style.bottom = trackerOpen?'210px':'62px';
+  document.getElementById('cart-bar').style.bottom=trackerOpen?'210px':'62px';
   updateCartBar();
 }
 
-function chgQty(bid,idx,name,price,delta) {
+function chgQty(bid,idx,name,price,delta){
   if(soldoutMap[bid+'::'+name]===true&&delta>0){alert('방금 품절 처리된 메뉴입니다.');renderMenu(bid);return;}
   if(!cart[bid])cart[bid]={};
   const nw=Math.max(0,(cart[bid][name]?.qty||0)+delta);
@@ -487,117 +341,53 @@ function chgQty(bid,idx,name,price,delta) {
   updateCartBar();
 }
 
-function updateCartBar() {
-  const{cnt,total}=cartCount(); const minO=tableInfo.minOrder; const ok=cnt>=minO;
-  document.getElementById('cart-bar').innerHTML=`
-    <div class="cart-summary">
-      <span class="${ok?'':'min-warn'}">${cnt<minO?`최소 ${minO}개 필요 (현재 ${cnt}개)`:cnt+'개 선택'}</span>
-      <span class="cart-tv">${total.toLocaleString()}원</span>
-    </div>
-    <button class="next-btn" ${!ok?'disabled':''} onclick="goCart()">주문 확인하기</button>`;
+function updateCartBar(){
+  const{cnt,total}=cartCount();const minO=tableInfo.minOrder;const ok=cnt>=minO;
+  document.getElementById('cart-bar').innerHTML=`<div class="cart-summary"><span class="${ok?'':'min-warn'}">${cnt<minO?`최소 ${minO}개 필요 (현재 ${cnt}개)`:cnt+'개 선택'}</span><span class="cart-tv">${total.toLocaleString()}원</span></div><button class="next-btn" ${!ok?'disabled':''} onclick="goCart()">주문 확인하기</button>`;
 }
 
-/* ── STEP 3: REVIEW ── */
-function goCart() {
-  setStep(3);
-  document.getElementById('cart-bar').style.display='none';
+function goCart(){
+  setStep(3);document.getElementById('cart-bar').style.display='none';
   const b=BOOTHS.find(x=>x.id===currentBoothId);
   const items=Object.values(cart[currentBoothId]||{});
   const total=items.reduce((a,i)=>a+i.p*i.qty,0);
-  document.getElementById('content').innerHTML=`
-    <div class="cart-review">
-      <div class="sect-title">${b.name} 주문 내역</div>
-      ${items.map(it=>`
-        <div class="ci-row">
-          <span class="ci-name">${it.n}</span>
-          <span class="ci-qty">×${it.qty}</span>
-          <span class="ci-price">${(it.p*it.qty).toLocaleString()}원</span>
-          <button class="ci-rm" onclick="rmItem('${it.n}')">×</button>
-        </div>`).join('')}
-      <div class="total-row"><span>합계</span><span class="total-p">${total.toLocaleString()}원</span></div>
-      <div class="pay-label">결제 수단</div>
-      <div class="pay-methods">
-        <button class="pay-btn2 active" id="pm-kakao" onclick="setPay('kakao')">카카오페이</button>
-        <button class="pay-btn2" id="pm-toss" onclick="setPay('toss')">토스</button>
-        <button class="pay-btn2" id="pm-card" onclick="setPay('card')">신용카드</button>
-      </div>
-      <button class="next-btn" onclick="doPayment()">결제하기 · ${total.toLocaleString()}원</button>
-    </div>`;
+  document.getElementById('content').innerHTML=`<div class="cart-review"><div class="sect-title">${b.name} 주문 내역</div>${items.map(it=>`<div class="ci-row"><span class="ci-name">${it.n}</span><span class="ci-qty">×${it.qty}</span><span class="ci-price">${(it.p*it.qty).toLocaleString()}원</span><button class="ci-rm" onclick="rmItem('${it.n}')">×</button></div>`).join('')}<div class="total-row"><span>합계</span><span class="total-p">${total.toLocaleString()}원</span></div><div class="pay-label">결제 수단</div><div class="pay-methods"><button class="pay-btn2 active" id="pm-kakao" onclick="setPay('kakao')">카카오페이</button><button class="pay-btn2" id="pm-toss" onclick="setPay('toss')">토스</button><button class="pay-btn2" id="pm-card" onclick="setPay('card')">신용카드</button></div><button class="next-btn" onclick="doPayment()">결제하기 · ${total.toLocaleString()}원</button></div>`;
   payMethod='kakao';
 }
 
-function setPay(m){
-  payMethod=m;
-  ['kakao','toss','card'].forEach(x=>{const el=document.getElementById('pm-'+x);if(el)el.className='pay-btn2'+(x===m?' active':'');});
-}
+function setPay(m){payMethod=m;['kakao','toss','card'].forEach(x=>{const el=document.getElementById('pm-'+x);if(el)el.className='pay-btn2'+(x===m?' active':'');});}
+function rmItem(name){if(cart[currentBoothId])delete cart[currentBoothId][name];const{cnt}=cartCount();if(cnt<tableInfo.minOrder)renderMenu(currentBoothId);else goCart();}
 
-function rmItem(name){
-  if(cart[currentBoothId])delete cart[currentBoothId][name];
-  const{cnt}=cartCount();
-  if(cnt<tableInfo.minOrder)renderMenu(currentBoothId);else goCart();
-}
-
-/* ── PAYMENT ── */
 async function doPayment(){
   if(!fbReady){alert('서버에 연결되지 않았습니다.');return;}
   const b=BOOTHS.find(x=>x.id===currentBoothId);
   const items=Object.values(cart[currentBoothId]||{});
   if(!items.length)return;
-
   const soldItems=items.filter(it=>soldoutMap[currentBoothId+'::'+it.n]===true);
   if(soldItems.length){alert('품절된 메뉴가 포함되어 있습니다:\n'+soldItems.map(i=>i.n).join(', '));renderMenu(currentBoothId);return;}
-
   const total=items.reduce((a,i)=>a+i.p*i.qty,0);
   const now=new Date();
   const timeStr=now.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
-
   const baseNum=await nextOrderNum();
-  if(items.length>1) await REF.counter().set(baseNum+items.length-1);
-
+  if(items.length>1)await REF.counter().set(baseNum+items.length-1);
   const assignedItems=items.map((it,i)=>({n:it.n,p:it.p,qty:it.qty,num:baseNum+i,done:false}));
   const orderId='ord_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
   const order={id:orderId,booth:b.name,boothId:currentBoothId,table:tableId,items:assignedItems,total,time:timeStr,pay:payMethod,ts:Date.now()};
-
   await saveOrder(order);
-
-  // ── localStorage에 orderId 저장 → 새로고침/추가주문 후에도 유지 ──
   addSavedOrderId(orderId);
-  subscribeOrder(orderId); // 즉시 실시간 구독 시작
-
+  subscribeOrder(orderId);
   const cur=boothStateMap[currentBoothId]||{orders:0,wait:0,revenue:0,popular:{}};
   const popular={...(cur.popular||{})};
   assignedItems.forEach(it=>{popular[it.n]=(popular[it.n]||0)+it.qty;});
-  await updateBoothState(currentBoothId,{
-    orders:(cur.orders||0)+1,
-    revenue:(cur.revenue||0)+total,
-    wait:Math.min(25,((cur.orders||0)+1)*2),
-    popular
-  });
-
-  cart={}; currentBoothId=null;
+  await updateBoothState(currentBoothId,{orders:(cur.orders||0)+1,revenue:(cur.revenue||0)+total,wait:Math.min(25,((cur.orders||0)+1)*2),popular});
+  cart={};currentBoothId=null;
   document.getElementById('steps').style.display='none';
   document.getElementById('cart-bar').style.display='none';
-
-  // 성공 화면 (트래커가 있으니 간단하게)
-  document.getElementById('content').innerHTML=`
-    <div class="suc-screen">
-      <div class="suc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-      <div class="suc-title">주문 완료!</div>
-      <div class="suc-sub">아래 <strong>내 주문 현황</strong>에서<br>번호가 완료로 바뀌면 수령하세요</div>
-      <button class="extra-btn" onclick="resetOrder()">추가 주문하기</button>
-    </div>`;
-
-  // 트래커 자동으로 열기
-  trackerOpen=true;
-  document.getElementById('tracker-body').className='tracker-body open';
-  document.getElementById('tracker-toggle').textContent='▼ 접기';
+  document.getElementById('content').innerHTML=`<div class="suc-screen"><div class="suc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="suc-title">주문 완료!</div><div class="suc-sub">아래 <strong>내 주문 현황</strong>에서<br>번호가 완료로 바뀌면 수령하세요</div><button class="extra-btn" onclick="resetOrder()">추가 주문하기</button></div>`;
+  trackerOpen=true;document.getElementById('tracker-body').className='tracker-body open';document.getElementById('tracker-toggle').textContent='▼ 접기';
 }
 
-function resetOrder(){
-  document.getElementById('steps').style.display='flex';
-  cart={}; currentBoothId=null;
-  renderBooth();
-}
+function resetOrder(){document.getElementById('steps').style.display='flex';cart={};currentBoothId=null;renderBooth();}
 </script>
 </body>
 </html>

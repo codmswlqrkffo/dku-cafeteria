@@ -6,23 +6,22 @@
 <title>단국대 학식당 — 관리자</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--g:#1a7a5e;--gl:#e8f5f0;--gm:#4caf8a;--am:#c97c2a;--al:#fef3e2;--rd:#c0392b;--rl:#fdf0ef;--bg:#f5f3ee;--s:#fff;--s2:#f0ede6;--b:#e0dbd2;--t:#1a1814;--t2:#6b6560;--t3:#a09b94;--r:12px;--rs:8px;}
+:root{--g:#003DA5;--gl:#EEF3FF;--gm:#6B8FD4;--am:#c97c2a;--al:#fef3e2;--rd:#c0392b;--rl:#fdf0ef;--bg:#f5f6fa;--s:#fff;--s2:#eef0f7;--b:#dde1f0;--t:#0d1a3a;--t2:#4a5580;--t3:#8e97b8;--r:12px;--rs:8px;}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);min-height:100vh}
 a{text-decoration:none;color:inherit}
-nav{background:var(--s);border-bottom:1px solid var(--b);padding:0 22px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
-.logo{display:flex;align-items:center;gap:10px}
-.logo-ic{width:32px;height:32px;background:var(--g);border-radius:8px;display:flex;align-items:center;justify-content:center}
-.logo-ic svg{width:17px;height:17px;fill:#fff}
-.logo-t{font-size:14px;font-weight:700}.logo-s{font-size:10px;color:var(--t3);font-family:'DM Mono',monospace}
+nav{background:var(--g);padding:0 22px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,61,165,.25)}
+.logo{display:flex;align-items:center;gap:11px}
+.logo-ic{width:48px;height:30px;flex-shrink:0}
+.logo-t{font-size:15px;font-weight:700;color:#fff}
+.logo-s{font-size:10px;color:rgba(255,255,255,.65);font-family:'DM Mono',monospace}
 .nav-r{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.nav-time{font-family:'DM Mono',monospace;font-size:12px;color:var(--t3)}
+.nav-time{font-family:'DM Mono',monospace;font-size:12px;color:rgba(255,255,255,.7)}
 .btn{padding:7px 13px;border:none;border-radius:var(--rs);font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px;text-decoration:none}
-.btn-g{background:var(--g);color:#fff}.btn-g:hover{background:#155f49}
+.btn-w{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25)}.btn-w:hover{background:rgba(255,255,255,.25)}
 .btn-o{background:var(--s2);color:var(--t2);border:1px solid var(--b)}
-.btn-rd{background:var(--rl);color:var(--rd);border:1px solid #f5b8b5}
-.btn-rd:hover{background:var(--rd);color:#fff}
-.conn-bar{padding:6px 22px;font-size:11px;display:flex;align-items:center;gap:6px;background:var(--al);color:var(--am)}
+.btn-rd{background:var(--rl);color:var(--rd);border:1px solid #f5b8b5}.btn-rd:hover{background:var(--rd);color:#fff}
+.conn-bar{padding:6px 22px;font-size:11px;display:flex;align-items:center;gap:6px;background:#fef6e4;color:var(--am)}
 .conn-bar.ok{background:var(--gl);color:var(--g)}
 .conn-dot{width:6px;height:6px;border-radius:50%;background:var(--am);animation:blink 1s infinite;flex-shrink:0}
 .conn-bar.ok .conn-dot{background:var(--g);animation:none}
@@ -37,15 +36,13 @@ nav{background:var(--s);border-bottom:1px solid var(--b);padding:0 22px;height:5
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
 .sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
 .sec-hd h2{font-size:15px;font-weight:700}
-/* RESET BOX */
 .reset-box{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .reset-info h3{font-size:13px;font-weight:700;margin-bottom:4px}
 .reset-info p{font-size:12px;color:var(--t3);line-height:1.6}
 .reset-btns{display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0}
-/* CONG */
 .cong-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:10px;margin-bottom:24px}
 .cong-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;transition:all .3s}
-.cong-card.flash{background:#fffde7;border-color:var(--am);transform:scale(1.02)}
+.cong-card.flash{background:#e8f0ff;border-color:var(--gm);transform:scale(1.02)}
 .cc-name{font-size:13px;font-weight:700;margin-bottom:6px}
 .cbadge{display:inline-block;font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;margin-bottom:6px}
 .cbadge.low{background:var(--gl);color:var(--g)}.cbadge.mid{background:var(--al);color:var(--am)}.cbadge.high{background:var(--rl);color:var(--rd)}.cbadge.none{background:var(--s2);color:var(--t3)}
@@ -55,7 +52,6 @@ nav{background:var(--s);border-bottom:1px solid var(--b);padding:0 22px;height:5
 .cbar{height:4px;background:var(--b);border-radius:2px;margin-top:8px;overflow:hidden}
 .cfill{height:100%;border-radius:2px;transition:width .5s}
 .cfill.low{background:var(--g)}.cfill.mid{background:var(--am)}.cfill.high{background:var(--rd)}.cfill.none{background:var(--b)}
-/* SEATS */
 .seats-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:18px;margin-bottom:24px}
 .zone-hd{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
 .seat-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
@@ -68,7 +64,6 @@ nav{background:var(--s);border-bottom:1px solid var(--b);padding:0 22px;height:5
 .leg{display:flex;gap:14px}
 .leg-i{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--t3)}
 .leg-d{width:10px;height:10px;border-radius:3px}
-/* ORDERS */
 .order-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
 .order-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;transition:border-color .3s,background .3s}
 .order-card.new-flash{border-color:var(--g);background:var(--gl)}
@@ -86,12 +81,10 @@ nav{background:var(--s);border-bottom:1px solid var(--b);padding:0 22px;height:5
 .done-btn{padding:5px 12px;border:1px solid var(--b);border-radius:6px;background:var(--s);font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:500;cursor:pointer;color:var(--t2);white-space:nowrap;transition:all .15s}
 .done-btn:hover{border-color:var(--g);color:var(--g)}
 .done-btn.done{background:var(--gl);border-color:var(--gm);color:var(--g);font-weight:700}
-/* STATS */
 .stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:24px}
 .stat-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;text-align:center}
 .stat-v{font-size:22px;font-weight:700;font-family:'DM Mono',monospace}
 .stat-l{font-size:10px;color:var(--t3);margin-top:3px}
-/* SOLDOUT */
 .sold-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
 .sold-booth{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px}
 .sold-booth-name{font-size:13px;font-weight:700;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--b)}
@@ -101,7 +94,6 @@ nav{background:var(--s);border-bottom:1px solid var(--b);padding:0 22px;height:5
 .sold-toggle{padding:4px 10px;border:1px solid var(--b);border-radius:6px;background:var(--s);font-family:'Noto Sans KR',sans-serif;font-size:11px;cursor:pointer;color:var(--t2);white-space:nowrap;transition:all .15s}
 .sold-toggle.on{background:var(--rl);border-color:var(--rd);color:var(--rd);font-weight:700}
 .empty-msg{font-size:13px;color:var(--t3);padding:20px 0}
-/* MODAL */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:500;align-items:center;justify-content:center}
 .modal-bg.show{display:flex}
 .modal{background:var(--s);border-radius:var(--r);padding:24px;max-width:380px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.15)}
@@ -118,12 +110,19 @@ nav{background:var(--s);border-bottom:1px solid var(--b);padding:0 22px;height:5
 
 <nav>
   <div class="logo">
-    <div class="logo-ic"><svg viewBox="0 0 24 24"><path d="M3 9H21M3 15H21M12 3v18M7.8 3h8.4C18.9 3 21 3 21 5.64v12.72C21 21 18.9 21 16.2 21H7.8C5.1 21 3 21 3 18.36V5.64C3 3 5.1 3 7.8 3Z"/></svg></div>
+    <!-- DKU 로고 아이콘 -->
+    <svg class="logo-ic" viewBox="0 0 72 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2 8L2 36L11 36C19.5 36 25.5 30.5 25.5 22C25.5 13.5 19.5 8 11 8Z M8 13.5L10.5 13.5C15.5 13.5 18.5 17 18.5 22C18.5 27 15.5 30.5 10.5 30.5L8 30.5Z" fill="white"/>
+      <path d="M29 8L29 36L35 36L35 25.5L43.5 36L50.5 36L41.5 22.5L50.5 8L43.5 8L35 20.5L35 8Z" fill="white"/>
+      <path d="M54 8L54 26.5C54 30 56 32 59.5 32C63 32 65 30 65 26.5L65 8L71 8L71 26.5C71 33.5 66 37.5 59.5 37.5C53 37.5 48 33.5 48 26.5L48 8Z" fill="white"/>
+      <ellipse cx="37" cy="22" rx="35" ry="10.5" stroke="white" stroke-width="1.8" fill="none" transform="rotate(-13 37 22)"/>
+      <circle cx="37" cy="22" r="2.5" fill="white"/>
+    </svg>
     <div><div class="logo-t">단국대 학식당</div><div class="logo-s">관리자 · 죽전캠퍼스</div></div>
   </div>
   <div class="nav-r">
     <div class="nav-time" id="nav-time">00:00</div>
-    <a href="qr.html" class="btn btn-g" target="_blank">🖨 QR 인쇄</a>
+    <a href="qr.html" class="btn btn-w" target="_blank">🖨 QR 인쇄</a>
   </div>
 </nav>
 
@@ -138,17 +137,12 @@ nav{background:var(--s);border-bottom:1px solid var(--b);padding:0 22px;height:5
   <div class="tab" onclick="switchTab('soldout')">품절 관리</div>
 </div>
 
-<!-- 대시보드 -->
 <div id="page-dash" class="page active">
   <br>
-  <!-- 초기화 박스 -->
   <div class="reset-box">
     <div class="reset-info">
       <h3>데이터 초기화</h3>
-      <p>
-        주문번호는 매일 자정 자동 초기화됩니다.<br>
-        영업 종료 후 수동 초기화가 필요하면 아래 버튼을 사용하세요.
-      </p>
+      <p>주문번호는 매일 자정 자동 초기화됩니다.<br>영업 종료 후 수동 초기화가 필요하면 아래 버튼을 사용하세요.</p>
     </div>
     <div class="reset-btns">
       <button class="btn btn-o" onclick="confirmReset('cong')">혼잡도만 초기화</button>
@@ -169,17 +163,12 @@ nav{background:var(--s);border-bottom:1px solid var(--b);padding:0 22px;height:5
   <div class="stat-grid" id="stat-grid"></div>
 </div>
 
-<!-- 주문 관리 -->
 <div id="page-orders" class="page">
   <br>
-  <div class="sec-hd">
-    <h2>주문 현황 — 완료처리하면 주문자 화면에 즉시 반영</h2>
-    <span class="live">LIVE</span>
-  </div>
+  <div class="sec-hd"><h2>주문 현황 — 완료처리하면 주문자 화면에 즉시 반영</h2><span class="live">LIVE</span></div>
   <div class="order-grid" id="order-grid"></div>
 </div>
 
-<!-- 품절 관리 -->
 <div id="page-soldout" class="page">
   <br>
   <div class="sec-hd"><h2>품절 설정</h2><button class="btn btn-o" onclick="clearAllSoldout()">전체 해제</button></div>
@@ -187,291 +176,108 @@ nav{background:var(--s);border-bottom:1px solid var(--b);padding:0 22px;height:5
   <div class="sold-grid" id="sold-grid"></div>
 </div>
 
-<!-- 확인 모달 -->
 <div class="modal-bg" id="modal">
   <div class="modal">
     <h3 id="modal-title">초기화 확인</h3>
     <p id="modal-desc"></p>
     <div class="modal-btns">
       <button class="btn btn-o" onclick="closeModal()">취소</button>
-      <button class="btn btn-rd" id="modal-confirm-btn" onclick="executeReset()">초기화</button>
+      <button class="btn btn-rd" onclick="executeReset()">초기화</button>
     </div>
   </div>
 </div>
 
 <script>
-let curTab = 'dash';
-let boothState = {}, soldoutState = {}, seatsState = {}, allOrders = [];
-let knownOrderIds = new Set();
-let pendingResetType = null;
+let curTab='dash',boothState={},soldoutState={},seatsState={},allOrders=[],knownOrderIds=new Set(),pendingResetType=null;
 
-function switchTab(t) {
-  curTab = t;
-  document.querySelectorAll('.tab').forEach((el,i) => el.classList.toggle('active', ['dash','orders','soldout'][i]===t));
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-'+t).classList.add('active');
-}
+function switchTab(t){curTab=t;document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',['dash','orders','soldout'][i]===t));document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+t).classList.add('active');}
+function tick(){document.getElementById('nav-time').textContent=new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});}
+setInterval(tick,1000);tick();
+function lv(w){return w===0?'none':w<=5?'low':w<=11?'mid':'high';}
+function lvL(l){return l==='none'?'주문 없음':l==='low'?'여유':l==='mid'?'보통':'혼잡';}
 
-function tick() { document.getElementById('nav-time').textContent = new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}); }
-setInterval(tick,1000); tick();
-
-function lv(w) { return w===0?'none':w<=5?'low':w<=11?'mid':'high'; }
-function lvL(l) { return l==='none'?'주문 없음':l==='low'?'여유':l==='mid'?'보통':'혼잡'; }
-
-/* ── FIREBASE 초기화 ── */
-document.addEventListener('DOMContentLoaded', () => {
-  const ok = initFirebase();
-  const bar = document.getElementById('conn-bar');
-  if (!ok) {
-    bar.style.cssText='background:var(--rl);color:var(--rd);padding:6px 22px;font-size:11px';
-    bar.textContent='⚠ Firebase 미설정';
-    renderAll(); return;
-  }
-
-  db.ref('.info/connected').on('value', snap => {
-    const c = snap.val();
-    bar.className = 'conn-bar'+(c?' ok':'');
-    bar.innerHTML = `<div class="conn-dot"></div><span>${c?'실시간 연결됨 — 모든 기기 동기화 중':'재연결 중...'}</span>`;
+document.addEventListener('DOMContentLoaded',()=>{
+  const ok=initFirebase();
+  const bar=document.getElementById('conn-bar');
+  if(!ok){bar.style.cssText='background:var(--rl);color:var(--rd);padding:6px 22px;font-size:11px';bar.textContent='⚠ Firebase 미설정';renderAll();return;}
+  db.ref('.info/connected').on('value',snap=>{const c=snap.val();bar.className='conn-bar'+(c?' ok':'');bar.innerHTML=`<div class="conn-dot"></div><span>${c?'실시간 연결됨 — 모든 기기 동기화 중':'재연결 중...'}</span>`;});
+  db.ref('boothState').on('value',snap=>{boothState=snap.val()||{};renderCong();renderStats();});
+  db.ref('seats').on('value',snap=>{seatsState=snap.val()||{};renderSeats();});
+  db.ref('orders').on('value',snap=>{
+    const raw=snap.val()||{};
+    const list=Object.values(raw).sort((a,b)=>b.ts-a.ts);
+    list.forEach(o=>{if(!knownOrderIds.has(o.id)&&knownOrderIds.size>0){const cc=document.getElementById('cc-'+o.boothId);if(cc){cc.classList.add('flash');setTimeout(()=>cc.classList.remove('flash'),1200);}}knownOrderIds.add(o.id);});
+    allOrders=list;renderOrders();renderStats();
   });
-
-  /* 부스 상태 */
-  db.ref('boothState').on('value', snap => {
-    boothState = snap.val() || {};
-    renderCong(); renderStats();
-  });
-
-  /* 좌석 */
-  db.ref('seats').on('value', snap => {
-    seatsState = snap.val() || {};
-    renderSeats();
-  });
-
-  /* 주문 */
-  db.ref('orders').on('value', snap => {
-    const raw = snap.val() || {};
-    const list = Object.values(raw).sort((a,b) => b.ts - a.ts);
-    list.forEach(o => {
-      if (!knownOrderIds.has(o.id) && knownOrderIds.size > 0) {
-        const cc = document.getElementById('cc-'+o.boothId);
-        if (cc) { cc.classList.add('flash'); setTimeout(()=>cc.classList.remove('flash'),1200); }
-      }
-      knownOrderIds.add(o.id);
-    });
-    allOrders = list;
-    renderOrders(); renderStats();
-  });
-
-  /* 품절 */
-  db.ref('soldout').on('value', snap => {
-    soldoutState = snap.val() || {};
-    renderSoldout();
-  });
-
-  /* 자정 자동 초기화 체크 */
+  db.ref('soldout').on('value',snap=>{soldoutState=snap.val()||{};renderSoldout();});
   checkMidnightReset();
-  setInterval(checkMidnightReset, 60000);
-
+  setInterval(checkMidnightReset,60000);
   renderAll();
 });
 
-/* ── 자정 자동 초기화 ── */
-function checkMidnightReset() {
-  const today = new Date().toDateString();
-  const lastReset = localStorage.getItem('dku_last_reset');
-  if (lastReset !== today) {
-    // 날짜가 바뀌었으면 번호 카운터만 초기화
-    db.ref('orderCounter').set(0);
-    localStorage.setItem('dku_last_reset', today);
-    console.log('자정 자동 초기화: 주문번호 리셋');
-  }
-}
+function checkMidnightReset(){const today=new Date().toDateString();const last=localStorage.getItem('dku_last_reset');if(last!==today){db.ref('orderCounter').set(0);localStorage.setItem('dku_last_reset',today);}}
+function renderAll(){renderCong();renderSeats();renderStats();renderSoldout();}
 
-/* ── 초기화 모달 ── */
-function confirmReset(type) {
-  pendingResetType = type;
-  const modal = document.getElementById('modal');
-  const title = document.getElementById('modal-title');
-  const desc = document.getElementById('modal-desc');
-  if (type === 'cong') {
-    title.textContent = '혼잡도 초기화';
-    desc.textContent = '모든 부스의 혼잡도와 주문량을 0으로 초기화합니다.\n주문 내역과 번호는 유지됩니다. 계속하시겠습니까?';
-  } else {
-    title.textContent = '전체 초기화';
-    desc.innerHTML = '<strong style="color:var(--rd)">주문 내역, 혼잡도, 주문번호, 좌석 정보</strong>가 모두 삭제됩니다.<br>영업 종료 후에만 사용하세요. 계속하시겠습니까?';
-  }
-  modal.classList.add('show');
+function confirmReset(type){
+  pendingResetType=type;
+  const title=document.getElementById('modal-title');
+  const desc=document.getElementById('modal-desc');
+  if(type==='cong'){title.textContent='혼잡도 초기화';desc.textContent='모든 부스의 혼잡도와 주문량을 0으로 초기화합니다. 주문 내역과 번호는 유지됩니다. 계속하시겠습니까?';}
+  else{title.textContent='전체 초기화';desc.innerHTML='<strong style="color:var(--rd)">주문 내역, 혼잡도, 주문번호, 좌석 정보</strong>가 모두 삭제됩니다.<br>영업 종료 후에만 사용하세요. 계속하시겠습니까?';}
+  document.getElementById('modal').classList.add('show');
 }
-
-function closeModal() {
-  document.getElementById('modal').classList.remove('show');
-  pendingResetType = null;
-}
-
-async function executeReset() {
+function closeModal(){document.getElementById('modal').classList.remove('show');pendingResetType=null;}
+async function executeReset(){
   closeModal();
-  try {
-    if (pendingResetType === 'cong') {
-      // 혼잡도만 초기화 — boothState의 wait, orders, revenue만 0으로
-      const updates = {};
-      BOOTHS.forEach(b => {
-        updates[`boothState/${b.id}/wait`] = 0;
-        updates[`boothState/${b.id}/orders`] = 0;
-        updates[`boothState/${b.id}/revenue`] = 0;
-        updates[`boothState/${b.id}/popular`] = null;
-      });
-      await db.ref().update(updates);
-    } else {
-      // 전체 초기화
-      await db.ref('orders').remove();
-      await db.ref('boothState').remove();
-      await db.ref('orderCounter').set(0);
-      await db.ref('seats').remove();
-      // soldout은 유지 (품절은 별도 관리)
-    }
-    alert(pendingResetType === 'cong' ? '혼잡도가 초기화되었습니다.' : '전체 데이터가 초기화되었습니다.');
-  } catch (e) {
-    console.error('초기화 실패:', e);
-    alert('초기화 중 오류가 발생했습니다.');
-  }
+  try{
+    if(pendingResetType==='cong'){const updates={};BOOTHS.forEach(b=>{updates[`boothState/${b.id}/wait`]=0;updates[`boothState/${b.id}/orders`]=0;updates[`boothState/${b.id}/revenue`]=0;updates[`boothState/${b.id}/popular`]=null;});await db.ref().update(updates);}
+    else{await db.ref('orders').remove();await db.ref('boothState').remove();await db.ref('orderCounter').set(0);await db.ref('seats').remove();}
+    alert(pendingResetType==='cong'?'혼잡도가 초기화되었습니다.':'전체 데이터가 초기화되었습니다.');
+  }catch(e){console.error(e);alert('초기화 중 오류가 발생했습니다.');}
 }
 
-function renderAll() { renderCong(); renderSeats(); renderStats(); renderSoldout(); }
-
-/* ── CONG ── */
-function renderCong() {
-  document.getElementById('cong-grid').innerHTML = BOOTHS.map(b => {
-    const s = boothState[b.id];
-    const hasData = !!s && (s.orders > 0);
-    const w = hasData ? (s.wait||0) : 0;
-    const l = lv(w);
-    const p = hasData ? Math.min(100,Math.round((w/22)*100)) : 0;
-    return `<div class="cong-card" id="cc-${b.id}">
-      <div class="cc-name">${b.name}</div>
-      <span class="cbadge ${l}">${lvL(l)}</span>
-      <div class="cw">${hasData?w:'—'}<span>${hasData?'분':''}</span></div>
-      <div class="co">${hasData?`주문 ${s.orders}건 · ${(s.revenue||0).toLocaleString()}원`:'주문 없음'}</div>
-      <div class="cbar"><div class="cfill ${l}" style="width:${p}%"></div></div>
-    </div>`;
+function renderCong(){
+  document.getElementById('cong-grid').innerHTML=BOOTHS.map(b=>{
+    const s=boothState[b.id];const hasData=!!s&&(s.orders>0);const w=hasData?(s.wait||0):0;const l=lv(w);const p=hasData?Math.min(100,Math.round((w/22)*100)):0;
+    return`<div class="cong-card" id="cc-${b.id}"><div class="cc-name">${b.name}</div><span class="cbadge ${l}">${lvL(l)}</span><div class="cw">${hasData?w:'—'}<span>${hasData?'분':''}</span></div><div class="co">${hasData?`주문 ${s.orders}건 · ${(s.revenue||0).toLocaleString()}원`:'주문 없음'}</div><div class="cbar"><div class="cfill ${l}" style="width:${p}%"></div></div></div>`;
   }).join('');
 }
 
-/* ── SEATS ── */
-function renderSeats() {
-  const zones = {};
-  TABLES.forEach(t=>{if(!zones[t.zone])zones[t.zone]=[];zones[t.zone].push(t);});
+function renderSeats(){
+  const zones={};TABLES.forEach(t=>{if(!zones[t.zone])zones[t.zone]=[];zones[t.zone].push(t);});
   const zl={A:'A구역 (1인석)',B:'B구역 (2인석)',C:'C구역 (4인석)',D:'D구역 (6인석)'};
-  document.getElementById('seats-wrap').innerHTML = Object.entries(zones).map(([z,tables])=>`
-    <div class="zone-hd">${zl[z]||z}</div>
-    <div class="seat-row">${tables.map(t=>{
-      const s=seatsState[t.id];
-      const occ=s?.occupied;
-      const rem=occ&&s.endTs?Math.max(0,Math.floor((s.endTs-Date.now())/60000)):null;
-      const exp=rem!==null&&rem<=10;
-      return`<div class="seat-chip${occ?(exp?' exp':' occ'):''}">
-        ${t.id}<span class="stype">${t.type}인</span>${occ&&rem!==null?`<span class="stime">${rem}분</span>`:''}
-      </div>`;
-    }).join('')}</div>`).join('');
+  document.getElementById('seats-wrap').innerHTML=Object.entries(zones).map(([z,tables])=>`<div class="zone-hd">${zl[z]||z}</div><div class="seat-row">${tables.map(t=>{const s=seatsState[t.id];const occ=s?.occupied;const rem=occ&&s.endTs?Math.max(0,Math.floor((s.endTs-Date.now())/60000)):null;const exp=rem!==null&&rem<=10;return`<div class="seat-chip${occ?(exp?' exp':' occ'):''}"> ${t.id}<span class="stype">${t.type}인</span>${occ&&rem!==null?`<span class="stime">${rem}분</span>`:''}</div>`;}).join('')}</div>`).join('');
 }
 
-/* ── ORDERS ── */
-function renderOrders() {
-  const el = document.getElementById('order-grid');
-  if (!allOrders.length) { el.innerHTML='<div class="empty-msg">주문이 없습니다</div>'; return; }
-  el.innerHTML = allOrders.slice(0,60).map(o=>`
-    <div class="order-card" id="oc-${o.id}">
-      <div class="oc-hd">
-        <div><div class="oc-booth">${o.booth}</div><div class="oc-meta">테이블 ${o.table} · ${o.time}</div></div>
-        <div class="oc-total">${(o.total||0).toLocaleString()}원</div>
-      </div>
-      <div class="order-items">
-        ${(o.items||[]).map((it,idx)=>`
-          <div class="oi${it.done?' done-row':''}" id="oi-${o.id}-${idx}">
-            <span class="oi-num${it.done?' done':''}">${it.num}</span>
-            <span class="oi-name">${it.n} ×${it.qty}</span>
-            <button class="done-btn${it.done?' done':''}" onclick="toggleDone('${o.id}',${idx},${!it.done},'${o.boothId}')">
-              ${it.done?'✓ 완료':'완료처리'}
-            </button>
-          </div>`).join('')}
-      </div>
-    </div>`).join('');
+function renderOrders(){
+  const el=document.getElementById('order-grid');
+  if(!allOrders.length){el.innerHTML='<div class="empty-msg">주문이 없습니다</div>';return;}
+  el.innerHTML=allOrders.slice(0,60).map(o=>`<div class="order-card" id="oc-${o.id}"><div class="oc-hd"><div><div class="oc-booth">${o.booth}</div><div class="oc-meta">테이블 ${o.table} · ${o.time}</div></div><div class="oc-total">${(o.total||0).toLocaleString()}원</div></div><div class="order-items">${(o.items||[]).map((it,idx)=>`<div class="oi${it.done?' done-row':''}"><span class="oi-num${it.done?' done':''}">${it.num}</span><span class="oi-name">${it.n} ×${it.qty}</span><button class="done-btn${it.done?' done':''}" onclick="toggleDone('${o.id}',${idx},${!it.done},'${o.boothId}')">${it.done?'✓ 완료':'완료처리'}</button></div>`).join('')}</div></div>`).join('');
 }
 
-/* ── 완료처리 → 혼잡도 차감 ── */
-async function toggleDone(orderId, itemIdx, val, boothId) {
-  try {
+async function toggleDone(orderId,itemIdx,val,boothId){
+  try{
     await db.ref(`orders/${orderId}/items/${itemIdx}/done`).set(val);
-
-    // 완료처리(true)할 때만 혼잡도 차감
-    if (val && boothId) {
-      const snap = await db.ref(`boothState/${boothId}`).get();
-      const cur = snap.val() || {orders:0, wait:0};
-      // 완료된 아이템 1개당 대기시간 1분 차감 (최소 0)
-      const newWait = Math.max(0, (cur.wait||0) - 1);
-      await db.ref(`boothState/${boothId}/wait`).set(newWait);
-    }
-    // 완료 취소(false)할 때는 다시 1분 추가
-    if (!val && boothId) {
-      const snap = await db.ref(`boothState/${boothId}`).get();
-      const cur = snap.val() || {orders:0, wait:0};
-      const newWait = Math.min(25, (cur.wait||0) + 1);
-      await db.ref(`boothState/${boothId}/wait`).set(newWait);
-    }
-  } catch (e) {
-    console.error('완료처리 실패:', e);
-    alert('완료처리 중 오류가 발생했습니다.');
-  }
+    if(boothId){const snap=await db.ref(`boothState/${boothId}/wait`).get();const cur=snap.val()||0;await db.ref(`boothState/${boothId}/wait`).set(val?Math.max(0,cur-1):Math.min(25,cur+1));}
+  }catch(e){console.error(e);alert('완료처리 중 오류가 발생했습니다.');}
 }
 
-/* ── STATS ── */
-function renderStats() {
-  const popular={};
-  allOrders.forEach(o=>(o.items||[]).forEach(it=>{popular[it.n]=(popular[it.n]||0)+it.qty;}));
+function renderStats(){
+  const popular={};allOrders.forEach(o=>(o.items||[]).forEach(it=>{popular[it.n]=(popular[it.n]||0)+it.qty;}));
   const top=Object.entries(popular).sort((a,b)=>b[1]-a[1]).slice(0,3);
   const totalRev=allOrders.reduce((a,o)=>a+(o.total||0),0);
   const hasOrders=Object.values(boothState).some(s=>s.orders>0);
   const sorted=[...BOOTHS].sort((a,b)=>(boothState[b.id]?.wait||0)-(boothState[a.id]?.wait||0));
-  document.getElementById('stat-grid').innerHTML=`
-    <div class="stat-card"><div class="stat-v" style="color:var(--g)">${allOrders.length}</div><div class="stat-l">총 주문 건수</div></div>
-    <div class="stat-card"><div class="stat-v" style="color:var(--am)">${totalRev.toLocaleString()}</div><div class="stat-l">총 매출(원)</div></div>
-    <div class="stat-card"><div class="stat-v" style="color:var(--rd);font-size:14px">${hasOrders?sorted[0]?.name:'—'}</div><div class="stat-l">가장 혼잡한 부스</div></div>
-    <div class="stat-card"><div class="stat-v" style="color:var(--g);font-size:14px">${hasOrders?sorted[sorted.length-1]?.name:'—'}</div><div class="stat-l">가장 여유로운 부스</div></div>
-    <div class="stat-card" style="grid-column:1/-1">
-      <div class="stat-v" style="font-size:13px;line-height:2">${top.length?top.map(([n,c])=>`🔥 ${n} <span style="color:var(--t3);font-size:12px">${c}건</span>`).join(' &nbsp;·&nbsp; '):'주문 데이터 없음'}</div>
-      <div class="stat-l">인기 메뉴 TOP 3</div>
-    </div>`;
+  document.getElementById('stat-grid').innerHTML=`<div class="stat-card"><div class="stat-v" style="color:var(--g)">${allOrders.length}</div><div class="stat-l">총 주문 건수</div></div><div class="stat-card"><div class="stat-v" style="color:var(--am)">${totalRev.toLocaleString()}</div><div class="stat-l">총 매출(원)</div></div><div class="stat-card"><div class="stat-v" style="color:var(--rd);font-size:14px">${hasOrders?sorted[0]?.name:'—'}</div><div class="stat-l">가장 혼잡한 부스</div></div><div class="stat-card"><div class="stat-v" style="color:var(--g);font-size:14px">${hasOrders?sorted[sorted.length-1]?.name:'—'}</div><div class="stat-l">가장 여유로운 부스</div></div><div class="stat-card" style="grid-column:1/-1"><div class="stat-v" style="font-size:13px;line-height:2">${top.length?top.map(([n,c])=>`🔥 ${n} <span style="color:var(--t3);font-size:12px">${c}건</span>`).join(' &nbsp;·&nbsp; '):'주문 데이터 없음'}</div><div class="stat-l">인기 메뉴 TOP 3</div></div>`;
 }
 
-/* ── SOLDOUT ── */
-function renderSoldout() {
-  document.getElementById('sold-grid').innerHTML=BOOTHS.map(b=>`
-    <div class="sold-booth">
-      <div class="sold-booth-name">${b.name}</div>
-      ${b.items.map(item=>{
-        const key=b.id+'::'+item.n;
-        const on=soldoutState[key]===true;
-        return`<div class="sold-item">
-          <span class="sold-item-name">${item.n}</span>
-          <span style="font-size:11px;color:var(--t3);font-family:'DM Mono',monospace;flex-shrink:0;margin-right:4px">${item.p.toLocaleString()}원</span>
-          <button class="sold-toggle${on?' on':''}" onclick="toggleSold('${key}')">
-            ${on?'품절':'정상'}
-          </button>
-        </div>`;
-      }).join('')}
-    </div>`).join('');
+function renderSoldout(){
+  document.getElementById('sold-grid').innerHTML=BOOTHS.map(b=>`<div class="sold-booth"><div class="sold-booth-name">${b.name}</div>${b.items.map(item=>{const key=b.id+'::'+item.n;const on=soldoutState[key]===true;return`<div class="sold-item"><span class="sold-item-name">${item.n}</span><span style="font-size:11px;color:var(--t3);font-family:'DM Mono',monospace;flex-shrink:0;margin-right:4px">${item.p.toLocaleString()}원</span><button class="sold-toggle${on?' on':''}" onclick="toggleSold('${key}')">${on?'품절':'정상'}</button></div>`;}).join('')}</div>`).join('');
 }
 
-async function toggleSold(key) {
-  try {
-    if (soldoutState[key]===true) await db.ref('soldout/'+key).remove();
-    else await db.ref('soldout/'+key).set(true);
-  } catch(e) { console.error(e); }
-}
-
-async function clearAllSoldout() {
-  try { await db.ref('soldout').remove(); } catch(e) { console.error(e); }
-}
-
-setInterval(()=>{ if(Object.keys(seatsState).length>0) renderSeats(); }, 60000);
+async function toggleSold(key){try{if(soldoutState[key]===true)await db.ref('soldout/'+key).remove();else await db.ref('soldout/'+key).set(true);}catch(e){console.error(e);}}
+async function clearAllSoldout(){try{await db.ref('soldout').remove();}catch(e){console.error(e);}}
+setInterval(()=>{if(Object.keys(seatsState).length>0)renderSeats();},60000);
 </script>
 </body>
 </html>
