@@ -59,6 +59,6 @@ const TABLES = [
 ];
 
 const BASE_WAIT = {bbopka:3,jungsik:8,janguk:5,poksil:4,gapjigae:12,katsu:7,gwang:6,popo:9,babi:4,bibigo:10};
-const DEFAULT_TIME = 30;
+const DEFAULT_TIME = 20;
 const EXTEND_TIME  = 20;
 const POPULAR_THRESHOLD = 3;
