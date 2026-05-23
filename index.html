@@ -10,36 +10,62 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);min-height:100vh}
 a{text-decoration:none;color:inherit}
+
+/* ── LOGIN SCREEN ── */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--g);padding:20px}
+.login-card{background:var(--s);border-radius:16px;padding:36px 32px;width:100%;max-width:380px;box-shadow:0 8px 40px rgba(0,0,0,.2)}
+.login-logo{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:28px}
+.login-logo svg{width:80px;height:50px}
+.login-title{font-size:18px;font-weight:700;color:var(--t);text-align:center}
+.login-sub{font-size:12px;color:var(--t3);text-align:center;margin-top:4px}
+.form-group{margin-bottom:14px}
+.form-label{font-size:12px;font-weight:500;color:var(--t2);margin-bottom:5px;display:block}
+.form-input{width:100%;padding:11px 14px;border:1.5px solid var(--b);border-radius:var(--rs);font-family:'Noto Sans KR',sans-serif;font-size:14px;color:var(--t);background:var(--s);outline:none;transition:border-color .15s}
+.form-input:focus{border-color:var(--g)}
+.login-btn{width:100%;padding:13px;background:var(--g);color:#fff;border:none;border-radius:var(--rs);font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-top:6px;transition:background .15s}
+.login-btn:hover{background:#002d7a}
+.login-btn:disabled{background:var(--b);cursor:default}
+.login-error{font-size:12px;color:var(--rd);text-align:center;margin-top:10px;min-height:18px}
+.login-security{display:flex;align-items:center;gap:6px;justify-content:center;font-size:11px;color:var(--t3);margin-top:20px}
+.login-security svg{width:13px;height:13px}
+
+/* ── NAV ── */
 nav{background:var(--g);padding:0 22px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,61,165,.25)}
 .logo{display:flex;align-items:center;gap:11px}
 .logo-ic{width:48px;height:30px;flex-shrink:0}
 .logo-t{font-size:15px;font-weight:700;color:#fff}
 .logo-s{font-size:10px;color:rgba(255,255,255,.65);font-family:'DM Mono',monospace}
-.nav-r{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.nav-r{display:flex;align-items:center;gap:8px}
 .nav-time{font-family:'DM Mono',monospace;font-size:12px;color:rgba(255,255,255,.7)}
+.nav-user{font-size:11px;color:rgba(255,255,255,.7);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .btn{padding:7px 13px;border:none;border-radius:var(--rs);font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px;text-decoration:none}
 .btn-w{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25)}.btn-w:hover{background:rgba(255,255,255,.25)}
 .btn-o{background:var(--s2);color:var(--t2);border:1px solid var(--b)}
 .btn-rd{background:var(--rl);color:var(--rd);border:1px solid #f5b8b5}.btn-rd:hover{background:var(--rd);color:#fff}
+
 .conn-bar{padding:6px 22px;font-size:11px;display:flex;align-items:center;gap:6px;background:#fef6e4;color:var(--am)}
 .conn-bar.ok{background:var(--gl);color:var(--g)}
 .conn-dot{width:6px;height:6px;border-radius:50%;background:var(--am);animation:blink 1s infinite;flex-shrink:0}
 .conn-bar.ok .conn-dot{background:var(--g);animation:none}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
 .tabs{display:flex;background:var(--s);border-bottom:1px solid var(--b);padding:0 22px}
 .tab{padding:12px 16px;font-size:13px;font-weight:500;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent}
 .tab.active{color:var(--g);border-bottom-color:var(--g);font-weight:700}
 .page{display:none;max-width:1080px;margin:0 auto;padding:20px 22px}
 .page.active{display:block}
+
 .live{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--rd)}
 .live::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--rd);animation:pulse 1.4s infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
 .sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
 .sec-hd h2{font-size:15px;font-weight:700}
+
 .reset-box{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .reset-info h3{font-size:13px;font-weight:700;margin-bottom:4px}
 .reset-info p{font-size:12px;color:var(--t3);line-height:1.6}
 .reset-btns{display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0}
+
 .cong-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:10px;margin-bottom:24px}
 .cong-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;transition:all .3s}
 .cong-card.flash{background:#e8f0ff;border-color:var(--gm);transform:scale(1.02)}
@@ -52,6 +78,7 @@ nav{background:var(--g);padding:0 22px;height:58px;display:flex;align-items:cent
 .cbar{height:4px;background:var(--b);border-radius:2px;margin-top:8px;overflow:hidden}
 .cfill{height:100%;border-radius:2px;transition:width .5s}
 .cfill.low{background:var(--g)}.cfill.mid{background:var(--am)}.cfill.high{background:var(--rd)}.cfill.none{background:var(--b)}
+
 .seats-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:18px;margin-bottom:24px}
 .zone-hd{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
 .seat-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
@@ -64,6 +91,7 @@ nav{background:var(--g);padding:0 22px;height:58px;display:flex;align-items:cent
 .leg{display:flex;gap:14px}
 .leg-i{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--t3)}
 .leg-d{width:10px;height:10px;border-radius:3px}
+
 .order-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
 .order-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;transition:border-color .3s,background .3s}
 .order-card.new-flash{border-color:var(--g);background:var(--gl)}
@@ -81,10 +109,12 @@ nav{background:var(--g);padding:0 22px;height:58px;display:flex;align-items:cent
 .done-btn{padding:5px 12px;border:1px solid var(--b);border-radius:6px;background:var(--s);font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:500;cursor:pointer;color:var(--t2);white-space:nowrap;transition:all .15s}
 .done-btn:hover{border-color:var(--g);color:var(--g)}
 .done-btn.done{background:var(--gl);border-color:var(--gm);color:var(--g);font-weight:700}
+
 .stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:24px}
 .stat-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;text-align:center}
 .stat-v{font-size:22px;font-weight:700;font-family:'DM Mono',monospace}
 .stat-l{font-size:10px;color:var(--t3);margin-top:3px}
+
 .sold-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
 .sold-booth{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px}
 .sold-booth-name{font-size:13px;font-weight:700;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--b)}
@@ -94,86 +124,134 @@ nav{background:var(--g);padding:0 22px;height:58px;display:flex;align-items:cent
 .sold-toggle{padding:4px 10px;border:1px solid var(--b);border-radius:6px;background:var(--s);font-family:'Noto Sans KR',sans-serif;font-size:11px;cursor:pointer;color:var(--t2);white-space:nowrap;transition:all .15s}
 .sold-toggle.on{background:var(--rl);border-color:var(--rd);color:var(--rd);font-weight:700}
 .empty-msg{font-size:13px;color:var(--t3);padding:20px 0}
+
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:500;align-items:center;justify-content:center}
 .modal-bg.show{display:flex}
 .modal{background:var(--s);border-radius:var(--r);padding:24px;max-width:380px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.15)}
 .modal h3{font-size:16px;font-weight:700;margin-bottom:8px}
 .modal p{font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:16px}
 .modal-btns{display:flex;gap:8px;justify-content:flex-end}
+
+/* 보안 배지 */
+.security-bar{background:var(--gl);border-bottom:1px solid var(--b);padding:5px 22px;font-size:11px;color:var(--g);display:flex;align-items:center;gap:6px}
+.security-bar svg{width:13px;height:13px;flex-shrink:0}
 </style>
 </head>
 <body>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <script src="data.js"></script>
 <script src="firebase.js"></script>
 
-<nav>
-  <div class="logo">
-    <!-- DKU 로고 아이콘 -->
-    <svg class="logo-ic" viewBox="0 0 72 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M2 8L2 36L11 36C19.5 36 25.5 30.5 25.5 22C25.5 13.5 19.5 8 11 8Z M8 13.5L10.5 13.5C15.5 13.5 18.5 17 18.5 22C18.5 27 15.5 30.5 10.5 30.5L8 30.5Z" fill="white"/>
-      <path d="M29 8L29 36L35 36L35 25.5L43.5 36L50.5 36L41.5 22.5L50.5 8L43.5 8L35 20.5L35 8Z" fill="white"/>
-      <path d="M54 8L54 26.5C54 30 56 32 59.5 32C63 32 65 30 65 26.5L65 8L71 8L71 26.5C71 33.5 66 37.5 59.5 37.5C53 37.5 48 33.5 48 26.5L48 8Z" fill="white"/>
-      <ellipse cx="37" cy="22" rx="35" ry="10.5" stroke="white" stroke-width="1.8" fill="none" transform="rotate(-13 37 22)"/>
-      <circle cx="37" cy="22" r="2.5" fill="white"/>
-    </svg>
-    <div><div class="logo-t">단국대 학식당</div><div class="logo-s">관리자 · 죽전캠퍼스</div></div>
-  </div>
-  <div class="nav-r">
-    <div class="nav-time" id="nav-time">00:00</div>
-    <a href="qr.html" class="btn btn-w" target="_blank">🖨 QR 인쇄</a>
-  </div>
-</nav>
-
-<div class="conn-bar" id="conn-bar">
-  <div class="conn-dot"></div>
-  <span id="conn-text">Firebase 연결 중...</span>
-</div>
-
-<div class="tabs">
-  <div class="tab active" onclick="switchTab('dash')">대시보드</div>
-  <div class="tab" onclick="switchTab('orders')">주문 관리</div>
-  <div class="tab" onclick="switchTab('soldout')">품절 관리</div>
-</div>
-
-<div id="page-dash" class="page active">
-  <br>
-  <div class="reset-box">
-    <div class="reset-info">
-      <h3>데이터 초기화</h3>
-      <p>주문번호는 매일 자정 자동 초기화됩니다.<br>영업 종료 후 수동 초기화가 필요하면 아래 버튼을 사용하세요.</p>
+<!-- ── 로그인 화면 ── -->
+<div id="login-screen" class="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">
+      <svg viewBox="0 0 72 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 8L2 36L11 36C19.5 36 25.5 30.5 25.5 22C25.5 13.5 19.5 8 11 8Z M8 13.5L10.5 13.5C15.5 13.5 18.5 17 18.5 22C18.5 27 15.5 30.5 10.5 30.5L8 30.5Z" fill="#003DA5"/>
+        <path d="M29 8L29 36L35 36L35 25.5L43.5 36L50.5 36L41.5 22.5L50.5 8L43.5 8L35 20.5L35 8Z" fill="#003DA5"/>
+        <path d="M54 8L54 26.5C54 30 56 32 59.5 32C63 32 65 30 65 26.5L65 8L71 8L71 26.5C71 33.5 66 37.5 59.5 37.5C53 37.5 48 33.5 48 26.5L48 8Z" fill="#003DA5"/>
+        <ellipse cx="37" cy="22" rx="35" ry="10.5" stroke="#003DA5" stroke-width="1.8" fill="none" transform="rotate(-13 37 22)"/>
+        <circle cx="37" cy="22" r="2.5" fill="#003DA5"/>
+      </svg>
+      <div>
+        <div class="login-title">단국대 학식당 관리자</div>
+        <div class="login-sub">죽전캠퍼스 · 관리자 전용</div>
+      </div>
     </div>
-    <div class="reset-btns">
-      <button class="btn btn-o" onclick="confirmReset('cong')">혼잡도만 초기화</button>
-      <button class="btn btn-rd" onclick="confirmReset('all')">전체 초기화</button>
+    <div class="form-group">
+      <label class="form-label">이메일</label>
+      <input class="form-input" type="email" id="login-email" placeholder="관리자 이메일" autocomplete="email">
+    </div>
+    <div class="form-group">
+      <label class="form-label">비밀번호</label>
+      <input class="form-input" type="password" id="login-pw" placeholder="비밀번호" autocomplete="current-password">
+    </div>
+    <button class="login-btn" id="login-btn" onclick="doLogin()">로그인</button>
+    <div class="login-error" id="login-error"></div>
+    <div class="login-security">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      Firebase Authentication으로 보호된 관리자 전용 페이지
     </div>
   </div>
-  <div class="sec-hd"><h2>실시간 혼잡도</h2><span class="live">LIVE</span></div>
-  <div class="cong-grid" id="cong-grid"></div>
-  <div class="sec-hd"><h2>좌석 현황</h2>
-    <div class="leg">
-      <div class="leg-i"><div class="leg-d" style="background:var(--s);border:1px solid var(--b)"></div>비어있음</div>
-      <div class="leg-i"><div class="leg-d" style="background:var(--g)"></div>사용중</div>
-      <div class="leg-i"><div class="leg-d" style="background:var(--al);border:1px solid var(--am)"></div>곧 만료</div>
+</div>
+
+<!-- ── 관리자 앱 (로그인 후 표시) ── -->
+<div id="admin-app" style="display:none">
+  <nav>
+    <div class="logo">
+      <svg class="logo-ic" viewBox="0 0 72 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 8L2 36L11 36C19.5 36 25.5 30.5 25.5 22C25.5 13.5 19.5 8 11 8Z M8 13.5L10.5 13.5C15.5 13.5 18.5 17 18.5 22C18.5 27 15.5 30.5 10.5 30.5L8 30.5Z" fill="white"/>
+        <path d="M29 8L29 36L35 36L35 25.5L43.5 36L50.5 36L41.5 22.5L50.5 8L43.5 8L35 20.5L35 8Z" fill="white"/>
+        <path d="M54 8L54 26.5C54 30 56 32 59.5 32C63 32 65 30 65 26.5L65 8L71 8L71 26.5C71 33.5 66 37.5 59.5 37.5C53 37.5 48 33.5 48 26.5L48 8Z" fill="white"/>
+        <ellipse cx="37" cy="22" rx="35" ry="10.5" stroke="white" stroke-width="1.8" fill="none" transform="rotate(-13 37 22)"/>
+        <circle cx="37" cy="22" r="2.5" fill="white"/>
+      </svg>
+      <div><div class="logo-t">단국대 학식당</div><div class="logo-s">관리자 · 죽전캠퍼스</div></div>
     </div>
+    <div class="nav-r">
+      <div class="nav-time" id="nav-time">00:00</div>
+      <div class="nav-user" id="nav-user"></div>
+      <a href="qr.html" class="btn btn-w" target="_blank">🖨 QR 인쇄</a>
+      <button class="btn btn-w" onclick="doLogout()">로그아웃</button>
+    </div>
+  </nav>
+
+  <div class="conn-bar" id="conn-bar">
+    <div class="conn-dot"></div>
+    <span id="conn-text">Firebase 연결 중...</span>
   </div>
-  <div class="seats-card" id="seats-wrap"></div>
-  <div class="sec-hd"><h2>통계</h2></div>
-  <div class="stat-grid" id="stat-grid"></div>
-</div>
 
-<div id="page-orders" class="page">
-  <br>
-  <div class="sec-hd"><h2>주문 현황 — 완료처리하면 주문자 화면에 즉시 반영</h2><span class="live">LIVE</span></div>
-  <div class="order-grid" id="order-grid"></div>
-</div>
+  <div class="security-bar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    Firebase Auth 인증됨 · QR 토큰 보안 활성화 · Realtime Database 암호화 전송
+  </div>
 
-<div id="page-soldout" class="page">
-  <br>
-  <div class="sec-hd"><h2>품절 설정</h2><button class="btn btn-o" onclick="clearAllSoldout()">전체 해제</button></div>
-  <p style="font-size:12px;color:var(--t3);margin-bottom:14px">품절 설정 즉시 주문자 화면에 반영됩니다.</p>
-  <div class="sold-grid" id="sold-grid"></div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('dash')">대시보드</div>
+    <div class="tab" onclick="switchTab('orders')">주문 관리</div>
+    <div class="tab" onclick="switchTab('soldout')">품절 관리</div>
+  </div>
+
+  <div id="page-dash" class="page active">
+    <br>
+    <div class="reset-box">
+      <div class="reset-info">
+        <h3>데이터 초기화</h3>
+        <p>주문번호는 매일 자정 자동 초기화됩니다.<br>영업 종료 후 수동 초기화가 필요하면 아래 버튼을 사용하세요.</p>
+      </div>
+      <div class="reset-btns">
+        <button class="btn btn-o" onclick="confirmReset('cong')">혼잡도만 초기화</button>
+        <button class="btn btn-rd" onclick="confirmReset('all')">전체 초기화</button>
+      </div>
+    </div>
+    <div class="sec-hd"><h2>실시간 혼잡도</h2><span class="live">LIVE</span></div>
+    <div class="cong-grid" id="cong-grid"></div>
+    <div class="sec-hd"><h2>좌석 현황</h2>
+      <div class="leg">
+        <div class="leg-i"><div class="leg-d" style="background:var(--s);border:1px solid var(--b)"></div>비어있음</div>
+        <div class="leg-i"><div class="leg-d" style="background:var(--g)"></div>사용중</div>
+        <div class="leg-i"><div class="leg-d" style="background:var(--al);border:1px solid var(--am)"></div>곧 만료</div>
+      </div>
+    </div>
+    <div class="seats-card" id="seats-wrap"></div>
+    <div class="sec-hd"><h2>통계</h2></div>
+    <div class="stat-grid" id="stat-grid"></div>
+  </div>
+
+  <div id="page-orders" class="page">
+    <br>
+    <div class="sec-hd"><h2>주문 현황 — 완료처리하면 주문자 화면에 즉시 반영</h2><span class="live">LIVE</span></div>
+    <div class="order-grid" id="order-grid"></div>
+  </div>
+
+  <div id="page-soldout" class="page">
+    <br>
+    <div class="sec-hd"><h2>품절 설정</h2><button class="btn btn-o" onclick="clearAllSoldout()">전체 해제</button></div>
+    <p style="font-size:12px;color:var(--t3);margin-bottom:14px">품절 설정 즉시 주문자 화면에 반영됩니다.</p>
+    <div class="sold-grid" id="sold-grid"></div>
+  </div>
 </div>
 
 <div class="modal-bg" id="modal">
@@ -188,18 +266,67 @@ nav{background:var(--g);padding:0 22px;height:58px;display:flex;align-items:cent
 </div>
 
 <script>
-let curTab='dash',boothState={},soldoutState={},seatsState={},allOrders=[],knownOrderIds=new Set(),pendingResetType=null;
+let curTab='dash', boothState={}, soldoutState={}, seatsState={}, allOrders=[], knownOrderIds=new Set(), pendingResetType=null;
 
+/* ── 탭 ── */
 function switchTab(t){curTab=t;document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',['dash','orders','soldout'][i]===t));document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+t).classList.add('active');}
+
 function tick(){document.getElementById('nav-time').textContent=new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});}
 setInterval(tick,1000);tick();
 function lv(w){return w===0?'none':w<=5?'low':w<=11?'mid':'high';}
 function lvL(l){return l==='none'?'주문 없음':l==='low'?'여유':l==='mid'?'보통':'혼잡';}
 
+/* ── 로그인 / 로그아웃 ── */
+async function doLogin(){
+  const email=document.getElementById('login-email').value.trim();
+  const pw=document.getElementById('login-pw').value;
+  const btn=document.getElementById('login-btn');
+  const err=document.getElementById('login-error');
+  if(!email||!pw){err.textContent='이메일과 비밀번호를 입력해주세요.';return;}
+  btn.disabled=true;btn.textContent='로그인 중...';err.textContent='';
+  try{
+    await signIn(email,pw);
+    // onAuthChange 콜백에서 화면 전환
+  }catch(e){
+    err.textContent=e.code==='auth/wrong-password'||e.code==='auth/user-not-found'||e.code==='auth/invalid-credential'
+      ?'이메일 또는 비밀번호가 올바르지 않습니다.'
+      :'로그인 중 오류가 발생했습니다.';
+    btn.disabled=false;btn.textContent='로그인';
+  }
+}
+
+// Enter 키 로그인
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('login-screen').style.display!=='none')doLogin();});
+
+async function doLogout(){
+  await signOut();
+}
+
+/* ── Firebase 초기화 & Auth 상태 감시 ── */
 document.addEventListener('DOMContentLoaded',()=>{
   const ok=initFirebase();
+  if(!ok){document.getElementById('login-error').textContent='Firebase 초기화 실패';return;}
+
+  // Auth 상태 변화 감지
+  onAuthChange(user=>{
+    if(user){
+      // 로그인 성공
+      document.getElementById('login-screen').style.display='none';
+      document.getElementById('admin-app').style.display='block';
+      document.getElementById('nav-user').textContent=user.email;
+      document.getElementById('login-btn').disabled=false;
+      document.getElementById('login-btn').textContent='로그인';
+      initAdminData();
+    }else{
+      // 로그아웃
+      document.getElementById('login-screen').style.display='flex';
+      document.getElementById('admin-app').style.display='none';
+    }
+  });
+});
+
+function initAdminData(){
   const bar=document.getElementById('conn-bar');
-  if(!ok){bar.style.cssText='background:var(--rl);color:var(--rd);padding:6px 22px;font-size:11px';bar.textContent='⚠ Firebase 미설정';renderAll();return;}
   db.ref('.info/connected').on('value',snap=>{const c=snap.val();bar.className='conn-bar'+(c?' ok':'');bar.innerHTML=`<div class="conn-dot"></div><span>${c?'실시간 연결됨 — 모든 기기 동기화 중':'재연결 중...'}</span>`;});
   db.ref('boothState').on('value',snap=>{boothState=snap.val()||{};renderCong();renderStats();});
   db.ref('seats').on('value',snap=>{seatsState=snap.val()||{};renderSeats();});
@@ -213,34 +340,30 @@ document.addEventListener('DOMContentLoaded',()=>{
   checkMidnightReset();
   setInterval(checkMidnightReset,60000);
   renderAll();
-});
+}
 
 function checkMidnightReset(){const today=new Date().toDateString();const last=localStorage.getItem('dku_last_reset');if(last!==today){db.ref('orderCounter').set(0);localStorage.setItem('dku_last_reset',today);}}
 function renderAll(){renderCong();renderSeats();renderStats();renderSoldout();}
 
 function confirmReset(type){
   pendingResetType=type;
-  const title=document.getElementById('modal-title');
-  const desc=document.getElementById('modal-desc');
-  if(type==='cong'){title.textContent='혼잡도 초기화';desc.textContent='모든 부스의 혼잡도와 주문량을 0으로 초기화합니다. 주문 내역과 번호는 유지됩니다. 계속하시겠습니까?';}
-  else{title.textContent='전체 초기화';desc.innerHTML='<strong style="color:var(--rd)">주문 내역, 혼잡도, 주문번호, 좌석 정보</strong>가 모두 삭제됩니다.<br>영업 종료 후에만 사용하세요. 계속하시겠습니까?';}
+  const title=document.getElementById('modal-title'),desc=document.getElementById('modal-desc');
+  if(type==='cong'){title.textContent='혼잡도 초기화';desc.textContent='모든 부스의 혼잡도와 주문량을 0으로 초기화합니다. 주문 내역과 번호는 유지됩니다.';}
+  else{title.textContent='전체 초기화';desc.innerHTML='<strong style="color:var(--rd)">주문 내역, 혼잡도, 주문번호, 좌석 정보</strong>가 모두 삭제됩니다.<br>영업 종료 후에만 사용하세요.';}
   document.getElementById('modal').classList.add('show');
 }
 function closeModal(){document.getElementById('modal').classList.remove('show');pendingResetType=null;}
 async function executeReset(){
   closeModal();
   try{
-    if(pendingResetType==='cong'){const updates={};BOOTHS.forEach(b=>{updates[`boothState/${b.id}/wait`]=0;updates[`boothState/${b.id}/orders`]=0;updates[`boothState/${b.id}/revenue`]=0;updates[`boothState/${b.id}/popular`]=null;});await db.ref().update(updates);}
+    if(pendingResetType==='cong'){const u={};BOOTHS.forEach(b=>{u[`boothState/${b.id}/wait`]=0;u[`boothState/${b.id}/orders`]=0;u[`boothState/${b.id}/revenue`]=0;u[`boothState/${b.id}/popular`]=null;});await db.ref().update(u);}
     else{await db.ref('orders').remove();await db.ref('boothState').remove();await db.ref('orderCounter').set(0);await db.ref('seats').remove();}
     alert(pendingResetType==='cong'?'혼잡도가 초기화되었습니다.':'전체 데이터가 초기화되었습니다.');
   }catch(e){console.error(e);alert('초기화 중 오류가 발생했습니다.');}
 }
 
 function renderCong(){
-  document.getElementById('cong-grid').innerHTML=BOOTHS.map(b=>{
-    const s=boothState[b.id];const hasData=!!s&&(s.orders>0);const w=hasData?(s.wait||0):0;const l=lv(w);const p=hasData?Math.min(100,Math.round((w/22)*100)):0;
-    return`<div class="cong-card" id="cc-${b.id}"><div class="cc-name">${b.name}</div><span class="cbadge ${l}">${lvL(l)}</span><div class="cw">${hasData?w:'—'}<span>${hasData?'분':''}</span></div><div class="co">${hasData?`주문 ${s.orders}건 · ${(s.revenue||0).toLocaleString()}원`:'주문 없음'}</div><div class="cbar"><div class="cfill ${l}" style="width:${p}%"></div></div></div>`;
-  }).join('');
+  document.getElementById('cong-grid').innerHTML=BOOTHS.map(b=>{const s=boothState[b.id];const hasData=!!s&&(s.orders>0);const w=hasData?(s.wait||0):0;const l=lv(w);const p=hasData?Math.min(100,Math.round((w/22)*100)):0;return`<div class="cong-card" id="cc-${b.id}"><div class="cc-name">${b.name}</div><span class="cbadge ${l}">${lvL(l)}</span><div class="cw">${hasData?w:'—'}<span>${hasData?'분':''}</span></div><div class="co">${hasData?`주문 ${s.orders}건 · ${(s.revenue||0).toLocaleString()}원`:'주문 없음'}</div><div class="cbar"><div class="cfill ${l}" style="width:${p}%"></div></div></div>`;}).join('');
 }
 
 function renderSeats(){

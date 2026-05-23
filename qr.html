@@ -46,7 +46,9 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t)}
   </div>
 </div>
 <div class="grid" id="grid"></div>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="data.js"></script>
+<script src="firebase.js"></script>
 <script>
 const minLabel = (t,m) => t===1?'최소 1개':t===2?'최소 1개':t===4?'최소 3개':'최소 5개';
 const minClass = t => t<=2?'t1':t===4?'t4':'t6';
@@ -71,7 +73,7 @@ function gen() {
 }
 window.addEventListener('load', () => {
   document.getElementById('base-url').value = window.location.href.replace('qr.html','').replace(/\/$/,'');
-  gen();
+  gen(); // async gen
 });
 </script>
 </body>
