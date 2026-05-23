@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>단국대 학식당 — 피드백</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--g:#003DA5;--gl:#EEF3FF;--gm:#6B8FD4;--am:#c97c2a;--al:#fef3e2;--rd:#c0392b;--rl:#fdf0ef;--bg:#f5f6fa;--s:#fff;--s2:#eef0f7;--b:#dde1f0;--t:#0d1a3a;--t2:#4a5580;--t3:#8e97b8;--r:14px;--rs:10px;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;max-width:480px;margin:0 auto}
+
+nav{background:var(--g);padding:0 18px;height:54px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,61,165,.25)}
+.logo{display:flex;align-items:center;gap:9px}
+.logo-ic{width:38px;height:24px;flex-shrink:0}
+.logo-t{font-size:14px;font-weight:700;color:#fff}
+.logo-s{font-size:10px;color:rgba(255,255,255,.65)}
+.nav-back{font-size:12px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:6px;padding:5px 10px;cursor:pointer;text-decoration:none;font-family:'Noto Sans KR',sans-serif}
+
+.hero{background:var(--g);padding:20px 18px 28px;color:#fff}
+.hero-title{font-size:20px;font-weight:700;margin-bottom:6px}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.75);line-height:1.6}
+
+.main{padding:16px;margin-top:-12px}
+
+.card{background:var(--s);border-radius:var(--r);border:1px solid var(--b);padding:18px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.card-title{font-size:13px;font-weight:700;color:var(--t2);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.card-title span{font-size:16px}
+
+/* 별점 */
+.stars{display:flex;gap:6px;justify-content:center;margin:4px 0 8px}
+.star{font-size:32px;cursor:pointer;transition:transform .1s;user-select:none;filter:grayscale(1);opacity:.4}
+.star.active{filter:none;opacity:1;transform:scale(1.1)}
+.star:active{transform:scale(.95)}
+.star-label{text-align:center;font-size:13px;color:var(--t3);min-height:18px;margin-top:4px}
+
+/* 카테고리 */
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.cat-btn{padding:9px 4px;border:1.5px solid var(--b);border-radius:var(--rs);background:var(--s);font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:500;cursor:pointer;text-align:center;color:var(--t2);transition:all .12s;line-height:1.4}
+.cat-btn.active{border-color:var(--g);color:var(--g);background:var(--gl);font-weight:700}
+.cat-btn:active{transform:scale(.97)}
+
+/* 테이블 선택 */
+.table-select{width:100%;padding:11px 14px;border:1.5px solid var(--b);border-radius:var(--rs);font-family:'Noto Sans KR',sans-serif;font-size:14px;color:var(--t);background:var(--s);outline:none;transition:border-color .15s;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238e97b8' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.table-select:focus{border-color:var(--g)}
+
+/* 텍스트 영역 */
+.textarea{width:100%;padding:12px 14px;border:1.5px solid var(--b);border-radius:var(--rs);font-family:'Noto Sans KR',sans-serif;font-size:14px;color:var(--t);resize:none;outline:none;transition:border-color .15s;line-height:1.6;background:var(--s)}
+.textarea:focus{border-color:var(--g)}
+.char-count{font-size:11px;color:var(--t3);text-align:right;margin-top:4px}
+
+/* 익명 토글 */
+.anon-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
+.anon-label{font-size:13px;color:var(--t2)}
+.anon-sub{font-size:11px;color:var(--t3);margin-top:1px}
+.toggle{width:44px;height:24px;border-radius:12px;background:var(--b);position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
+.toggle.on{background:var(--g)}
+.toggle-knob{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.toggle.on .toggle-knob{left:23px}
+
+/* 제출 버튼 */
+.submit-btn{width:100%;padding:14px;background:var(--g);color:#fff;border:none;border-radius:var(--rs);font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:background .15s;margin-top:4px}
+.submit-btn:hover{background:#002d7a}
+.submit-btn:disabled{background:var(--b);color:var(--t3);cursor:default}
+
+/* 성공 화면 */
+.success-screen{padding:40px 20px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
+.suc-icon{width:72px;height:72px;border-radius:50%;background:var(--gl);display:flex;align-items:center;justify-content:center;margin:0 auto}
+.suc-icon svg{width:36px;height:36px;stroke:var(--g)}
+.suc-title{font-size:22px;font-weight:700}
+.suc-sub{font-size:13px;color:var(--t2);line-height:1.7}
+.suc-badge{background:var(--gl);color:var(--g);font-size:12px;font-weight:500;padding:6px 16px;border-radius:20px}
+.another-btn{width:100%;padding:12px;border:1.5px solid var(--b);border-radius:var(--rs);background:var(--s);font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;cursor:pointer;color:var(--t2);margin-top:8px}
+
+/* 이전 피드백 */
+.history-item{padding:12px 0;border-bottom:1px solid var(--b)}
+.history-item:last-child{border-bottom:none}
+.hi-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.hi-cat{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--gl);color:var(--g)}
+.hi-date{font-size:11px;color:var(--t3);font-family:'DM Mono',monospace}
+.hi-text{font-size:13px;color:var(--t);line-height:1.6;margin-bottom:4px}
+.hi-status{font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;display:inline-block}
+.hi-status.pending{background:var(--al);color:var(--am)}
+.hi-status.done{background:var(--gl);color:var(--g)}
+.hi-status.reviewing{background:#f0eeff;color:#6c3fb5}
+.hi-stars{font-size:12px;color:var(--am)}
+.empty-feedback{font-size:13px;color:var(--t3);text-align:center;padding:20px 0}
+</style>
+</head>
+<body>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script src="data.js"></script>
+<script src="firebase.js"></script>
+
+<nav>
+  <div class="logo">
+    <svg class="logo-ic" viewBox="0 0 72 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2 8L2 36L11 36C19.5 36 25.5 30.5 25.5 22C25.5 13.5 19.5 8 11 8Z M8 13.5L10.5 13.5C15.5 13.5 18.5 17 18.5 22C18.5 27 15.5 30.5 10.5 30.5L8 30.5Z" fill="white"/>
+      <path d="M29 8L29 36L35 36L35 25.5L43.5 36L50.5 36L41.5 22.5L50.5 8L43.5 8L35 20.5L35 8Z" fill="white"/>
+      <path d="M54 8L54 26.5C54 30 56 32 59.5 32C63 32 65 30 65 26.5L65 8L71 8L71 26.5C71 33.5 66 37.5 59.5 37.5C53 37.5 48 33.5 48 26.5L48 8Z" fill="white"/>
+      <ellipse cx="37" cy="22" rx="35" ry="10.5" stroke="white" stroke-width="1.8" fill="none" transform="rotate(-13 37 22)"/>
+      <circle cx="37" cy="22" r="2.5" fill="white"/>
+    </svg>
+    <div><div class="logo-t">단국대 학식당</div><div class="logo-s">죽전캠퍼스</div></div>
+  </div>
+  <a href="status.html" class="nav-back">← 현황판</a>
+</nav>
+
+<div id="main-content">
+  <div class="hero">
+    <div class="hero-title">💬 불편사항 · 개선 제안</div>
+    <div class="hero-sub">더 나은 학식당을 위해<br>자유롭게 의견을 남겨주세요</div>
+  </div>
+
+  <div class="main">
+
+    <!-- 만족도 별점 -->
+    <div class="card">
+      <div class="card-title"><span>⭐</span> 오늘 이용 만족도</div>
+      <div class="stars" id="stars">
+        <span class="star" data-v="1" onclick="setStar(1)">⭐</span>
+        <span class="star" data-v="2" onclick="setStar(2)">⭐</span>
+        <span class="star" data-v="3" onclick="setStar(3)">⭐</span>
+        <span class="star" data-v="4" onclick="setStar(4)">⭐</span>
+        <span class="star" data-v="5" onclick="setStar(5)">⭐</span>
+      </div>
+      <div class="star-label" id="star-label">별점을 선택해주세요</div>
+    </div>
+
+    <!-- 카테고리 -->
+    <div class="card">
+      <div class="card-title"><span>📋</span> 피드백 유형</div>
+      <div class="cat-grid">
+        <button class="cat-btn" data-cat="주문 오류" onclick="setCat(this)">🔴<br>주문 오류</button>
+        <button class="cat-btn" data-cat="메뉴 관련" onclick="setCat(this)">🍱<br>메뉴 관련</button>
+        <button class="cat-btn" data-cat="좌석 불편" onclick="setCat(this)">💺<br>좌석 불편</button>
+        <button class="cat-btn" data-cat="앱 오류" onclick="setCat(this)">📱<br>앱 오류</button>
+        <button class="cat-btn" data-cat="대기 시간" onclick="setCat(this)">⏱<br>대기 시간</button>
+        <button class="cat-btn" data-cat="기타" onclick="setCat(this)">💡<br>기타 제안</button>
+      </div>
+    </div>
+
+    <!-- 테이블 -->
+    <div class="card">
+      <div class="card-title"><span>🪑</span> 이용 테이블</div>
+      <select class="table-select" id="table-sel">
+        <option value="">테이블을 선택해주세요</option>
+        <optgroup label="A구역 (1인석)">
+          <option>A1</option><option>A2</option><option>A3</option><option>A4</option>
+        </optgroup>
+        <optgroup label="B구역 (2인석)">
+          <option>B1</option><option>B2</option><option>B3</option><option>B4</option>
+        </optgroup>
+        <optgroup label="C구역 (4인석)">
+          <option>C1</option><option>C2</option><option>C3</option><option>C4</option>
+        </optgroup>
+        <optgroup label="D구역 (6인석)">
+          <option>D1</option><option>D2</option><option>D3</option><option>D4</option>
+        </optgroup>
+        <option value="기억 안 남">기억 안 남</option>
+      </select>
+    </div>
+
+    <!-- 내용 -->
+    <div class="card">
+      <div class="card-title"><span>✍️</span> 내용</div>
+      <textarea class="textarea" id="feedback-text" rows="5"
+        placeholder="불편하셨던 점이나 개선되었으면 하는 내용을 자유롭게 작성해주세요."
+        maxlength="300" oninput="updateCount()"></textarea>
+      <div class="char-count"><span id="char-count">0</span> / 300</div>
+    </div>
+
+    <!-- 익명 -->
+    <div class="card">
+      <div class="anon-row">
+        <div>
+          <div class="anon-label">익명으로 제출</div>
+          <div class="anon-sub">이름 없이 피드백을 제출합니다</div>
+        </div>
+        <div class="toggle on" id="anon-toggle" onclick="toggleAnon()">
+          <div class="toggle-knob"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="submit-btn" id="submit-btn" onclick="submitFeedback()">피드백 제출하기</button>
+
+    <!-- 이전 피드백 (같은 기기) -->
+    <div class="card" style="margin-top:20px" id="history-card">
+      <div class="card-title"><span>📝</span> 내가 남긴 피드백</div>
+      <div id="history-list"><div class="empty-feedback">아직 제출한 피드백이 없습니다</div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 성공 화면 -->
+<div id="success-screen" style="display:none" class="main">
+  <div class="success-screen">
+    <div class="suc-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="suc-title">제출 완료!</div>
+    <div class="suc-sub">소중한 의견 감사합니다.<br>더 나은 학식당을 위해 반영하겠습니다.</div>
+    <div class="suc-badge" id="suc-cat-badge">피드백 접수됨</div>
+    <button class="another-btn" onclick="resetForm()">추가 피드백 남기기</button>
+    <a href="status.html" style="font-size:13px;color:var(--t3);text-decoration:none;margin-top:4px">← 현황판으로 돌아가기</a>
+  </div>
+</div>
+
+<script>
+let selectedStar = 0;
+let selectedCat = '';
+let isAnon = true;
+
+const STAR_LABELS = ['', '매우 불만족', '불만족', '보통', '만족', '매우 만족 😊'];
+
+function setStar(v) {
+  selectedStar = v;
+  document.querySelectorAll('.star').forEach((s, i) => s.classList.toggle('active', i < v));
+  document.getElementById('star-label').textContent = STAR_LABELS[v];
+}
+
+function setCat(btn) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedCat = btn.dataset.cat;
+}
+
+function updateCount() {
+  const v = document.getElementById('feedback-text').value.length;
+  document.getElementById('char-count').textContent = v;
+}
+
+function toggleAnon() {
+  isAnon = !isAnon;
+  document.getElementById('anon-toggle').className = 'toggle' + (isAnon ? ' on' : '');
+}
+
+async function submitFeedback() {
+  const text = document.getElementById('feedback-text').value.trim();
+  const table = document.getElementById('table-sel').value;
+
+  if (!selectedStar) { alert('만족도 별점을 선택해주세요.'); return; }
+  if (!selectedCat)  { alert('피드백 유형을 선택해주세요.'); return; }
+  if (!text)         { alert('내용을 입력해주세요.'); return; }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true; btn.textContent = '제출 중...';
+
+  try {
+    const now = new Date();
+    const id = 'fb_' + Date.now() + '_' + Math.random().toString(36).slice(2,6);
+    const feedback = {
+      id,
+      star: selectedStar,
+      category: selectedCat,
+      table: table || '미선택',
+      text,
+      anon: isAnon,
+      status: 'pending', // pending / reviewing / done
+      ts: Date.now(),
+      date: now.toLocaleDateString('ko-KR', {month:'long', day:'numeric'}),
+      time: now.toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit'})
+    };
+
+    await db.ref('feedback/' + id).set(feedback);
+
+    // 로컬에도 저장 (내 피드백 목록용)
+    const local = JSON.parse(localStorage.getItem('dku_my_feedback') || '[]');
+    local.unshift(id);
+    if (local.length > 20) local.splice(20);
+    localStorage.setItem('dku_my_feedback', JSON.stringify(local));
+
+    // 성공 화면
+    document.getElementById('suc-cat-badge').textContent = selectedCat + ' · ' + STAR_LABELS[selectedStar];
+    document.getElementById('main-content').style.display = 'none';
+    document.getElementById('success-screen').style.display = 'block';
+
+  } catch(e) {
+    console.error(e);
+    alert('제출 중 오류가 발생했습니다. 다시 시도해주세요.');
+    btn.disabled = false; btn.textContent = '피드백 제출하기';
+  }
+}
+
+function resetForm() {
+  selectedStar = 0; selectedCat = ''; isAnon = true;
+  document.querySelectorAll('.star').forEach(s => s.classList.remove('active'));
+  document.getElementById('star-label').textContent = '별점을 선택해주세요';
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('feedback-text').value = '';
+  document.getElementById('char-count').textContent = '0';
+  document.getElementById('table-sel').value = '';
+  document.getElementById('anon-toggle').className = 'toggle on';
+  document.getElementById('submit-btn').disabled = false;
+  document.getElementById('submit-btn').textContent = '피드백 제출하기';
+  document.getElementById('main-content').style.display = 'block';
+  document.getElementById('success-screen').style.display = 'none';
+  loadMyFeedback();
+}
+
+// 내 피드백 목록 불러오기
+async function loadMyFeedback() {
+  const ids = JSON.parse(localStorage.getItem('dku_my_feedback') || '[]');
+  const el = document.getElementById('history-list');
+  if (!ids.length) { el.innerHTML = '<div class="empty-feedback">아직 제출한 피드백이 없습니다</div>'; return; }
+  el.innerHTML = '<div style="font-size:12px;color:var(--t3);text-align:center;padding:10px">불러오는 중...</div>';
+  try {
+    const items = [];
+    for (const id of ids.slice(0, 5)) {
+      const snap = await db.ref('feedback/' + id).get();
+      if (snap.val()) items.push(snap.val());
+    }
+    if (!items.length) { el.innerHTML = '<div class="empty-feedback">피드백을 찾을 수 없습니다</div>'; return; }
+    const statusLabel = {pending:'접수됨', reviewing:'검토중', done:'반영완료'};
+    el.innerHTML = items.map(f => `
+      <div class="history-item">
+        <div class="hi-head">
+          <span class="hi-cat">${f.category}</span>
+          <span class="hi-date">${f.date} ${f.time}</span>
+        </div>
+        <div class="hi-stars">${'⭐'.repeat(f.star)}</div>
+        <div class="hi-text">${f.text}</div>
+        <span class="hi-status ${f.status}">${statusLabel[f.status]||f.status}</span>
+      </div>`).join('');
+  } catch(e) {
+    el.innerHTML = '<div class="empty-feedback">불러오기 실패</div>';
+  }
+}
+
+// Firebase 초기화
+document.addEventListener('DOMContentLoaded', () => {
+  initFirebase();
+  loadMyFeedback();
+});
+</script>
+</body>
+</html>

@@ -124,6 +124,19 @@ nav{background:var(--g);padding:0 22px;height:58px;display:flex;align-items:cent
 .sold-toggle{padding:4px 10px;border:1px solid var(--b);border-radius:6px;background:var(--s);font-family:'Noto Sans KR',sans-serif;font-size:11px;cursor:pointer;color:var(--t2);white-space:nowrap;transition:all .15s}
 .sold-toggle.on{background:var(--rl);border-color:var(--rd);color:var(--rd);font-weight:700}
 .empty-msg{font-size:13px;color:var(--t3);padding:20px 0}
+.fb-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;transition:border-color .2s}
+.fb-card.new{border-color:var(--g)}
+.fb-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:8px;flex-wrap:wrap}
+.fb-cat{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--gl);color:var(--g)}
+.fb-meta{font-size:11px;color:var(--t3);font-family:'DM Mono',monospace}
+.fb-stars{font-size:13px;margin-bottom:5px}
+.fb-text{font-size:13px;color:var(--t);line-height:1.6;margin-bottom:8px}
+.fb-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.fb-table{font-size:11px;color:var(--t3)}
+.fb-status-sel{padding:4px 8px;border:1px solid var(--b);border-radius:6px;font-family:'Noto Sans KR',sans-serif;font-size:11px;cursor:pointer;background:var(--s);color:var(--t2)}
+.fb-status-sel.pending{border-color:var(--am);color:var(--am)}
+.fb-status-sel.reviewing{border-color:#6c3fb5;color:#6c3fb5}
+.fb-status-sel.done{border-color:var(--g);color:var(--g)}
 
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:500;align-items:center;justify-content:center}
 .modal-bg.show{display:flex}
@@ -212,6 +225,7 @@ nav{background:var(--g);padding:0 22px;height:58px;display:flex;align-items:cent
     <div class="tab active" onclick="switchTab('dash')">대시보드</div>
     <div class="tab" onclick="switchTab('orders')">주문 관리</div>
     <div class="tab" onclick="switchTab('soldout')">품절 관리</div>
+    <div class="tab" onclick="switchTab('feedback')">피드백 <span id="fb-badge" style="display:none;background:var(--rd);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;margin-left:3px">0</span></div>
   </div>
 
   <div id="page-dash" class="page active">
@@ -254,6 +268,21 @@ nav{background:var(--g);padding:0 22px;height:58px;display:flex;align-items:cent
   </div>
 </div>
 
+<div id="page-feedback" class="page">
+  <br>
+  <div class="sec-hd">
+    <h2>피드백 관리</h2>
+    <div style="display:flex;gap:8px">
+      <span id="fb-stat" style="font-size:12px;color:var(--t3)"></span>
+      <button class="btn btn-o" onclick="filterFb('all')" id="fb-f-all">전체</button>
+      <button class="btn btn-o" onclick="filterFb('pending')" id="fb-f-pending">접수됨</button>
+      <button class="btn btn-o" onclick="filterFb('reviewing')" id="fb-f-reviewing">검토중</button>
+      <button class="btn btn-o" onclick="filterFb('done')" id="fb-f-done">반영완료</button>
+    </div>
+  </div>
+  <div id="feedback-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px"></div>
+</div>
+
 <div class="modal-bg" id="modal">
   <div class="modal">
     <h3 id="modal-title">초기화 확인</h3>
@@ -269,7 +298,7 @@ nav{background:var(--g);padding:0 22px;height:58px;display:flex;align-items:cent
 let curTab='dash', boothState={}, soldoutState={}, seatsState={}, allOrders=[], knownOrderIds=new Set(), pendingResetType=null;
 
 /* ── 탭 ── */
-function switchTab(t){curTab=t;document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',['dash','orders','soldout'][i]===t));document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+t).classList.add('active');}
+function switchTab(t){curTab=t;document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',['dash','orders','soldout','feedback'][i]===t));document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+t).classList.add('active');if(t==='feedback')renderFeedback();}
 
 function tick(){document.getElementById('nav-time').textContent=new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});}
 setInterval(tick,1000);tick();
@@ -340,6 +369,7 @@ function initAdminData(){
   checkMidnightReset();
   setInterval(checkMidnightReset,60000);
   renderAll();
+  initFeedbackListener();
 }
 
 function checkMidnightReset(){const today=new Date().toDateString();const last=localStorage.getItem('dku_last_reset');if(last!==today){db.ref('orderCounter').set(0);localStorage.setItem('dku_last_reset',today);}}
@@ -401,6 +431,64 @@ function renderSoldout(){
 async function toggleSold(key){try{if(soldoutState[key]===true)await db.ref('soldout/'+key).remove();else await db.ref('soldout/'+key).set(true);}catch(e){console.error(e);}}
 async function clearAllSoldout(){try{await db.ref('soldout').remove();}catch(e){console.error(e);}}
 setInterval(()=>{if(Object.keys(seatsState).length>0)renderSeats();},60000);
+
+// ── 피드백 ──
+let allFeedback = [], fbFilter = 'all';
+
+function initFeedbackListener() {
+  db.ref('feedback').orderByChild('ts').on('value', snap => {
+    const raw = snap.val() || {};
+    allFeedback = Object.values(raw).sort((a,b) => b.ts - a.ts);
+    const pending = allFeedback.filter(f => f.status === 'pending').length;
+    const badge = document.getElementById('fb-badge');
+    if (badge) { badge.style.display = pending > 0 ? 'inline' : 'none'; badge.textContent = pending; }
+    const stat = document.getElementById('fb-stat');
+    if (stat) stat.textContent = `전체 ${allFeedback.length}건 · 미처리 ${pending}건`;
+    if (curTab === 'feedback') renderFeedback();
+  });
+}
+
+function filterFb(f) {
+  fbFilter = f;
+  ['all','pending','reviewing','done'].forEach(x => {
+    const el = document.getElementById('fb-f-'+x);
+    if (el) el.className = 'btn ' + (x === f ? 'btn-g' : 'btn-o');
+  });
+  renderFeedback();
+}
+
+function renderFeedback() {
+  const el = document.getElementById('feedback-grid');
+  if (!el) return;
+  const list = fbFilter === 'all' ? allFeedback : allFeedback.filter(f => f.status === fbFilter);
+  if (!list.length) { el.innerHTML = '<div class="empty-msg">피드백이 없습니다</div>'; return; }
+  const stars = n => '⭐'.repeat(n) + '☆'.repeat(5-n);
+  const statusLabel = {pending:'접수됨', reviewing:'검토중', done:'반영완료'};
+  el.innerHTML = list.map(f => `
+    <div class="fb-card${f.status==='pending'?' new':''}">
+      <div class="fb-head">
+        <span class="fb-cat">${f.category}</span>
+        <span class="fb-meta">${f.date} ${f.time} · 테이블 ${f.table}</span>
+      </div>
+      <div class="fb-stars">${stars(f.star)} <span style="font-size:11px;color:var(--t3)">${['','매우 불만족','불만족','보통','만족','매우 만족'][f.star]}</span></div>
+      <div class="fb-text">${f.text}</div>
+      <div class="fb-footer">
+        <span class="fb-table">${f.anon ? '익명' : '실명'}</span>
+        <select class="fb-status-sel ${f.status}" onchange="updateFbStatus('${f.id}', this)">
+          <option value="pending" ${f.status==='pending'?'selected':''}>접수됨</option>
+          <option value="reviewing" ${f.status==='reviewing'?'selected':''}>검토중</option>
+          <option value="done" ${f.status==='done'?'selected':''}>반영완료</option>
+        </select>
+      </div>
+    </div>`).join('');
+}
+
+async function updateFbStatus(id, sel) {
+  const val = sel.value;
+  sel.className = 'fb-status-sel ' + val;
+  try { await db.ref('feedback/' + id + '/status').set(val); }
+  catch(e) { console.error(e); }
+}
 </script>
 </body>
 </html>
