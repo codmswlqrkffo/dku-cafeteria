@@ -166,6 +166,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
   <span class="timer-val" id="timer-val">30:00</span>
   <div class="timer-prog"><div class="timer-fill" id="timer-fill" style="width:100%"></div></div>
   <button class="extend-btn" onclick="extendTime()">+20분</button>
+  <button class="extend-btn" style="background:var(--rl);border-color:var(--rd);color:var(--rd)" onclick="confirmCheckout()">체크아웃</button>
 </div>
 
 <div class="steps" id="steps">
@@ -243,6 +244,12 @@ setInterval(updateTimer,1000);updateTimer();
 function showExpired(){
   // 만료 팝업 표시
   document.getElementById('expire-modal').style.display='flex';
+}
+
+function confirmCheckout(){
+  if(confirm('체크아웃 하시겠습니까?\n식사가 완료되셨나요?')) {
+    doCheckout();
+  }
 }
 
 function doCheckout(){
