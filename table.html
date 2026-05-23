@@ -145,24 +145,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
 <script src="data.js"></script>
 <script src="firebase.js"></script>
 
-<!-- QR 토큰 오류 화면 -->
-<div id="token-error-screen" style="display:none;min-height:100vh;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px">
-  <div style="background:var(--s);border-radius:16px;padding:36px 28px;max-width:360px;width:100%;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.1)">
-    <div style="width:64px;height:64px;border-radius:50%;background:var(--rl);display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--rd)" stroke-width="2.5"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
-    </div>
-    <div style="font-size:18px;font-weight:700;color:var(--rd);margin-bottom:8px">유효하지 않은 QR</div>
-    <div style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:20px">
-      이 QR 코드는 만료되었거나 올바르지 않습니다.<br>
-      테이블에 부착된 QR 코드를 다시 스캔해주세요.
-    </div>
-    <div style="font-size:11px;color:var(--t3);background:var(--s2);border-radius:8px;padding:10px;line-height:1.6">
-      🔒 QR 보안 토큰은 매일 자정 자동 갱신됩니다.<br>
-      복사된 QR은 당일에만 유효합니다.
-    </div>
-  </div>
-</div>
-
 <div id="conn-bar" class="conn-bar">
   <div class="conn-dot"></div>
   <span id="conn-text">서버 연결 중...</span>
@@ -211,35 +193,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);m
 <script>
 const params = new URLSearchParams(location.search);
 const tableId = params.get('id') || 'A1';
-const tableToken = params.get('token') || '';
 const tableInfo = TABLES.find(t => t.id === tableId) || {id:tableId,zone:'A',type:1,minOrder:1};
-
-// ── QR 토큰 검증 ──
-async function checkQRToken() {
-  // 토큰이 없으면 (직접 URL 입력 등) 통과 허용 — 실제 운영시 엄격하게 변경 가능
-  if (!tableToken) return true;
-  const valid = await verifyQRToken(tableId, tableToken);
-  return valid;
-}
-
-// 페이지 로드 시 토큰 검증
-window.addEventListener('load', async () => {
-  if (tableToken) {
-    const valid = await checkQRToken();
-    if (!valid) {
-      // 토큰 오류 화면 표시
-      document.getElementById('token-error-screen').style.display = 'flex';
-      document.getElementById('conn-bar').style.display = 'none';
-      document.querySelector('.hd') && (document.querySelector('.hd').style.display = 'none');
-      document.querySelector('.timer-bar') && (document.querySelector('.timer-bar').style.display = 'none');
-      document.getElementById('steps').style.display = 'none';
-      document.getElementById('content').style.display = 'none';
-      document.getElementById('cart-bar').style.display = 'none';
-      document.getElementById('order-tracker').style.display = 'none';
-      return;
-    }
-  }
-});
 
 const ORDER_KEY = 'dku_orders_' + tableId;
 function getSavedOrderIds(){try{return JSON.parse(localStorage.getItem(ORDER_KEY))||[];}catch{return[];}}
