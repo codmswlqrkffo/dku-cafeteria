@@ -235,7 +235,7 @@ let session;
 let isNewSession=false; // 새 세션 여부 (QR 재스캔 판단용)
 try{session=JSON.parse(sessionStorage.getItem(SK));}catch{}
 if(!session){
-  session={startTs:Date.now(),endTs:Date.now()+DEFAULT_TIME*60000,extended:0};
+  session={startTs:Date.now(),endTs:Date.now()+20*60000,extended:0};
   sessionStorage.setItem(SK,JSON.stringify(session));
   isNewSession=true; // 세션스토리지에 없었으면 새 세션 (탭 새로 열림 = QR 재스캔)
 }
@@ -359,60 +359,59 @@ function updateCongHeader(){
   el.textContent='● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · '+avg+'분';
 }
 
-window.addEventListener('load', async ()=>{
-  const ok=initFirebase();
-  const bar=document.getElementById('conn-bar');
-  if(!ok){bar.style.cssText='background:var(--rl);color:var(--rd);padding:6px 18px;font-size:11px';bar.textContent='⚠ Firebase 미설정';return;}
-  fbReady=true;
-  db.ref('.info/connected').on('value',snap=>{const c=snap.val();bar.className='conn-bar'+(c?' ok':'');bar.innerHTML=`<div class="conn-dot"></div><span>${c?'실시간 연결됨':'재연결 중...'}</span>`;});
-  // ── 체크아웃 후 재접속 차단 ──
-  const seatSnap = await db.ref('seats/'+tableId).get();
-  const seatData = seatSnap.val();
+window.addEventListener('load', ()=>{
+  // Firebase 연결 전에도 부스 목록 즉시 렌더
+  renderBooth();
 
-  if(seatData && seatData.checkedOut === true){
-    const elapsed = seatData.checkedOutAt ? Date.now() - seatData.checkedOutAt : 0;
-
-    if(isNewSession){
-      // 새 탭/QR 재스캔 → 체크아웃 기록 초기화 후 정상 진입
-      await db.ref('seats/'+tableId).remove();
-      localStorage.removeItem('dku_checkout_'+tableId);
-    } else if(elapsed < 30 * 60 * 1000){
-      // 같은 탭에서 30분 이내 재접속 → 차단
-      showBlockedScreen();
-      return;
-    } else {
-      // 30분 경과 → 자동 해제
-      await db.ref('seats/'+tableId).remove();
-      localStorage.removeItem('dku_checkout_'+tableId);
-    }
+  const ok = initFirebase();
+  const bar = document.getElementById('conn-bar');
+  if(!ok){
+    bar.style.cssText='background:var(--rl);color:var(--rd);padding:6px 18px;font-size:11px';
+    bar.textContent='⚠ Firebase 미설정';
+    return;
   }
+  fbReady = true;
 
-  // 2차: localStorage 확인 (같은 기기 같은 탭)
-  if(!isNewSession){
-    const checkoutTs = localStorage.getItem('dku_checkout_'+tableId);
-    if(checkoutTs){
-      const elapsed = Date.now() - parseInt(checkoutTs);
-      if(elapsed < 30 * 60 * 1000){
-        showBlockedScreen();
-        return;
-      } else {
-        localStorage.removeItem('dku_checkout_'+tableId);
+  // 연결 상태 표시
+  db.ref('.info/connected').on('value', snap=>{
+    const c=snap.val();
+    bar.className='conn-bar'+(c?' ok':'');
+    bar.innerHTML=`<div class="conn-dot"></div><span>${c?'실시간 연결됨':'재연결 중...'}</span>`;
+  });
+
+  // 좌석 등록
+  setSeat(tableId,{occupied:true,since:session.startTs,endTs:session.endTs});
+
+  // 품절 구독
+  db.ref('soldout').on('value',snap=>{
+    soldoutMap=snap.val()||{};
+    if(currentBoothId)renderMenu(currentBoothId);
+  });
+
+  // 부스 상태 구독
+  db.ref('boothState').on('value',snap=>{
+    boothStateMap=snap.val()||{};
+    updateCongHeader();
+    if(!currentBoothId) renderBooth();
+    else{
+      const w=document.getElementById('booth-wait-label');
+      if(w){
+        const bw=boothStateMap[currentBoothId]?.wait||0;
+        const l=bw===0?'none':bw<=5?'low':bw<=11?'mid':'high';
+        w.className='bc-wait '+l;
+        w.textContent=bw===0?'대기 없음':'● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+bw+'분 대기';
       }
     }
-  } else {
-    localStorage.removeItem('dku_checkout_'+tableId);
-  }
-
-  setSeat(tableId,{occupied:true,since:session.startTs,endTs:session.endTs});
-  db.ref('soldout').on('value',snap=>{soldoutMap=snap.val()||{};if(currentBoothId)renderMenu(currentBoothId);});
-  db.ref('boothState').on('value',snap=>{
-    boothStateMap=snap.val()||{};updateCongHeader();
-    if(!currentBoothId)renderBooth();
-    else{const w=document.getElementById('booth-wait-label');if(w){const bw=boothStateMap[currentBoothId]?.wait||0;const l=bw===0?'none':bw<=5?'low':bw<=11?'mid':'high';w.className='bc-wait '+l;w.textContent=bw===0?'대기 없음':'● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+bw+'분 대기';}}
   });
-  db.ref('orders').on('value',snap=>{if(!Object.keys(trackedOrders).length&&!getSavedOrderIds().length)return;const data=snap.val()||{};getSavedOrderIds().forEach(id=>{if(data[id]){trackedOrders[id]=data[id];}});renderTracker();});
+
+  // 내 주문 구독
+  db.ref('orders').on('value',snap=>{
+    if(!Object.keys(trackedOrders).length&&!getSavedOrderIds().length)return;
+    const data=snap.val()||{};
+    getSavedOrderIds().forEach(id=>{if(data[id])trackedOrders[id]=data[id];});
+    renderTracker();
+  });
   getSavedOrderIds().forEach(id=>subscribeOrder(id));
-  renderBooth();
 });
 
 function subscribeOrder(orderId){
