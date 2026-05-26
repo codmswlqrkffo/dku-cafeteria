@@ -1,0 +1,12 @@
+{
+  "name": "단국대 학식당 주문",
+  "short_name": "DKU 주문",
+  "description": "단국대학교 죽전캠퍼스 학식당 QR 주문",
+  "display": "standalone",
+  "background_color": "#003DA5",
+  "theme_color": "#003DA5",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

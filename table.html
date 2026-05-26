@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>DKU 학식당 주문</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest-table.json">
+  <meta name="theme-color" content="#003DA5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="DKU 학식당">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -219,7 +228,7 @@ function getSavedOrderIds(){try{return JSON.parse(localStorage.getItem(ORDER_KEY
 function addSavedOrderId(id){const ids=getSavedOrderIds();if(!ids.includes(id))ids.push(id);if(ids.length>10)ids.splice(0,ids.length-10);localStorage.setItem(ORDER_KEY,JSON.stringify(ids));}
 function clearSavedOrderIds(){localStorage.removeItem(ORDER_KEY);}
 
-let expireShown=false,soldoutMap={}, boothStateMap={}, trackedOrders={}, trackerOpen=false, fbReady=false;
+let expireShown=false,isAdditionalOrder=false,soldoutMap={}, boothStateMap={}, trackedOrders={}, trackerOpen=false, fbReady=false;
 
 const SK='dku_sess_'+tableId;
 let session;
@@ -227,9 +236,37 @@ try{session=JSON.parse(sessionStorage.getItem(SK));}catch{}
 if(!session){session={startTs:Date.now(),endTs:Date.now()+DEFAULT_TIME*60000,extended:0};sessionStorage.setItem(SK,JSON.stringify(session));}
 function saveSession(){sessionStorage.setItem(SK,JSON.stringify(session));}
 
-function extendTime(){session.endTs+=20*60000;session.extended=(session.extended||0)+1;saveSession();if(fbReady)setSeat(tableId,{occupied:true,since:session.startTs,endTs:session.endTs});document.getElementById('expire-modal').style.display='none';}
+function extendTime(){
+  if((session.extended||0)>=1){
+    alert('시간 연장은 1회만 가능합니다.');
+    document.getElementById('expire-modal').style.display='none';
+    doCheckout();
+    return;
+  }
+  session.endTs+=20*60000;
+  session.extended=(session.extended||0)+1;
+  saveSession();
+  if(fbReady)setSeat(tableId,{occupied:true,since:session.startTs,endTs:session.endTs});
+  document.getElementById('expire-modal').style.display='none';
+  // 타이머 바의 +20분 버튼 비활성화
+  const extBtn=document.querySelector('.extend-btn');
+  if(extBtn&&extBtn.textContent.includes('+20분')){
+    extBtn.disabled=true;
+    extBtn.style.opacity='0.4';
+    extBtn.style.cursor='default';
+    extBtn.title='연장은 1회만 가능합니다';
+  }
+}
 
 function updateTimer(){
+  // 이미 연장한 경우 버튼 비활성화 유지
+  if((session.extended||0)>=1){
+    const extBtn=document.querySelector('.extend-btn');
+    if(extBtn&&extBtn.textContent.includes('+20분')){
+      extBtn.disabled=true;extBtn.style.opacity='0.4';extBtn.style.cursor='default';
+      extBtn.title='연장은 1회만 가능합니다';
+    }
+  }
   const rem=Math.max(0,session.endTs-Date.now());
   const total=(DEFAULT_TIME+(session.extended||0)*EXTEND_TIME)*60000;
   const pct=(rem/total)*100;
@@ -242,8 +279,47 @@ function updateTimer(){
 setInterval(updateTimer,1000);updateTimer();
 
 function showExpired(){
-  // 만료 팝업 표시
+  if((session.extended||0)>=1){
+    // 이미 연장한 경우 연장 버튼 없이 체크아웃만
+    document.getElementById('expire-modal').innerHTML=`
+      <div style="background:var(--s);border-radius:16px;padding:28px 22px;max-width:340px;width:100%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.18)">
+        <div style="width:60px;height:60px;border-radius:50%;background:var(--rl);display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--rd)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div style="font-size:18px;font-weight:700;margin-bottom:8px">이용시간이 종료되었습니다</div>
+        <div style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:20px">
+          연장 가능 횟수를 모두 사용하셨습니다.<br>
+          <span style="font-size:12px;color:var(--t3)">이용해주셔서 감사합니다 😊</span>
+        </div>
+        <button onclick="doCheckout()" style="width:100%;padding:12px;border:none;border-radius:var(--rs);background:var(--g);color:#fff;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;cursor:pointer">체크아웃</button>
+      </div>`;
+  }
   document.getElementById('expire-modal').style.display='flex';
+}
+
+function showBlockedScreen(){
+  document.getElementById('steps').style.display='none';
+  document.getElementById('cart-bar').style.display='none';
+  document.getElementById('order-tracker').style.display='none';
+  document.getElementById('content').innerHTML=`
+    <div class="suc-screen">
+      <div class="suc-icon" style="background:var(--s2)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2.5">
+          <rect x="3" y="11" width="18" height="11" rx="2"/>
+          <path d="M7 11V7a5 5 0 0110 0v4"/>
+        </svg>
+      </div>
+      <div class="suc-title" style="color:var(--t2);font-size:18px">접근이 제한된 자리입니다</div>
+      <div class="suc-sub">
+        이미 체크아웃된 자리입니다.<br>
+        새로 이용하시려면 테이블의<br>
+        <strong style="color:var(--t)">QR 코드를 다시 스캔</strong>해주세요.
+      </div>
+      <div style="background:var(--s2);border-radius:var(--rs);padding:12px 16px;font-size:12px;color:var(--t3);line-height:1.7;width:100%;text-align:left">
+        🔒 보안 정책: 체크아웃 후 30분간 URL 직접 접속이 제한됩니다.<br>
+        QR 스캔을 통해서만 새 세션을 시작할 수 있습니다.
+      </div>
+    </div>`;
 }
 
 function confirmCheckout(){
@@ -253,11 +329,22 @@ function confirmCheckout(){
 }
 
 function doCheckout(){
-  // 체크아웃 처리
   document.getElementById('expire-modal').style.display='none';
-  if(fbReady) clearSeat(tableId);
+  // Firebase 좌석 상태: occupied:false + checkedOut 기록
+  // occupied:false → 현황판/관리자 창에서 빈자리로 표시
+  if(fbReady){
+    await db.ref('seats/'+tableId).set({
+      occupied: false,
+      checkedOut: true,
+      checkedOutAt: Date.now()
+    });
+  }
   // 세션 삭제
   sessionStorage.removeItem('dku_sess_'+tableId);
+  // localStorage에도 체크아웃 기록 (같은 기기 빠른 재접속 차단용)
+  localStorage.setItem('dku_checkout_'+tableId, Date.now().toString());
+  // expireShown 초기화
+  expireShown = false;
   // 종료 화면
   document.getElementById('steps').style.display='none';
   document.getElementById('cart-bar').style.display='none';
@@ -288,12 +375,42 @@ function updateCongHeader(){
   el.textContent='● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · '+avg+'분';
 }
 
-window.addEventListener('load',()=>{
+window.addEventListener('load', async ()=>{
   const ok=initFirebase();
   const bar=document.getElementById('conn-bar');
   if(!ok){bar.style.cssText='background:var(--rl);color:var(--rd);padding:6px 18px;font-size:11px';bar.textContent='⚠ Firebase 미설정';return;}
   fbReady=true;
   db.ref('.info/connected').on('value',snap=>{const c=snap.val();bar.className='conn-bar'+(c?' ok':'');bar.innerHTML=`<div class="conn-dot"></div><span>${c?'실시간 연결됨':'재연결 중...'}</span>`;});
+  // ── 체크아웃 후 재접속 차단 ──
+  // 1차: Firebase에서 해당 좌석의 checkedOut 상태 확인 (서버 기반 - 다기기 차단)
+  const seatSnap = await db.ref('seats/'+tableId).get();
+  const seatData = seatSnap.val();
+  
+  if(seatData && seatData.checkedOut === true){
+    // 체크아웃 후 30분 이내인지 확인
+    const elapsed = seatData.checkedOutAt ? Date.now() - seatData.checkedOutAt : 0;
+    if(elapsed < 30 * 60 * 1000){
+      showBlockedScreen();
+      return;
+    } else {
+      // 30분 경과 → Firebase 초기화 후 정상 이용 허용
+      await db.ref('seats/'+tableId).remove();
+      localStorage.removeItem('dku_checkout_'+tableId);
+    }
+  }
+
+  // 2차: localStorage 확인 (같은 기기 빠른 재접속 차단)
+  const checkoutTs = localStorage.getItem('dku_checkout_'+tableId);
+  if(checkoutTs){
+    const elapsed = Date.now() - parseInt(checkoutTs);
+    if(elapsed < 30 * 60 * 1000){
+      showBlockedScreen();
+      return;
+    } else {
+      localStorage.removeItem('dku_checkout_'+tableId);
+    }
+  }
+
   setSeat(tableId,{occupied:true,since:session.startTs,endTs:session.endTs});
   db.ref('soldout').on('value',snap=>{soldoutMap=snap.val()||{};if(currentBoothId)renderMenu(currentBoothId);});
   db.ref('boothState').on('value',snap=>{
@@ -359,7 +476,7 @@ function renderBooth(){
   if(currentBoothId)return;
   setStep(1);document.getElementById('cart-bar').style.display='none';
   const minO=tableInfo.minOrder;
-  document.getElementById('content').innerHTML=`<div class="booth-picker"><div class="picker-title">어느 부스에서 주문하시겠어요?</div>${minO>1?`<div class="min-notice">⚠ ${tableInfo.type}인석 최소 ${minO}개 주문</div>`:''}${BOOTHS.map(b=>{const s=boothStateMap[b.id];const w=s?.wait||0;const hasO=!!s&&s.orders>0;const l=!hasO?'none':w<=5?'low':w<=11?'mid':'high';return`<div class="booth-card" onclick="selectBooth('${b.id}')"><div><div class="bc-name">${b.name}</div><div class="bc-wait ${l}">${!hasO?'대기 없음':'● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+w+'분'}</div></div><span style="font-size:20px;color:var(--t3)">›</span></div>`;}).join('')}</div>`;
+  document.getElementById('content').innerHTML=`<div class="booth-picker"><div class="picker-title">어느 부스에서 주문하시겠어요?</div>${minO>1&&!isAdditionalOrder?`<div class="min-notice">⚠ ${tableInfo.type}인석은 전체 메뉴 합산 최소 ${minO}개 주문이 필요합니다</div>`:''}${BOOTHS.map(b=>{const s=boothStateMap[b.id];const w=s?.wait||0;const hasO=!!s&&s.orders>0;const l=!hasO?'none':w<=5?'low':w<=11?'mid':'high';return`<div class="booth-card" onclick="selectBooth('${b.id}')"><div><div class="bc-name">${b.name}</div><div class="bc-wait ${l}">${!hasO?'대기 없음':'● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+w+'분'}</div></div><span style="font-size:20px;color:var(--t3)">›</span></div>`;}).join('')}</div>`;
 }
 
 function selectBooth(id){currentBoothId=id;if(!cart[id])cart[id]={};renderMenu(id);}
@@ -370,7 +487,10 @@ function renderMenu(id){
   const s=boothStateMap[id];const w=s?.wait||0;const hasO=!!s&&s.orders>0;
   const l=!hasO?'none':w<=5?'low':w<=11?'mid':'high';
   const popular=s?.popular||{};
-  document.getElementById('content').innerHTML=`<div class="menu-section"><div class="booth-hd"><button class="back-btn" onclick="currentBoothId=null;cart={};renderBooth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button><div><div style="font-size:16px;font-weight:700">${b.name}</div><div id="booth-wait-label" class="bc-wait ${l}">${!hasO?'대기 없음':'● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+w+'분 대기'}</div></div></div>${b.items.map((item,i)=>{const qty=cart[id][item.n]?.qty||0;const key=id+'::'+item.n;const isSold=soldoutMap[key]===true;const isPop=(popular[item.n]||0)>=POPULAR_THRESHOLD&&!isSold;return`<div class="menu-item"><div class="mi-info"><div class="mi-name-row"><span class="mi-name">${item.n}</span>${isPop?'<span class="badge-pop">🔥 인기</span>':''}${isSold?'<span class="badge-sold">품절</span>':''}</div><div class="mi-price">${item.p.toLocaleString()}원</div></div>${isSold?'<div style="font-size:12px;color:var(--rd);font-weight:500;flex-shrink:0">품절</div>':`<div class="qty-ctrl"><button class="qty-btn sub" id="sub-${i}" onclick="chgQty('${id}',${i},'${item.n}',${item.p},-1)" ${qty===0?'disabled':''}>−</button><span class="qty-num" id="qn-${i}">${qty}</span><button class="qty-btn add" onclick="chgQty('${id}',${i},'${item.n}',${item.p},1)">+</button></div>`}</div>`;}).join('')}</div>`;
+  // 부스에서 가장 많이 주문된 메뉴 1개만 인기메뉴
+  const popularEntries=Object.entries(popular).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);
+  const topMenuName=popularEntries.length>0?popularEntries[0][0]:null;
+  document.getElementById('content').innerHTML=`<div class="menu-section"><div class="booth-hd"><button class="back-btn" onclick="currentBoothId=null;cart={};renderBooth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button><div><div style="font-size:16px;font-weight:700">${b.name}</div><div id="booth-wait-label" class="bc-wait ${l}">${!hasO?'대기 없음':'● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+w+'분 대기'}</div></div></div>${b.items.map((item,i)=>{const qty=cart[id][item.n]?.qty||0;const key=id+'::'+item.n;const isSold=soldoutMap[key]===true;const isPop=topMenuName===item.n&&!isSold&&(popular[item.n]||0)>0;return`<div class="menu-item"><div class="mi-info"><div class="mi-name-row"><span class="mi-name">${item.n}</span>${isPop?'<span class="badge-pop">🔥 인기</span>':''}${isSold?'<span class="badge-sold">품절</span>':''}</div><div class="mi-price">${item.p.toLocaleString()}원</div></div>${isSold?'<div style="font-size:12px;color:var(--rd);font-weight:500;flex-shrink:0">품절</div>':`<div class="qty-ctrl"><button class="qty-btn sub" id="sub-${i}" onclick="chgQty('${id}',${i},'${item.n}',${item.p},-1)" ${qty===0?'disabled':''}>−</button><span class="qty-num" id="qn-${i}">${qty}</span><button class="qty-btn add" onclick="chgQty('${id}',${i},'${item.n}',${item.p},1)">+</button></div>`}</div>`;}).join('')}</div>`;
   document.getElementById('cart-bar').style.display='block';
   document.getElementById('cart-bar').style.bottom=trackerOpen?'210px':'62px';
   updateCartBar();
@@ -387,44 +507,79 @@ function chgQty(bid,idx,name,price,delta){
 }
 
 function updateCartBar(){
-  const{cnt,total}=cartCount();const minO=tableInfo.minOrder;const ok=cnt>=minO;
-  document.getElementById('cart-bar').innerHTML=`<div class="cart-summary"><span class="${ok?'':'min-warn'}">${cnt<minO?`최소 ${minO}개 필요 (현재 ${cnt}개)`:cnt+'개 선택'}</span><span class="cart-tv">${total.toLocaleString()}원</span></div><button class="next-btn" ${!ok?'disabled':''} onclick="goCart()">주문 확인하기</button>`;
+  const{cnt,total}=cartCount();
+  const minO=isAdditionalOrder?1:tableInfo.minOrder;
+  const ok=cnt>=minO;
+  const warnMsg=isAdditionalOrder?cnt+'개 선택':(cnt<minO?`전체 ${minO}개 이상 필요 (현재 ${cnt}개)`:cnt+'개 선택');
+  document.getElementById('cart-bar').innerHTML=`<div class="cart-summary"><span class="${ok?'':'min-warn'}">${warnMsg}</span><span class="cart-tv">${total.toLocaleString()}원</span></div><button class="next-btn" ${!ok?'disabled':''} onclick="goCart()">주문 확인하기</button>`;
 }
 
 function goCart(){
   setStep(3);document.getElementById('cart-bar').style.display='none';
-  const b=BOOTHS.find(x=>x.id===currentBoothId);
-  const items=Object.values(cart[currentBoothId]||{});
-  const total=items.reduce((a,i)=>a+i.p*i.qty,0);
-  document.getElementById('content').innerHTML=`<div class="cart-review"><div class="sect-title">${b.name} 주문 내역</div>${items.map(it=>`<div class="ci-row"><span class="ci-name">${it.n}</span><span class="ci-qty">×${it.qty}</span><span class="ci-price">${(it.p*it.qty).toLocaleString()}원</span><button class="ci-rm" onclick="rmItem('${it.n}')">×</button></div>`).join('')}<div class="total-row"><span>합계</span><span class="total-p">${total.toLocaleString()}원</span></div><div class="pay-label">결제 수단</div><div class="pay-methods"><button class="pay-btn2 active" id="pm-kakao" onclick="setPay('kakao')">카카오페이</button><button class="pay-btn2" id="pm-toss" onclick="setPay('toss')">토스</button><button class="pay-btn2" id="pm-card" onclick="setPay('card')">신용카드</button></div><button class="next-btn" onclick="doPayment()">결제하기 · ${total.toLocaleString()}원</button></div>`;
+  // 전체 카트(모든 부스) 합산
+  const allItems=[];
+  Object.entries(cart).forEach(([bid,items])=>{
+    const b=BOOTHS.find(x=>x.id===bid);
+    Object.values(items).forEach(it=>allItems.push({...it,boothName:b?b.name:'',boothId:bid}));
+  });
+  const total=allItems.reduce((a,i)=>a+i.p*i.qty,0);
+  // 부스별 그룹으로 표시
+  const byBooth={};
+  allItems.forEach(it=>{if(!byBooth[it.boothId])byBooth[it.boothId]=[];byBooth[it.boothId].push(it);});
+  const itemsHtml=Object.entries(byBooth).map(([bid,items])=>{
+    const bName=items[0].boothName;
+    return`<div style="margin-bottom:8px"><div style="font-size:11px;font-weight:700;color:var(--t3);margin-bottom:4px;padding:4px 0;border-bottom:1px solid var(--b)">${bName}</div>${items.map(it=>`<div class="ci-row"><span class="ci-name">${it.n}</span><span class="ci-qty">×${it.qty}</span><span class="ci-price">${(it.p*it.qty).toLocaleString()}원</span><button class="ci-rm" onclick="rmItem('${it.boothId}','${it.n}')">×</button></div>`).join('')}</div>`;
+  }).join('');
+  document.getElementById('content').innerHTML=`<div class="cart-review"><div class="sect-title">주문 내역 전체</div>${itemsHtml}<div class="total-row"><span>합계</span><span class="total-p">${total.toLocaleString()}원</span></div><div class="pay-label">결제 수단</div><div class="pay-methods"><button class="pay-btn2 active" id="pm-kakao" onclick="setPay('kakao')">카카오페이</button><button class="pay-btn2" id="pm-toss" onclick="setPay('toss')">토스</button><button class="pay-btn2" id="pm-card" onclick="setPay('card')">신용카드</button></div><button class="next-btn" onclick="doPayment()">결제하기 · ${total.toLocaleString()}원</button></div>`;
   payMethod='kakao';
 }
 
 function setPay(m){payMethod=m;['kakao','toss','card'].forEach(x=>{const el=document.getElementById('pm-'+x);if(el)el.className='pay-btn2'+(x===m?' active':'');});}
-function rmItem(name){if(cart[currentBoothId])delete cart[currentBoothId][name];const{cnt}=cartCount();if(cnt<tableInfo.minOrder)renderMenu(currentBoothId);else goCart();}
+function rmItem(boothId,name){
+  if(cart[boothId])delete cart[boothId][name];
+  if(cart[boothId]&&Object.keys(cart[boothId]).length===0)delete cart[boothId];
+  const{cnt}=cartCount();
+  if(cnt===0){currentBoothId=null;renderBooth();}
+  else if(cnt<tableInfo.minOrder){goCart();}
+  else{goCart();}
+}
 
 async function doPayment(){
   if(!fbReady){alert('서버에 연결되지 않았습니다.');return;}
-  const b=BOOTHS.find(x=>x.id===currentBoothId);
-  const items=Object.values(cart[currentBoothId]||{});
-  if(!items.length)return;
-  const soldItems=items.filter(it=>soldoutMap[currentBoothId+'::'+it.n]===true);
-  if(soldItems.length){alert('품절된 메뉴가 포함되어 있습니다:\n'+soldItems.map(i=>i.n).join(', '));renderMenu(currentBoothId);return;}
-  const total=items.reduce((a,i)=>a+i.p*i.qty,0);
+  // 전체 카트에서 부스별 아이템 수집
+  const allItems=[];
+  Object.entries(cart).forEach(([bid,items])=>{
+    Object.values(items).forEach(it=>allItems.push({...it,boothId:bid}));
+  });
+  if(!allItems.length)return;
+  // 품절 확인
+  const soldItems=allItems.filter(it=>soldoutMap[it.boothId+'::'+it.n]===true);
+  if(soldItems.length){alert('품절된 메뉴가 포함되어 있습니다:\n'+soldItems.map(i=>i.n).join(', '));return;}
+  const total=allItems.reduce((a,i)=>a+i.p*i.qty,0);
+  // 하위 호환을 위해 items 변수 유지
+  const items=allItems;
   const now=new Date();
   const timeStr=now.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
   const baseNum=await nextOrderNum();
   if(items.length>1)await REF.counter().set(baseNum+items.length-1);
-  const assignedItems=items.map((it,i)=>({n:it.n,p:it.p,qty:it.qty,num:baseNum+i,done:false}));
+  const assignedItems=items.map((it,i)=>({n:it.n,p:it.p,qty:it.qty,boothId:it.boothId,num:baseNum+i,done:false}));
   const orderId='ord_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
-  const order={id:orderId,booth:b.name,boothId:currentBoothId,table:tableId,items:assignedItems,total,time:timeStr,pay:payMethod,ts:Date.now()};
+  // 대표 부스명 (여러 부스면 '복수 부스')
+  const boothIds=[...new Set(items.map(i=>i.boothId))];
+  const boothLabel=boothIds.length===1?(BOOTHS.find(b=>b.id===boothIds[0])?.name||boothIds[0]):'복수 부스';
+  const order={id:orderId,booth:boothLabel,boothId:boothIds[0],table:tableId,items:assignedItems,total,time:timeStr,pay:payMethod,ts:Date.now()};
   await saveOrder(order);
   addSavedOrderId(orderId);
   subscribeOrder(orderId);
-  const cur=boothStateMap[currentBoothId]||{orders:0,wait:0,revenue:0,popular:{}};
-  const popular={...(cur.popular||{})};
-  assignedItems.forEach(it=>{popular[it.n]=(popular[it.n]||0)+it.qty;});
-  await updateBoothState(currentBoothId,{orders:(cur.orders||0)+1,revenue:(cur.revenue||0)+total,wait:Math.min(25,((cur.orders||0)+1)*2),popular});
+  // 부스별로 상태 업데이트
+  for(const bid of boothIds){
+    const boothItems=assignedItems.filter(it=>it.boothId===bid);
+    const bTotal=boothItems.reduce((a,i)=>a+i.p*i.qty,0);
+    const cur=boothStateMap[bid]||{orders:0,wait:0,revenue:0,popular:{}};
+    const popular={...(cur.popular||{})};
+    boothItems.forEach(it=>{popular[it.n]=(popular[it.n]||0)+it.qty;});
+    await updateBoothState(bid,{orders:(cur.orders||0)+1,revenue:(cur.revenue||0)+bTotal,wait:Math.min(25,((cur.orders||0)+1)*2),popular});
+  }
   cart={};currentBoothId=null;
   document.getElementById('steps').style.display='none';
   document.getElementById('cart-bar').style.display='none';
@@ -432,7 +587,7 @@ async function doPayment(){
   trackerOpen=true;document.getElementById('tracker-body').className='tracker-body open';document.getElementById('tracker-toggle').textContent='▼ 접기';
 }
 
-function resetOrder(){document.getElementById('steps').style.display='flex';cart={};currentBoothId=null;renderBooth();}
+function resetOrder(){document.getElementById('steps').style.display='flex';cart={};currentBoothId=null;isAdditionalOrder=true;renderBooth();}
 </script>
 </body>
 </html>
