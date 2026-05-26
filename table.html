@@ -231,7 +231,7 @@ function clearSavedOrderIds(){localStorage.removeItem(ORDER_KEY);}
 
 let expireShown=false,isAdditionalOrder=false,soldoutMap={}, boothStateMap={}, trackedOrders={}, trackerOpen=false, fbReady=false;
 
-const SK='dku_sess_'+tableId;
+const SK='dku_sess_v2_'+tableId; // v2: 20분으로 변경
 let session;
 let isNewSession=false; // 새 세션 여부 (QR 재스캔 판단용)
 try{session=JSON.parse(sessionStorage.getItem(SK));}catch{}
@@ -328,7 +328,7 @@ function doCheckout(){
     });
   }
   // 세션 삭제
-  sessionStorage.removeItem('dku_sess_'+tableId);
+  sessionStorage.removeItem('dku_sess_v2_'+tableId);
   expireShown = false;
   // 종료 화면
   document.getElementById('steps').style.display='none';
@@ -360,7 +360,7 @@ function updateCongHeader(){
   el.textContent='● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · '+avg+'분';
 }
 
-window.addEventListener('load', ()=>{
+document.addEventListener('DOMContentLoaded', ()=>{
   // Firebase 연결 전에도 부스 목록 즉시 렌더
   renderBooth();
 
