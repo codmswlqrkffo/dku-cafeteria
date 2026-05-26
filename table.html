@@ -229,16 +229,14 @@ function getSavedOrderIds(){try{return JSON.parse(localStorage.getItem(ORDER_KEY
 function addSavedOrderId(id){const ids=getSavedOrderIds();if(!ids.includes(id))ids.push(id);if(ids.length>10)ids.splice(0,ids.length-10);localStorage.setItem(ORDER_KEY,JSON.stringify(ids));}
 function clearSavedOrderIds(){localStorage.removeItem(ORDER_KEY);}
 
-let expireShown=false,isAdditionalOrder=false,soldoutMap={}, boothStateMap={}, trackedOrders={}, trackerOpen=false, fbReady=false;
+let expireShown=false,isAdditionalOrder=false,soldoutMap={},boothStateMap={},trackedOrders={},trackerOpen=false,fbReady=false;
 
-const SK='dku_sess_v2_'+tableId; // v2: 20분으로 변경
+const SK='dku_sess_v3_'+tableId;
 let session;
-let isNewSession=false; // 새 세션 여부 (QR 재스캔 판단용)
 try{session=JSON.parse(sessionStorage.getItem(SK));}catch{}
 if(!session){
   session={startTs:Date.now(),endTs:Date.now()+20*60000,extended:0};
   sessionStorage.setItem(SK,JSON.stringify(session));
-  isNewSession=true; // 세션스토리지에 없었으면 새 세션 (탭 새로 열림 = QR 재스캔)
 }
 function saveSession(){sessionStorage.setItem(SK,JSON.stringify(session));}
 
@@ -328,7 +326,7 @@ function doCheckout(){
     });
   }
   // 세션 삭제
-  sessionStorage.removeItem('dku_sess_v2_'+tableId);
+  sessionStorage.removeItem('dku_sess_v3_'+tableId);
   expireShown = false;
   // 종료 화면
   document.getElementById('steps').style.display='none';
@@ -465,10 +463,37 @@ let cart={},currentBoothId=null,payMethod='kakao';
 function cartCount(){let cnt=0,total=0;Object.values(cart).forEach(b=>Object.values(b).forEach(it=>{cnt+=it.qty;total+=it.p*it.qty;}));return{cnt,total};}
 
 function renderBooth(){
-  if(currentBoothId)return;
-  setStep(1);document.getElementById('cart-bar').style.display='none';
-  const minO=tableInfo.minOrder;
-  document.getElementById('content').innerHTML=`<div class="booth-picker"><div class="picker-title">어느 부스에서 주문하시겠어요?</div>${minO>1&&!isAdditionalOrder?`<div class="min-notice">⚠ ${tableInfo.type}인석은 전체 메뉴 합산 최소 ${minO}개 주문이 필요합니다</div>`:''}${BOOTHS.map(b=>{const s=boothStateMap[b.id];const w=s?.wait||0;const hasO=!!s&&s.orders>0;const l=!hasO?'none':w<=5?'low':w<=11?'mid':'high';return`<div class="booth-card" onclick="selectBooth('${b.id}')"><div><div class="bc-name">${b.name}</div><div class="bc-wait ${l}">${!hasO?'대기 없음':'● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+w+'분'}</div></div><span style="font-size:20px;color:var(--t3)">›</span></div>`;}).join('')}</div>`;
+  if(currentBoothId) return;
+  setStep(1);
+  document.getElementById('cart-bar').style.display='none';
+  const contentEl = document.getElementById('content');
+  if(!contentEl) return;
+  if(typeof BOOTHS === 'undefined' || !BOOTHS.length){
+    contentEl.innerHTML='<div style="padding:20px;font-size:13px;color:#888">데이터 로딩 중...</div>';
+    return;
+  }
+  const minO = tableInfo ? tableInfo.minOrder : 1;
+  let html = '<div class="booth-picker">';
+  html += '<div class="picker-title">어느 부스에서 주문하시겠어요?</div>';
+  if(minO > 1 && !isAdditionalOrder){
+    html += `<div class="min-notice">⚠ ${tableInfo.type}인석은 전체 메뉴 합산 최소 ${minO}개 주문이 필요합니다</div>`;
+  }
+  BOOTHS.forEach(b => {
+    const s = boothStateMap[b.id];
+    const w = s?.wait || 0;
+    const hasO = !!s && s.orders > 0;
+    const l = !hasO ? 'none' : w<=5 ? 'low' : w<=11 ? 'mid' : 'high';
+    const waitTxt = !hasO ? '대기 없음' : '● '+(l==='low'?'여유':l==='mid'?'보통':'혼잡')+' · 약 '+w+'분';
+    html += `<div class="booth-card" onclick="selectBooth('${b.id}')">
+      <div>
+        <div class="bc-name">${b.name}</div>
+        <div class="bc-wait ${l}">${waitTxt}</div>
+      </div>
+      <span style="font-size:20px;color:var(--t3)">›</span>
+    </div>`;
+  });
+  html += '</div>';
+  contentEl.innerHTML = html;
 }
 
 function selectBooth(id){currentBoothId=id;if(!cart[id])cart[id]={};renderMenu(id);}
