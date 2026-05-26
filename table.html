@@ -272,14 +272,17 @@ function updateTimer(){
       extBtn.title='연장은 1회만 가능합니다';
     }
   }
-  const rem=Math.max(0,session.endTs-Date.now());
+  const remRaw=session.endTs-Date.now();
+  const rem=Math.max(0,remRaw);
   const total=(DEFAULT_TIME+(session.extended||0)*EXTEND_TIME)*60000;
   const pct=(rem/total)*100;
   const mins=Math.floor(rem/60000),secs=Math.floor((rem%60000)/1000);
   const el=document.getElementById('timer-val'),fill=document.getElementById('timer-fill');
   if(el){el.textContent=`${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;el.className='timer-val'+(mins<5?' danger':mins<10?' warn':'');}
   if(fill){fill.style.width=pct+'%';fill.className='timer-fill'+(mins<5?' danger':mins<10?' warn':'');}
-  if(rem===0&&!expireShown){expireShown=true;showExpired();}
+  if(remRaw<=0&&!expireShown){expireShown=true;showExpired();}
+  // 만료 후 60초 지나도 응답 없으면 Firebase 자동 체크아웃
+  if(remRaw<=-60000&&fbReady){db.ref('seats/'+tableId).set({occupied:false,checkedOut:true,checkedOutAt:Date.now()});}
 }
 setInterval(updateTimer,1000);updateTimer();
 

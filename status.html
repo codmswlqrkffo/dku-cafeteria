@@ -148,7 +148,30 @@ function renderCong(){
   document.getElementById('cong-list').innerHTML=BOOTHS.map(b=>{const s=boothState[b.id];const hasData=!!s&&(s.orders>0);const w=hasData?(s.wait||0):0;const l=lv(w);const pct=hasData?Math.min(100,Math.round((w/22)*100)):0;return`<div class="cong-row"><div class="cong-name">${b.name}</div><div class="cong-bar-wrap"><div class="cong-bar-fill ${l}" style="width:${pct}%"></div></div><div class="cong-right"><div class="cong-badge ${l}">${lvL(l)}</div><div class="cong-wait">${hasData?w+'분 대기':'—'}</div></div></div>`;}).join('');
 }
 
-setInterval(()=>{if(Object.keys(seatsState).length>0)renderSeats();},30000);
+setInterval(()=>{
+  if(Object.keys(seatsState).length>0){
+    renderSeats();
+    autoCheckoutExpired();
+  }
+},30000);
+
+// 만료된 좌석 자동 체크아웃
+async function autoCheckoutExpired(){
+  const now = Date.now();
+  for(const [id, seat] of Object.entries(seatsState)){
+    if(seat.occupied && seat.endTs && seat.endTs < now){
+      // 만료된 좌석 자동 체크아웃
+      try {
+        await db.ref('seats/'+id).set({
+          occupied: false,
+          checkedOut: true,
+          checkedOutAt: now
+        });
+        console.log('Auto checkout:', id);
+      } catch(e){ console.error(e); }
+    }
+  }
+}
 </script>
 </body>
 </html>

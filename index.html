@@ -439,7 +439,53 @@ function renderSoldout(){
 
 async function toggleSold(key){try{if(soldoutState[key]===true)await db.ref('soldout/'+key).remove();else await db.ref('soldout/'+key).set(true);}catch(e){console.error(e);}}
 async function clearAllSoldout(){try{await db.ref('soldout').remove();}catch(e){console.error(e);}}
-setInterval(()=>{if(Object.keys(seatsState).length>0)renderSeats();},60000);
+setInterval(()=>{
+  if(Object.keys(seatsState).length>0){
+    renderSeats();
+    autoCheckoutExpired();
+  }
+},30000);
+
+async function autoCheckoutExpired(){
+  const now = Date.now();
+  for(const [id, seat] of Object.entries(seatsState)){
+    if(seat.occupied && seat.endTs && seat.endTs < now){
+      try{
+        await db.ref('seats/'+id).set({
+          occupied: false,
+          checkedOut: true,
+          checkedOutAt: now
+        });
+      }catch(e){ console.error(e); }
+    }
+  }
+}
+
+// ── 만료 좌석 자동 체크아웃 (10초마다 확인) ──
+setInterval(autoExpireSeats, 10000);
+
+async function autoExpireSeats(){
+  const now = Date.now();
+  const updates = {};
+  Object.entries(seatsState).forEach(([tableId, seat]) => {
+    if(!seat || !seat.occupied) return;
+    if(!seat.endTs) return;
+    // 만료 시간 초과 시 자동 체크아웃
+    if(now > seat.endTs){
+      updates[tableId] = {
+        occupied: false,
+        checkedOut: true,
+        checkedOutAt: now
+      };
+    }
+  });
+  if(Object.keys(updates).length > 0){
+    for(const [tableId, data] of Object.entries(updates)){
+      await db.ref('seats/' + tableId).set(data);
+      console.log('자동 체크아웃:', tableId);
+    }
+  }
+}
 
 // ── 피드백 ──
 let allFeedback = [], fbFilter = 'all';
