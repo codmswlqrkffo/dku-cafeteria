@@ -316,10 +316,9 @@ function confirmCheckout(){
 
 function doCheckout(){
   document.getElementById('expire-modal').style.display='none';
-  // Firebase 좌석 상태: occupied:false + checkedOut 기록
-  // occupied:false → 현황판/관리자 창에서 빈자리로 표시
+  // Firebase 좌석 상태: occupied:false 로 설정 (현황판/관리자에서 빈자리로 표시)
   if(fbReady){
-    await db.ref('seats/'+tableId).set({
+    db.ref('seats/'+tableId).set({
       occupied: false,
       checkedOut: true,
       checkedOutAt: Date.now()
